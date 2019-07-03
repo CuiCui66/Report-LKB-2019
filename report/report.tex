@@ -1,0 +1,171 @@
+\documentclass[10pt]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[left=2cm,top=1.5cm,right=2cm,bottom=2cm]{geometry}
+
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsopn}
+\usepackage{amsthm}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+\usepackage{fancyvrb}
+\usepackage{tikz}
+\usepackage[justification=centering]{caption}
+% \patchcmd{\thebibliography}{\chapter*}{\section*}{}{}
+\usepackage[super]{nth}
+\usepackage{textcomp}
+\usepackage{enumitem}
+\setlist{nosep}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{cor}[theorem]{Corollary}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{1}
+%\renewcommand\thesection{\arabic{section}}
+
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\Rb}{\ensuremath{\overline{\mathbb{R}}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\C}{\ensuremath{\mathbb{C}}}
+\newcommand{\U}{\ensuremath{\mathbb{U}}}
+\newcommand{\F}{\ensuremath{\mathbb{F}}}
+\newcommand{\K}{\ensuremath{\mathbb{K}}}
+
+
+\newcommand\eqdef{\stackrel{\mathclap{\mbox{\tiny def}}}{=}}
+
+\DeclareMathOperator{\fst}{fst}
+\DeclareMathOperator{\snd}{snd}
+\DeclareMathOperator{\cif}{if}
+
+
+
+\newcommand{\Send}{\textsf{Send}}
+\newcommand{\Recv}{\textsf{Recv}}
+\newcommand{\Grant}{\textsf{Grant}}
+\newcommand{\GR}{\textsf{GrantReply}}
+
+
+% \usepackage{titlesec}
+% \titleformat{\chapter}[hang] 
+
+\makeatletter
+\def\@makechapterhead#1{%
+  \vspace*{0\p@}% %%% removed!
+  {\parindent \z@ \raggedright \normalfont
+    \ifnum \c@secnumdepth >\m@ne
+        \huge\bfseries \@chapapp\space \thechapter
+        \par\nobreak
+        \vskip 10\p@
+    \fi
+    \interlinepenalty\@M
+    \Huge \bfseries #1\par\nobreak
+    \vskip 30\p@
+  }}
+\def\@makeschapterhead#1{%
+  \vspace*{0\p@}% %%% removed!
+  {\parindent \z@ \raggedright
+    \normalfont
+    \interlinepenalty\@M
+    \Huge \bfseries  #1\par\nobreak
+    \vskip 30\p@
+  }}
+\makeatother
+
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{.7\baselineskip}{.5\baselineskip}
+\titlespacing*{\subsection}{0pt}{.4\baselineskip}{.3\baselineskip}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  {\scshape\huge École Normale Supérieure \par}
+  \vspace{0.3cm}
+  {\scshape\Large Départment de Mathématiques et applications \par}
+  \vspace{3cm}
+  {\Huge\bfseries Tomographie quantique par estimation maxlike \par}
+  \vspace{0.5cm}
+  {\scshape\Large Rapport de stage\par}
+  \vspace{3cm}
+  {\LARGE Thibaut \textsc{Pérami}\par}
+  \vfill
+  {
+    \large
+    supervisé par\par
+    Igor \textsc{Dotsenko}\par
+    et\par
+    Pierre \textsc{Rouchon}\par
+  à\par
+  LKB, Collège de France
+  }
+
+  \vfill
+
+  % Bottom of the page
+  {\Large \today\par}
+\end{titlepage}
+
+\newcommand{\fset}{\ensuremath{\mathop{\text{\textquotesingle}}}}
+
+
+\pagenumbering{gobble}
+\tableofcontents
+
+\chapter*{Introduction}
+\pagenumbering{arabic}
+\addcontentsline{toc}{chapter}{Introduction}
+
+\chapter{Chapitre}
+
+\chapter{Chapitre}
+
+\chapter*{Conclusion} %and bibliography
+\addcontentsline{toc}{chapter}{Conclusion}
+
+Conclusion
+
+
+
+\vfill
+
+\paragraph{\Huge Remerciement}
+\addcontentsline{toc}{chapter}{Remerciement}
+
+\
+
+\vspace{3mm}
+
+\begin{itemize}
+
+\item Merci
+\item Merci
+\item Merci
+
+\end{itemize}
+
+\vfill
+
+
+% Bibliography
+
+\addcontentsline{toc}{chapter}{Bibliography}
+
+\bibliographystyle{plain}
+
+{\let\clearpage\relax \bibliography{report}}
+
+\end{document}
+
+
+
+\end{document}
