@@ -2,7 +2,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[french]{babel}
+\usepackage[english]{babel}
 \usepackage[left=2cm,top=1.5cm,right=2cm,bottom=2cm]{geometry}
 
 \usepackage{mathtools}
@@ -91,21 +91,21 @@
   \centering
   {\scshape\huge École Normale Supérieure \par}
   \vspace{0.3cm}
-  {\scshape\Large Départment de Mathématiques et applications \par}
+  {\scshape\Large Department of Mathematics and their Applications (DMA) \par}
   \vspace{3cm}
-  {\Huge\bfseries Tomographie quantique par estimation maxlike \par}
+  {\Huge\bfseries Error estimation in maxlike reconstruction for quantum tomography \par}
   \vspace{0.5cm}
-  {\scshape\Large Rapport de stage\par}
+  {\scshape\Large Internship report\par}
   \vspace{3cm}
   {\LARGE Thibaut \textsc{Pérami}\par}
   \vfill
   {
     \large
-    supervisé par\par
+    supervised by\par
     Igor \textsc{Dotsenko}\par
-    et\par
+    and\par
     Pierre \textsc{Rouchon}\par
-  à\par
+  in\par
   LKB, Collège de France
   }
 
@@ -125,9 +125,124 @@
 \pagenumbering{arabic}
 \addcontentsline{toc}{chapter}{Introduction}
 
-\chapter{Chapitre}
+This report details my internship with Pierre Rouchon and Igor dotsenko on
+Quantum tomography by maximum-likelihood reconstruction. It was done mainly at
+the Laboratory Kessler-Brosel (LKB) in the Collège de France but also a bit
+\emph{insert Pierre's location here}.
 
-\chapter{Chapitre}
+The goal of Quantum tomography is to find ways to reconstruct the state of
+a quantum system from several direct or indirect measurement on it. In some case
+those measurement do not modify the state of the system. Those are called QND
+(Quantum Non-Destructive) measurement.
+
+The specific physical project on which I worked with Igor Dotsenko is the
+internship project of Luis Najera about thermodynamics in the case of
+atom-cavity interaction in quantum optics. More precisely, we send an circular
+Rydberg atom in a resonant cavity containing photons. The state of the cavity is
+thermal i.e it follow the Bose-Einstein distribution. The atom then interacts
+with the cavity. If the atom is in a thermal state between two atomic level that
+are at the same frequency than the cavity then a thermal exchange will occur in
+the expected way. However if we pump one of the state of the atom in a hidden
+state, like a Maxwell demon, we can can apparently break the second law and make
+a cold atom give head to a hotter cavity.
+
+In order to study this experiment, we need to measure the state of the cavity.
+That state cannot be measured directly, so we do it by quantum tomography using
+maximum-likelihood reconstruction. This construction takes into account all the
+measurements made and deduce a density matrix. To find it, one needs to solve a
+convex optimisation problem on the set of density matrix (hermitian positive
+definite matrix of trace 1). This was done using a gradient descent method with
+projection of the gradient on the domain.
+
+The deduced state is usually not a pure state because the reconstruction often
+came from a state that has been prepared several times.
+All the prepared state are slightly different.
+Furthermore, other factors like measurements imperfection and decoherent
+relaxation decrease the precision of the reconstruction.
+
+With this measurements, we can now get and interpret the results of our Maxwell
+demon experiment. However, to be able to interpret measurement, we need to know
+the error on the reconstructed state. The original paper [ref here] on
+tomography only provide the standard deviation of usual quantum operator which
+are linear in the density matrix. However to do our analysis of the second law,
+we need to evaluate the error on the entropy.
+
+In order to do that, I had to extract from the reconstruction the probability
+distribution around the maximum which is our estimator. But this distribution
+cannot be samples easily because its a mix of Gaussian and exponential law
+truncated into the domain of density matrix. Into to sample from this
+probability I use an adapted hit and run method to build a Markov chain on the
+density matrix space (but discrete time) whose stationary distribution is the
+wanted distribution. By sampling this chain long enough, I can get the statistic
+average and standard deviation of any real function of the density matrix space.
+
+In the end we get nice plots with errorbars and we were able to determine which
+point we realistic within the error-bars and which were completely wrong. We
+could then redo the bad point and reach a clean conclusion.
+
+\
+
+This report alternate maths and physics. The odd chapters are about the physical
+part of the internship and the even ones about maths. The five first chapter are
+about my understanding of prior work that I had to do in order to do what I did.
+The last two are about my personal contributions.
+
+In the first chapter I
+present the experiment, its modelisation and what we want to prove. In the
+second I explain the basics of maximum likelihood reconstruction then I show in
+the third chapter how to apply this method for our particular case. In the
+fourth chapter I show how to solve the convex optimization problem. Then I can
+explain the state of the results before I arrived in chapter 5. In chapter 6 I
+explain what I did for computing errorbars for non-linear function and at last
+I explain the final results in chapter 7.
+
+
+\chapter{Experimental setup and goal}
+\section{Setup description}
+\section{Calibration}
+\section{Predictions}
+
+% Hoe can we estimate the state
+
+\chapter{Maximum likelihood reconstruction}
+\section{Reminders about statistics}
+\section{Maximum likelihood estimator}
+\section{General properties}
+
+\chapter{Effect matrices computation}
+\section{Density matrices and Krauss operators}
+\section{Likelihood in terms of Krauss operators}
+\section{Computation of Krauss operators for QND measurement}
+
+\chapter{Convex optimization}
+\section{Reminders on convex optimization}
+\section{Projected gradient method}
+\section{Convergence criterion}
+\section{Probabilities around estimator}
+
+\chapter{First results}
+\section{Reminders on Quantum information}
+\subsection{Classical Information theory}
+
+\section{Thermodynamical states}
+
+% How to get error bars
+
+\chapter{Error estimation}
+\section{Probability distribution around maximum}
+\section{Linear operator case}
+\section{General case : Monte carlo estimation}
+\subsection{Reminders on Markov chains}
+\subsection{Probability vectors}
+% Convergence proofs
+\subsection{Density matrix}
+% Convergence proofs
+
+\chapter{Final Results}
+\section{Combination of reconstructions}
+\section{Plots}
+\section{Interpretation}
+
 
 \chapter*{Conclusion} %and bibliography
 \addcontentsline{toc}{chapter}{Conclusion}
@@ -138,8 +253,8 @@ Conclusion
 
 \vfill
 
-\paragraph{\Huge Remerciement}
-\addcontentsline{toc}{chapter}{Remerciement}
+\paragraph{\Huge Thanks}
+\addcontentsline{toc}{chapter}{Thanks}
 
 \
 
@@ -147,9 +262,10 @@ Conclusion
 
 \begin{itemize}
 
-\item Merci
-\item Merci
-\item Merci
+\item Pierre Rouchon
+\item Igor Dotsenko
+\item Valentin Metillon
+\item Luis Najera
 
 \end{itemize}
 
