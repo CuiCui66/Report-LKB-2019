@@ -19,6 +19,7 @@
 \usepackage[super]{nth}
 \usepackage{textcomp}
 \usepackage{enumitem}
+\usepackage{doi}
 \setlist{nosep}
 
 \newtheorem{theorem}{Theorem}[section]
@@ -43,16 +44,7 @@
 
 \newcommand\eqdef{\stackrel{\mathclap{\mbox{\tiny def}}}{=}}
 
-\DeclareMathOperator{\fst}{fst}
-\DeclareMathOperator{\snd}{snd}
-\DeclareMathOperator{\cif}{if}
 
-
-
-\newcommand{\Send}{\textsf{Send}}
-\newcommand{\Recv}{\textsf{Recv}}
-\newcommand{\Grant}{\textsf{Grant}}
-\newcommand{\GR}{\textsf{GrantReply}}
 
 
 % \usepackage{titlesec}
@@ -118,11 +110,11 @@
 \newcommand{\fset}{\ensuremath{\mathop{\text{\textquotesingle}}}}
 
 
-\pagenumbering{gobble}
+% \pagenumbering{gobble} % to avoid counting contents page in report
 \tableofcontents
 
 \chapter*{Introduction}
-\pagenumbering{arabic}
+% \pagenumbering{arabic}
 \addcontentsline{toc}{chapter}{Introduction}
 
 This report details my internship with Pierre Rouchon and Igor dotsenko on
@@ -198,51 +190,186 @@ I explain the final results in chapter 7.
 
 
 \chapter{Experimental setup and goal}
-\section{Setup description}
-\section{Calibration}
-\section{Predictions}
 
-% Hoe can we estimate the state
+In this chapter I expect a basic knowledge of quantum mechanics, Hilbert space and
+Schrodinger equations. In the while report I will use the usual bra-ket notation
+and therefore a scalar product linear to the right. The transpose will be
+denoted by $A^t$ and the transpose conjugate by $A^*$.
+\section{Basic setup description}
+
+Mostly from \cite{Har06}
+
+We want atom interacting with cavities and measuring it at the end
+
+\subsection{Rydberg Ciruclar atoms}
+
+% Rydberg circular atoms
+% Cavites
+
+\subsection{Ramsay zone : Interaction with classical field}
+
+\subsection{Cavity resonance and interaction}
+
+
+\section{Experimental details and calibration}
+
+Mostly from the unknown thesis and other material I have to ask for
+
+\subsection{State preparation}
+
+% oven
+% speed filtering Laser with doppler + resonnance
+% State filtering (n=52)
+% We ignore non-Rydeberg atoms
+
+\subsection{Detection of atom}
+
+% see thesis for functioning of detector
+
+\section{Reconstruction}
+
+Still from \cite{Har06}
+
+\subsection{Ramsay interferometer}
+
+\subsection{Phase shift of QND atoms}
+
+\subsection{What data we have as an output}
+
+Personal
+
+
+
+
 
 \chapter{Maximum likelihood reconstruction}
 \section{Reminders about statistics}
+
+Statistic vocabulary from Wikipédia
+
 \section{Maximum likelihood estimator}
+
+From Wikipédia and Valentin'thesis
+
+
 \section{General properties}
 
+From Wikipédia and Valentin'thesis and personal work on probability.
+
 \chapter{Effect matrices computation}
+
 \section{Density matrices and Krauss operators}
+
+Anywhere and some \cite{Har06}
+
+Explicitely mention the density matrice as an statistical average of quantum state
+
 \section{Likelihood in terms of Krauss operators}
+
+Mainly \cite{SPRQT16} but some others
+
 \section{Computation of Krauss operators for QND measurement}
+Mostly from \cite{VM19} but with a bit of \cite{Har06}
 
 \chapter{Convex optimization}
-\section{Reminders on convex optimization}
-\section{Projected gradient method}
-\section{Convergence criterion}
-\section{Probabilities around estimator}
 
-\chapter{First results}
+\section{Reminders on convex optimization}
+
+Aspremont convex optimization course
+
+\section{Projected gradient method}
+
+Ask Rouchon
+
+\section{Convergence criterion}
+
+Ask Rouchon
+
+\chapter{First Results}
+\section{Extracting the results and basic error}
+
+Mention the results already proven and put a plot of reconstructed state with errorbars.
+
+We get error on matrix value and photon number
+
+\section{Maxwell Demon experiment}
+
+% Here or first chapter
+Mainly Luis notes and presentation
+
+
 \section{Reminders on Quantum information}
+
+Wikipédia
+
 \subsection{Classical Information theory}
 
-\section{Thermodynamical states}
+\subsection{Quantum information theory}
 
-% How to get error bars
+\section{Thermodynamical analysis}
 
-\chapter{Error estimation}
-\section{Probability distribution around maximum}
-\section{Linear operator case}
-\section{General case : Monte carlo estimation}
+Built the new second law from
+
+Mainly the long notes from Luis
+
+
+\section{Experimental results}
+
+\paragraph{Combination of reconstructions} How we build the matrices
+experimentally : from code
+
+Plots and error bars ?
+
+\paragraph{TODO} Need to save the data needed for the report
+
+\chapter{Error estimation and validity proofs}
+\section{Quick approach : Monte carlo estimation}
+% Only on specific case of probability vectors
 \subsection{Reminders on Markov chains}
-\subsection{Probability vectors}
+
+Continuous Markov chain notes
+
+\subsection{Truncated gaussian simulation}
 % Convergence proofs
-\subsection{Density matrix}
-% Convergence proofs
+
+\section{Probability distribution around maximum}
+
+Full rank and half rank case
+
+Give the formula that we will prove by intuition
+
+Will probably need the transition from the z hessian to the usual notation here.
+
+\section{Exact case}
+
+Use \cite{SPRAL17} but generalise. Will try to compact the proofs
+
+Maybe some stuff will go in the appendices
+\subsection{Full rank}
+
+\subsection{Low rank}
+
+\section{Fix the non full span problem}
+
+\paragraph{TODO} original work
 
 \chapter{Final Results}
-\section{Combination of reconstructions}
+
+\section{Approximations and implementation}
+
+Gradient of entropy, projections, ...
+
+Relevant implementation details
+
+Details about error propagation and different approach
+
 \section{Plots}
+
+\paragraph{TODO} Gather data for plots
+
 \section{Interpretation}
 
+Well crafted bullshit
 
 \chapter*{Conclusion} %and bibliography
 \addcontentsline{toc}{chapter}{Conclusion}
@@ -262,8 +389,8 @@ Conclusion
 
 \begin{itemize}
 
-\item Pierre Rouchon
 \item Igor Dotsenko
+\item Pierre Rouchon
 \item Valentin Metillon
 \item Luis Najera
 
@@ -279,9 +406,5 @@ Conclusion
 \bibliographystyle{plain}
 
 {\let\clearpage\relax \bibliography{report}}
-
-\end{document}
-
-
 
 \end{document}
