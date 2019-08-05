@@ -34,7 +34,7 @@
 \theoremstyle{definition}
 \newtheorem{defn}{Definition}[chapter]
 \newtheorem{axi}{Axiom}[chapter]
-\newtheorem{eqn}{Equation}[chapter]
+\newtheorem{eqn}[thm]{Equation}
 
 \theoremstyle{remark}
 \newtheorem*{rem}{Remark}
@@ -66,6 +66,11 @@
 \newcommand{\braket}[2]{\langle#1|#2\rangle}
 
 \newcommand{\dd}{\mathrm{d}}
+\newcommand{\der}[2]{\frac{\dd{#1}}{\dd{#2}}}
+\newcommand{\dern}[3]{\frac{\dd^{#3} #1}{\dd{#2}^{#3}}}
+\newcommand{\dpar}[2]{\frac{\partial{#1}}{\partial{#2}}}
+\newcommand{\dparn}[3]{\frac{\partial^{#3} {#1}}{\partial{#2}^{#3}}}
+
 \renewcommand{\geq}{\geqslant}
 \renewcommand{\leq}{\leqslant}
 
@@ -250,7 +255,7 @@ reconstruction is needed.
 
 \section{Basic setup description}
 
-In this section I will describe the experiment I worked with at the LKB. This
+In this section I will describe the experiment I worked with at the LKB.\@This
 experience studies the interaction between Rydberg circular atoms and light in
 cavities.
 We produce Rydberg atoms in a known state, then we send them through a
@@ -267,7 +272,7 @@ of an atom, we can make give heat to the cavity (emit a photon) even if the atom
 is colder than the cavity. I will define the notion of temperature of single
 atom later.
 
-Most of the formulas come from \cite{Har06}
+Most of the formulas come from~\cite{Har06}
 
 
 \subsection{Rydberg Ciruclar atoms}
@@ -334,7 +339,7 @@ In our circular states, we have $\bra e R \ket e = 0$ and $\bra g R \ket g = 0$,
 so we only care about the off diagonal terms. We want to write the dipole
 operator as:
 \[\bs D = d\mat{\bs 0&\bs u_a^*\\\bs u_a&\bs 0}\]
-Such that $\bs u_a$ expressed the direction and $d$ the value of dipolar
+Such that $\bs u_a$ expressed the direction and $d$ the value of electric dipole
 moment. They are defined by $ q \bra g \bs R \ket e = d \bs u_a$. The field
 Hamiltonian has now the expression:
 
@@ -347,9 +352,15 @@ Hamiltonian has now the expression:
 
 \
 
-In order to express the evolution of the system more easily, we will place
-ourselves in an interaction representation. That means that we remove the
-evolution of an Hamiltonian from the
+The free Hamiltonian of the system being $H_a = \frac{\hbar \omega_a}2 \sigma_Z$.
+We'll need to express the evolution of the system by separating both evolutions.
+We will place ourselves in an interaction picture (explanation
+in~\cref{app:pict}). Both the free and interaction Hamiltonian make the state turn
+around, We want to see the difference between the two of them. Therefore, We
+will remove $H_0 = \frac{\hbar \omega_r}2 \sigma_Z$. We remove the Hamiltonian
+with the frequency of the field and not the atom to simplify the field
+frequencies elsewhere. Our new Hamiltonian $H_1 = e^{i\frac{H_0}\hbar t}(H_f + H_a - H_0)e^{i\frac{H_0}\hbar t}$ is thus:
+\[H_1 =  \]
 
 \subsection{Resonant cavities}\label{ssec:rescav}
 
@@ -752,10 +763,10 @@ deserves a name.
    \TODO
 \end{proof}
 
-The main interest of purity is that in unitary evolution ($\Tr (U^\dagger \rho U)
-= \Tr \rho^2$, it remains constant,
-whereas it will decrease in any other evolution, relaxation, decoherence,
-measurement, as we lose information.
+The main interest of purity is that it remains constant in unitary evolution
+($\Tr (U^\dagger \rho U) = \Tr \rho^2$),
+whereas it will change in any other evolution, relaxation, decoherence,
+measurement, as we lose information or gain information.
 
 \subsection{Coefficients interpretation}
 
@@ -838,11 +849,102 @@ We can then look at the purity $\gamma$ in function of $\bs r$. We have :
 \end{cor}
 
 Mixed state are thus represented in Bloch ``ball''. The pure states are exactly
-the one that are laying on the boundary i.e. on the sphere. One can check this
+the one that are laying on the boundary i.e.\ on the sphere. One can check this
 representation matches the usual Block sphere representation on pure states. The
 uniform state is the center of the ball.
 
+\subsection{Partial trace}
+
+\TODO
+
 \section{Krauss Maps}
+
+Even if a closed quantum system has a unitary evolution, in real life, quantum
+system are open, The undergo interaction with their environment whether it is
+from external measurement or simply thermal relaxation. The goal of this section
+is to build a representation of acceptable transformation for open systems in a
+similar way that we say that any transformation of a closed system is unitary.
+
+\subsection{Classical measurement}
+
+The first and simplest example of external interaction in quantum theory is
+measurement. When a quantum system interact with a macroscopic measurement
+device, it is measured and collapse in a specific state. The usual framework for
+measurement is projective measurement. It is
+made by measuring a observable that fully describes the measurement
+process.
+
+A observable $A$ is any Hermitian matrix on $\mathcal{H}$. The
+spectral decomposition of $A$ tells us that $A = \sum_a a P_a$, where the $a$
+are the eigenvalues of $A$ and the $P_a$ orthogonal projector on the
+corresponding eigenvector spaces. When starting in state $\ket \Psi$, We
+measure $a$ with probability $\bra \Psi P_a \ket \Psi$, and we get we get
+the output state:
+\[ \frac{P_a \ket \Psi}{\sqrt{\bra \Psi P_a \ket \Psi}}\]
+
+In fact $P_a$ is also a quantum measurement operator which detect if we measure
+$a$ or not, and thus its average value is the probability of measuring $A$. We
+can then express the same thing in the world of density matrices. When starting in
+$\rho$, we expect $a$ with probability $\Tr(\rho P_a)$ and get as an output
+state:
+\[ \frac{P_a \rho P_a}{\Tr(\rho P_a)}\]
+
+A important question when dealing with probability is whether they always sum to
+one, and in this case, this is answered by the closure relation
+\[\sum_a P_a = I\]
+
+and as $\bra \Psi I \ket \Psi = \Tr(\rhoI) = 1$, the probabilities are normalized
+
+\subsection{Generalized measurement}
+
+However in some case, quantum detector can perform other kinds of measurement.
+In particular measurement that completely destroy the object instead of
+projecting is in a specific vector space. The main example is a photon counting
+detector. When a cavity is in a fock state $\ket n$, and we insert a photon
+counting detector, the photons ``crash'' into the detector and are counted to be
+$n$. The remaining state is always $\ket 0$, as there are no photons left. This
+measurement is obviously non projective as $\ket 0$ is orthogonal to any $\ket
+n$. We thus need a framework to handle this kind of measurement.
+
+While a projective measurement of operator $N$, would have left the state in
+state $\ket n$ because we applied $P_n = \ket n \bra n$.
+The operation the detector apply to the system when measuring $n$ is $M_n = \ket
+0 \bra n$. If we apply it to any state $\ket \Psi$, We have to normalize $M_n
+\ket \Psi$. The squared norm is $\bra \Psi M_n^\dagger M_n \ket \Psi$ and by
+analogy, this looks like our probability. However any group of $M_n$ cannot
+represent a generalized measurement. We need a normalization condition which is
+quite simple given the probability expression: $\sum M_n^\dagger M_n = I$.
+
+\begin{defn}
+  On a quantum Hilbert space $\mathcal{H}$, a generalized measurement is a set
+  of outcomes $o$ of the measurement (There can be more outcomes that the
+  dimension of $\mathcal{H}$), and for each of them a measurement
+  operator $M_o$. For the measurement to be complete, we require the
+  normalization condition:
+  \[\sum_o M_o^\dagger M_o = I\]
+
+  In that case the probability of outcome $o$ in state $\ket \Psi$ is $\bra \Psi
+  M_o^\dagger M_o \ket \Psi$ and the resulting state is:
+\[\frac{M_o \ket \Psi}{\sqrt{\bra \Psi M_o^\dagger M_o \ket \Psi}}\]
+\end{defn}
+
+\begin{rem}
+  A projective measurement is just a special case of generalized measurement
+  with $M_o=P_o$ as $P_o^\dagger P_o = P_o$.
+\end{rem}
+
+\begin{prop}
+  If we have a mixed state $\rho$, the action of this generalized measurement is
+  to measure $o$ with probability, $\Tr(M_0\rho M_0^\dagger)$. The outcome would
+  then be:
+  \[\frac{M_0\rho M_0^\dagger}{\Tr(M_0\rho M_0^\dagger)}\]
+\end{prop}
+
+
+
+\subsection{Quantum operations, Krauss maps}
+
+
 
 \section{Likelihood in terms of Krauss maps}
 
@@ -1012,7 +1114,7 @@ Conclusion
 
 \appendix
 
-\chapter{Quantum mechanics pictures}
+\chapter{Quantum mechanics pictures}\label{app:pict}
 
 Picture are different way to perceive and express quantum mechanics. They vary
 in how the system state and the various operator change over time. All those
@@ -1029,23 +1131,89 @@ evolutions will always apply to state.
 The Schrodinger picture is the usual representation of quantum mechanics. In
 this context only the state of the system varies and the way to observe it do
 not change. When the system evolves under Hamiltonian $H(t)$,
-the various operators relevant to the system are constant and the
+the various operators relevant to the system are constant (unless they vary
+because of a external source which is not the system) and the
 state follow the Schrodinger equation:
+\begin{eqn}\label{eqn:schro}
 \[i\hbar \frac{\partial \ket \Psi}{\partial t} (t) = H(t) \ket {\Psi(t)} \]
+\end{eqn}
 
+\begin{prop}
+  If $H$ is constant over time, the solution of~\cref{eqn:schro} is:
+  \[ \ket {\Psi(t)} = e^{-i\frac H\hbar t}\ket{\Psi(0)}\]
+\end{prop}
 
+On very important theorem that makes a link the Heisenberg picture is the
+following:
+
+\begin{thm}[Ehrenfest]\label{thm:ehren}
+  \[\der{}t\langle A\rangle = \frac i\hbar\langle[H,A]\rangle + \left\langle\dpar
+      A t \right\rangle\]
+\end{thm}
+
+\begin{proof}
+  \TODO
+\end{proof}
 
 
 \section{Heisenberg picture}
 
+In the Heisenberg picture however, the state in $\mathcal{H}$, only correspond
+to the initial state and represent the whole trajectory. However to measure an
+observable a time $t$, you its expression $A(t)$ at this point in time. The
+equation that rules this evolution is
+
+
+
+\begin{eqn}
+  \[\der At   = \frac i {\hbar}[H,A] + {\left(\dpar At \right)}_{\!\!H}\]
+\end{eqn}
+
+Here the $[\cdot,\cdot]$ is the commutator and the partial derivative is the
+variation of $A$ due to external element out of the system (i.e.~the variation
+of H in Schrodinger picture). This equation is actually the not-averaged version
+of Ehrenfest theorem (\ref{thm:ehren})
+
+\begin{prop}
+  The Schrodinger picture and Heisenberg picture describe the same mechanics. In
+  particular $\bra \Psi A \ket \Psi$ is the same for any operator in both pictures.
+\end{prop}
+
+\begin{proof}
+  The value of the average in Schrodinger picture if given by Ehrenfest theorem.
+  Let's compute the same average in Heisenberg picture. On the right side, the
+  averaging give instantly the right hand of Ehrenfest theorem. We only have
+  left to prove:
+  \[ \left \langle \der A t\right\rangle = \der{}t\langle A\rangle\]
+  But this is still true by linearity.
+\end{proof}
+
+In fact, The Schrodinger equation has general which is the unitary evolution
+operator $U(t)$. From there, the evolution of the state in Schrodinger's picture
+in $\ket {\Psi(t)} = U(t) \ket {\Psi(0)}$, whereas the evolution of a operator
+in Heisenberg picture is $A(t) = U^\dagger(t)A_0(t)U(t)$, where $A_0(t)$
+expresses the variation from external elements.
+
+If the Hamiltonian is time-independent, $U(t) = e^{-i\frac H\hbar t}$
 
 \section{Interaction picture}
 
 Sometimes, in order to compare two phenomenon, it is useful to compare two
 Hamiltonian in certain way. Usually, this is to compare the free evolution of a
 system to the interaction with another system, this is why this is called the
-interaction picture.
+interaction picture. Will split our Hamiltonian in two parts:
+\[H = H_0 + H_1\]
+In most case we'll try to keep $H_0$ time independent and simple, whereas $H_1$
+will contain all the complexity of the system. That way, $U_0(t)$, will still be
+$e^{-i\frac {H_0}\hbar t}$. We'll then make operator evolve with $H_0$, when
+state evolves with $H_1$. The equations are:
 
+\[i\hbar \frac{\partial \ket \Psi}{\partial t} (t) = H_1(t) \ket {\Psi(t)} \]
+\[A(t) = U_0^\dagger(t)A_0(t)U_0(t)\]
+
+This equivalent to manipulating state in a moving frame that moves according to
+$U_0$. The Schrodinger frame would then be the fixed frame and the Heisenberg frame
+would be the one that move exactly with the state.
 
 \chapter{Covariance}\label{app:cov}
 
