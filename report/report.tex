@@ -83,10 +83,40 @@
 \DeclareMathOperator{\argmin}{arg\,min}
 \DeclareMathOperator{\rk}{rk}
 \DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\dom}{dom}
 
 
 \newcommand{\class}[1]{{\mathscr{C}^{#1}}}
 
+
+
+
+\newcommand{\ml}{_{M\!L}}
+
+
+\newcommand{\maxim}[3]{\begin{cases}
+    \mathbf{maximize}\,\quad #1& \mathbf{on}\; #2\\
+    \mathbf{subject\;to}\quad #3
+  \end{cases}}
+\newcommand{\maximf}[2]{\begin{cases}
+    \mathbf{maximize}\,\quad #1& \mathbf{on}\; #2
+  \end{cases}}
+\newcommand{\maxima}[3]{\begin{cases}
+    \mathbf{maximize}\,\quad #1& \mathbf{on}\; #2\\
+    \mathbf{subject\;to}\quad \begin{aligned}[t]#3\end{aligned}
+  \end{cases}}
+
+\newcommand{\minim}[3]{\begin{cases}
+    \mathbf{minimize}\;\,\quad #1& \mathbf{on}\; #2\\
+    \mathbf{subject\;to}\quad #3
+  \end{cases}}
+\newcommand{\minimf}[2]{\begin{cases}
+    \mathbf{minimize}\,\quad #1& \mathbf{on}\; #2
+  \end{cases}}
+\newcommand{\minima}[3]{\begin{cases}
+    \mathbf{minimize}\;\,\quad #1& \mathbf{on}\; #2\\
+    \mathbf{subject\;to}\quad \begin{aligned}[t]#3\end{aligned}
+  \end{cases}}
 
 
 
@@ -237,10 +267,12 @@ I explain the final results in chapter 7.
 
 \paragraph{Notations:} I'll use the bra-ket notation and thus my Hilbertian
 products are linear on the right. On $\R^n$ I'll use $>$ and $\geq$ for
-component wise inequality. On $M_n(\C)$, $A > B$ mean that $A-B$ is hermitian
+component wise inequality. On $\mathcal{M}_n(\C)$, $A > B$ mean that $A-B$ is hermitian
 positive definite and $A \geq B$ means that $A - B$ is hermitian positive
 semi-definite. This works obviously also on $\mathcal{M}_n(\R)$. The conjugate will be
-denoted by $A^*$, the transpose by $A^t$, and the transpose conjugate by $A^\dagger$.
+denoted by $A^*$, the transpose by $A^t$, and the transpose conjugate by
+$A^\dagger$. The same notations will be used on any self-operator space of any finite dimension
+Hilbert space.
 
 
 \chapter{Experimental setup and goal}
@@ -417,7 +449,7 @@ I put some reminders about multivariate covariances in
 
 \subsection{Estimator}
 
-The goal of estimation is to estimate a parameters using observations or
+The goal of estimation is to estimate some parameters using observations or
 measurements. In the simplest case, we measure an random output $X \in \mathcal{X}$ from an
 unknown input $\theta \in \Theta$. We place ourselves in a model where the law
 of X condition to $\theta$ is known. Formally, We have for each $\theta$ a
@@ -446,7 +478,8 @@ subtraction:
 \begin{defn}
   For a given $\theta$, the \emph{bias} of the estimator $\hat \theta$ is:
   \[B(\hat{\theta}) = E_\theta(\hat{\theta}(X) - \theta)\]
-  where the expectation $E_\theta$ is taken on the law $P_\theta$.
+  where the expectation $E_\theta$ is taken on the law $P_\theta$. An estimator
+  is \emph{biased} is the bias is non zero and \emph{unbiased} otherwise.
 \end{defn}
 
 \begin{defn}
@@ -480,16 +513,16 @@ gradient of the log-likelihood function. This is called the
 \emph{score}. We have $s_x(\theta) = \partial_\theta \ell_x(\theta)$. The
 lower the score (its norm, actually), the better our estimation.
 
-As we move around the optimal likelihood value TODO bullshit
+As we move around the optimal likelihood value \TODO{} bullshit
 
 \begin{prop} The expectation of the score is 0.
 \end{prop}
 \begin{proof}
-  TODO
+  \TODO{}
 \end{proof}
 
 We can then study the variance of score. The lower this variance is, The more
-$\theta$ value TODO bullshit
+$\theta$ value \TODO{} bullshit
 
 We can then make an important remark
 
@@ -499,6 +532,7 @@ We can then make an important remark
 \end{lem}
 
 \begin{proof}
+  \TODO{}
 \end{proof}
 
 In light of the theorem about bounds of \cref{sec:correl}, we can give special
@@ -573,7 +607,6 @@ formula to make sense, we need a prior law on $\theta$. If the prior
 distribution is more or less uniform, it is the same as maximizing $p_\theta(x)
 = \mathcal{L}_x(\theta)$.
 
-\renewcommand{\ml}{_{ML}}
 
 \begin{defn}
   The \emph{maximum likelihood estimator} $\theta\ml$ is defined by:
@@ -613,8 +646,12 @@ Add the case at the edge of $\mathcal{D}$.
 
 In this chapter, we stay in Hilbert spaces of finite dimension. Most of the
 result can be extended to Hilbert spaces of countable dimension, by adding
-some restriction like only using compact operators,
-but we won't need it in the rest of the report.
+some restriction,
+but we won't need then in the rest of the report, so I won't mention infinite
+dimension anymore. The space of operator on
+$\mathcal{H}$ is denoted by $\mathcal{L}(\mathcal{H})$. The set of observable
+(Hermitian operators) is denoted by $\mathcal{O}(\mathcal{H})$. The set of
+unitary operator on $\mathcal{H}$ is denoted by $\mathcal{U}(\mathcal{H})$.
 
 \section{Density matrices}
 
@@ -692,19 +729,22 @@ can then be written:
 \begin{proof}
   Any matrix satisfying the condition~\ref{prop:dens} can be decomposed in
   $\rho = \sum p_i \ket {\phi_i} \bra {\phi_i}$, and thus the atomic measure
-  $\lambda(\{\ket {\phi_i}\}) = p_i$ give exactly that density matrix. This
-  still work exactly the same way for Hermitian compact operators of trace one in infinite countable dimension.
+  $\lambda(\{\ket {\phi_i}\}) = p_i$ give exactly that density matrix.
 \end{proof}
 
 The set of density matrix will be denoted by $\mathcal{D}(\mathcal{H})$ (or just
-$\mathcal{D}$ when there is no ambiguity). It is a subset of the set of
-operators on $\mathcal{H}$, $\mathcal{O}(\mathcal{H})$ (only compact operators
-in infinite countable dimension).
+$\mathcal{D}$ when there is no ambiguity). We have the inclusions:
+\[\mathcal{D}(\mathcal{H}) \subset \mathcal{O}(\mathcal{H}) \subset \mathcal{L}(\mathcal{H})\]
+
+As a density matrix is an observable, we can study its behavior as an observable.
+In state $\ket \Psi$, the average $\langle \rho \rangle$ is the probability of
+state $\ket \Psi$ if we did a projective measurement in an orthonormal base that
+contains $\ket \Psi$. $\rho$ is thus like an observable of classical probability.
 
 \subsection{Rank and purity}
 
 In finite dimension, we can also look at the
-rank of the density matrix that gives a lot of information).
+rank of the density matrix that gives a lot of information.
 
 \begin{prop}
   The rank of the density matrix $\rho$ is the dimension of the support of any
@@ -723,7 +763,7 @@ rank of the density matrix that gives a lot of information).
   \phi \bra \phi$ as both are called pure states.
 
   On the other hand if $\rk \rho > 1$, the density matrix represent a
-  \emph{mixed state} : a statistical mixture of state.
+  \emph{mixed state}: a statistical mixture of state.
 \end{defn}
 
 \begin{rem}
@@ -734,7 +774,7 @@ rank of the density matrix that gives a lot of information).
   $\ket0,\ket1$, the results will be the same but in other base they could be
   different. In particular, in base $\ket +, \ket -$, the first one will be
   measured as $100$ \% $\ket +$ and $0$ \% $\ket -$ but the second will still be
-  50-50 of $\ket+$ and $\ket -$.
+  50\,--\,50 of $\ket+$ and $\ket -$.
 \end{rem}
 
 \begin{prop}
@@ -800,7 +840,7 @@ this form. In particular:
 \end{prop}
 
 \begin{proof}
-  The (real) dimension of Hermitian matrices is $d^2$ because there are $d$ diagonal
+  The (real) dimension of $\mathcal{O}(\mathcal{H})$ is $d^2$ because there are $d$ diagonal
   coefficient and $\frac {d(d-1)} 2$ complex off-diagonal coefficient so $d +
   d(d-1)$ coefficient in total. The constraint $\Tr \rho = 1$ remove one degree
   of freedom, so we only have $d^2 -1$ dimension.
@@ -813,22 +853,18 @@ that the pure states, up to a phase shift can be represented on the Bloch sphere
 would like to know how to represent mixed states. The dimension of
 $\mathcal{D}(\mathcal{H})$ is 3, so we can hope for a simple representation. Any
 density matrix from $\mathcal{H}$ can be written:
-
 \[\rho = \frac12I + S\]
 
 where $\Tr S = 0$. A base of the hyperplane of hermitian matrix of trace $0$ can
-be given by Pauli matrices :
-
-
+be given by Pauli matrices:
 \[\sigma_Z = \mat{1&0\\0&1} \quad \quad \sigma_X = \mat{0&1\\1&0} \quad \quad
   \sigma_Y = \mat{0&-i\\i&0}\]
 
-If we write $\bs\sigma = (\sigma_X,\sigma_yY,\sigma_Z)$, we can write
-$\rho$ as :
-
+If we write $\bs\sigma = (\sigma_X,\sigma_Y,\sigma_Z)$, we can write
+$\rho$ as:
 \[\rho = \frac12 I + \bs r \cdot \bs \sigma\]
 
-where $\bs r \in \R^3$ is usual 3D vector. We can check  However we have :
+where $\bs r \in \R^3$ is usual 3D vector. We can check  However we have:
 
 \begin{prop}
   $\rho \geq 0$ if and only if $\|\bs r\| \leq 1$
@@ -838,7 +874,7 @@ where $\bs r \in \R^3$ is usual 3D vector. We can check  However we have :
   $\det \rho = 1 - \|r\|^2$
 \end{proof}
 
-We can then look at the purity $\gamma$ in function of $\bs r$. We have :
+We can then look at the purity $\gamma$ in function of $\bs r$. We have:
 
 \begin{prop}
   $\gamma = \Tr(\rho^2) = \frac 12 (1 + \|\bs r\|^2)$
@@ -853,11 +889,59 @@ the one that are laying on the boundary i.e.\ on the sphere. One can check this
 representation matches the usual Block sphere representation on pure states. The
 uniform state is the center of the ball.
 
-\subsection{Partial trace}
+\subsection{Composite systems, Partial trace}
 
-\TODO
+When must now ask how to model density matrix on multiple system. On pure state,
+this is a simple tensor product $\ket{\Psi\Phi} = \ket \Psi \otimes \ket \Phi =
+\ket \Psi\ket\Phi$. Luckily for us we have:
+\[(\ket\Psi\ket\Phi) \otimes (\bra\Psi\bra\Phi) = \ket\Psi\bra\Psi \otimes \ket
+  \Phi \bra \Phi\]
 
-\section{Krauss Maps}
+Where the $\otimes$ designate here the tensor product of operators and matrices.
+We still have the same property of entanglement, i.e a state is entangled iff
+the density matrix cannot be written as a tensor product.
+
+What is interesting now is to study the statistical result of measurement in a
+single one of the two quantum sub systems $\mathcal{H}_1$ and $\mathcal{H}_2$.
+If we take an observable $A$ on $\mathcal{H}_1$ and its extension to
+$\mathcal{H} = \mathcal{H}_1 \otimes \mathcal{H}_2$ which is $\tilde A = A
+\otimes I$. If we have a density matrix $\rho = \rho_1 \otimes \rho_2$, then the
+average of $A$ is $\Tr(\rho \tilde A) = \Tr(\rho_1A)\Tr(\rho_2) = \Tr(\rho_1A)$.
+On a tensor product density matrix, the evaluation of $\tilde A$, only depend on
+the part of $\rho$ in $\mathcal{H}_1$ and we would like to express that on any
+density matrix. In order to do that, we rewrite our computation as
+$\Tr(\rho\tilde A) = \Tr((\rho_1\Tr(\rho_2))A)$, we can then see that
+$\rho_1\Tr(\rho_2)$ is the part of $\rho$ in $\mathcal{H}_1$.
+
+\begin{defn}
+  Given a tensor product $\mathcal{H} = \mathcal{H}_1 \otimes \mathcal{H}_2$,
+  The \emph{partial trace over $\mathcal{H}_2$}, is an linear operator
+  $\Tr_{\mathcal{H}_2} : \mathcal{L}(\mathcal{H}) \to
+  \mathcal{L}(\mathcal{H}_1)$ defined on tensor product by:
+  \[\Tr_{\mathcal{H}_2}(\rho_1\otimes \rho_2) = \rho_1 \Tr(\rho_2)\]
+  and extended by linearity on the full $\mathcal{L}(\mathcal{H})$.
+\end{defn}
+
+\begin{prop}
+  For any operator $\rho \in \mathcal{L}(\mathcal{H})$, and any observable
+  $A\in\mathcal{O}(\mathcal{H}_1)$, we have:
+  \[\Tr(\rho(A \otimes I)) = \Tr(\Tr_{\mathcal{H}_2}(\rho)A)\]
+\end{prop}
+
+\begin{proof}
+  It's true if $\rho$ is a tensor product and so it is true on any $\rho$ by linearity.
+\end{proof}
+
+An important remark to be made is that if a pure state in entangled, its partial
+trace will be mixed states. That is because, if we forgot the other space, Our
+space will behave as a statistical mixture and not a quantum superposition
+because depending of what the other state becomes, we can have any different phase.
+For example if we have two qubits, and we have a
+bell state $\ket \psi = \frac{\ket{00} + \ket{11}}{\sqrt 2}$, then
+\[\Tr_2\big(\ket \Psi \bra \Psi\big) = \frac 12I\]
+
+
+\section{Quantum operations}
 
 Even if a closed quantum system has a unitary evolution, in real life, quantum
 system are open, The undergo interaction with their environment whether it is
@@ -874,7 +958,7 @@ measurement is projective measurement. It is
 made by measuring a observable that fully describes the measurement
 process.
 
-A observable $A$ is any Hermitian matrix on $\mathcal{H}$. The
+Let $A \in \mathcal{O}(\mathcal{H})$ be an observable on $\mathcal{H}$. The
 spectral decomposition of $A$ tells us that $A = \sum_a a P_a$, where the $a$
 are the eigenvalues of $A$ and the $P_a$ orthogonal projector on the
 corresponding eigenvector spaces. When starting in state $\ket \Psi$, We
@@ -893,7 +977,7 @@ A important question when dealing with probability is whether they always sum to
 one, and in this case, this is answered by the closure relation
 \[\sum_a P_a = I\]
 
-and as $\bra \Psi I \ket \Psi = \Tr(\rhoI) = 1$, the probabilities are normalized
+and as $\bra \Psi I \ket \Psi = \Tr(\rho I) = 1$, the probabilities are normalized
 
 \subsection{Generalized measurement}
 
@@ -916,7 +1000,7 @@ represent a generalized measurement. We need a normalization condition which is
 quite simple given the probability expression: $\sum M_n^\dagger M_n = I$.
 
 \begin{defn}
-  On a quantum Hilbert space $\mathcal{H}$, a generalized measurement is a set
+  On a quantum Hilbert space $\mathcal{H}$, a \emph{generalized measurement} is a set
   of outcomes $o$ of the measurement (There can be more outcomes that the
   dimension of $\mathcal{H}$), and for each of them a measurement
   operator $M_o$. For the measurement to be complete, we require the
@@ -935,41 +1019,518 @@ quite simple given the probability expression: $\sum M_n^\dagger M_n = I$.
 
 \begin{prop}
   If we have a mixed state $\rho$, the action of this generalized measurement is
-  to measure $o$ with probability, $\Tr(M_0\rho M_0^\dagger)$. The outcome would
+  to measure $o$ with probability, $\Tr(M_o\rho M_o^\dagger)$. The outcome would
   then be:
-  \[\frac{M_0\rho M_0^\dagger}{\Tr(M_0\rho M_0^\dagger)}\]
+  \[\frac{M_o\rho M_o^\dagger}{\Tr(M_o\rho M_o^\dagger)}\]
 \end{prop}
 
+The question that is important now, is what happens when we forget the value of
+the measurement. We can have each outcome $o$ with the corresponding
+probability, so the resulting state is:
+\[\rho_f = \sum_o \Tr(M_o\rho M_o^\dagger)\frac{M_o\rho M_o^\dagger}{\Tr(M_o\rho
+    M_o^\dagger)}
+  =\sum_o M_o\rho M_o^\dagger \]
 
 
-\subsection{Quantum operations, Krauss maps}
 
+\subsection{Quantum operations}
 
+The goal of this section is to describe a formalism to express the evolution of
+an open quantum system in term of density operators. Another order of presention
+with deeper analysis can be found in (\TODO{} cite the book).
+
+For sake of generality, The input state
+$\mathcal{H}_i$ and the output system $\mathcal{H}_o$ will not be the same. In
+most case, they will, but in some case the system we study is causally related to
+an input system but is not the same.
+What we want is an operator $\mathbb{E} : \mathcal{D}(\mathcal{H}_i) \to
+\mathcal{D}(\mathcal{H}_o)$. That map the input mixed state to the output mixed
+state and represent the evolution.
+
+First, we remark that if $\rho$ is mixed state representing $\rho_1$ with
+probability $p_1$ and $\rho_2$ with probability $p_2$, then the output state
+must be $\mathbb E(\rho_1)$ with probability $p_1$ and $\mathbb E(\rho_2)$ with
+probability $p_2$. Therefore in the general case we have :
+\[\mathbb E(\sum p_i \rho_i) = \sum p_i \mathbb E(\rho_i)\]
+
+$\mathbb E$ thus preserves convex combinations. A better way of representing
+that is to say that $\mathbb E \in
+\mathcal{L}(\mathcal{O}(\mathcal{H}_i),\mathcal{O}(\mathcal{H}_o))$ i.e.
+$\mathcal{E}$ is linear on Hermitian operators. Any operator that preserves
+convex combinations on $\mathcal{D}(\mathcal{H})$ can be extended to a linear
+operator on Hermitian matrices (The proof is easy and not interesting). The
+opposite is true if the operator preserves the positiveness and the value of the
+trace.
+
+However to be sure to keep positiveness in all case, when we have two maps on
+different systems, we must have $\mathbb{E}_1
+\otimes \mathbb{E}_2$, to also preserves positiveness. We now have all
+conditions for a good definition.
+
+\begin{defn}[Trace-preserving quantum operation]\label{def:tpqo}
+  Given an input space $\mathcal{H}_i$ and an output space $\mathcal{H}_o$, a
+  linear map $\mathbb E : \mathcal{O}(\mathcal{H}_i) \to
+  \mathcal{O}(\mathcal{H}_o)$ is said to be a \emph{trace preserving quantum
+    operation} (or quantum map) if:
+  \begin{itemize}
+  \item It preserves trace i.e $\Tr = \Tr \circ\; \mathbb E$.
+  \item It is completely positive i.e, for any other space $\mathcal{H}_0$ with
+    identity quantum operation $\mathbb I_0$, The map $\mathbb I_0 \otimes
+    \mathbb E : \mathcal{O}(\mathcal{H}_0 \otimes \mathcal{H}_i) \to
+    \mathcal{O}(\mathcal{H}_0 \otimes \mathcal{H}_o)$ preserves the positiveness
+    of Hermitian operators.
+  \end{itemize}
+\end{defn}
+
+This definition is nice and clean, but not very easy to manipulate, so we'll
+need more efficient representation to be able to manipulate them on computers.
+We will see that in \cref{ssec:kraus}. Afterwards, in \cref{ssec:interp}, we'll see
+why this formalism can represent all sorts of open quantum evolutions, by giving
+a more precise existence to the environment.
+
+\subsection{Non-trace preserving quantum operations}
+
+Restraining ourselves to an operator preserving the trace can be a problem for
+some kinds of evolution. For example, if we look at a generalized measurement
+${(M_o)}_o$, The operation of measuring and forgetting is
+\[\mathbb{M}(\rho) = \sum_o M_o \rho M_o^\dagger\]
+
+However, when we remember the outcome $o$, the operation is $\rho \mapsto
+\frac{M_o \rho M_o^\dagger}{\Tr(M_0\rho M_0^\dagger)}$ which is \emph{not}
+linear. The associated linear operation is $\mathbb{M}_o(\rho) = M_o\rho
+M_0^\dagger$ which satisfies all properties of \cref{def:tpqo} except preserving
+the trace. In fact $\mathbb{M}_o$ describes a process that is not sure to
+happen. The probability that $\mathbb{M}_o$ happens when we do the measurement
+on $\rho$ is $p_o = \Tr(\mathbb{M}_o(\rho))$ and the resulting density matrix is
+$\mathbb{M}_o(\rho)/p_o$.
+Non-trace preserving quantum operation therefore represent
+operations where the observer has learnt some information on the system. Notice
+that here, the notion of observer is a mix of the notion of drawing a value from
+the probability measure that the density matrix represents and the usual observer
+associated to quantum collapsing. Therefore the generic definition for quantum
+operators is:
+\begin{defn}[quantum operation]\label{def:qo}
+  Given an input space $\mathcal{H}_i$ and an output space $\mathcal{H}_o$, a
+  linear map $\mathbb E : \mathcal{O}(\mathcal{H}_i) \to
+  \mathcal{O}(\mathcal{H}_o)$ is said to be a \emph{quantum
+    operation} (or quantum map) if:
+  \begin{itemize}
+  \item It decreases the trace i.e $\Tr \circ\; \mathbb E < \Tr$.
+  \item It is completely positive i.e, for any other space $\mathcal{H}_0$ with
+    identity quantum operation $\mathbb I_0$, The map $\mathbb I_0 \otimes
+    \mathbb E : \mathcal{O}(\mathcal{H}_0 \otimes \mathcal{H}_i) \to
+    \mathcal{O}(\mathcal{H}_0 \otimes \mathcal{H}_o)$ preserves the positiveness
+    of Hermitian operators.
+  \end{itemize}
+\end{defn}
+
+Trace preserving operation represent deterministic processes
+that do not leak any information the observer whereas non trace preserving operations describe
+processes that may happen with some probability (the trace of the output) and for which the
+observer has learnt some classical information on the system. A \emph{complete system of
+  quantum operation} (or \emph{measurement model}) ${(\mathbb{M}_o)}_o$ is a set of quantum
+operation such that $\sum_o \mathbb M_o$ is trace preserving. We can evaluate
+this system like a generalized measurement, The probability of the outcome $o$
+is $\Tr(\mathbb M_o(\rho))$ and the output state is:
+
+\newcommand{\trnorm}[1]{\frac{#1}{\Tr\left({#1}\right)}}
+
+\[\trnorm{\mathbb M_o(\rho)}\]
+
+We can now look at two complete system in sequence to get the following
+property.
+
+\begin{prop}\label{prop:qocomp}
+  Given $(\mathbb M_o)$ and $(\mathbb K)_i$ two measurement models, The
+  probability or measuring $o$ then $i$ in state $\rho$
+  is $\Tr(\mathbb K_i (\mathbb M_o(\rho)))$ and the output state is:
+  \[\trnorm{\mathbb K_i (\mathbb M_o(\rho)))}\]
+\end{prop}
+
+\begin{proof}
+  \TODO{}
+\end{proof}
+
+This obviously works for more than two systems and that's why we can compose
+partial operator without renormalizing each time and only care about
+renormalizing at the end. The behavior is exactly the same as if we had a single
+system of operator indexed on $(o,i)$ where $\mathbb E_{o,i} = \mathbb K_i \circ
+\mathbb M_o$.
+
+\subsection{Krauss operators, Krauss Maps}\label{ssec:kraus}
+
+Until we have only manipulated abstract definition for quantum operation, let's
+see how to represent them numerically. In fact we already know a numerical
+formula for a certain kind of operation: unread generalized measurement. The
+form we know is $\mathbb{M}(\rho) = \sum \mathbb M_o(\rho) = \sum M_o\rho
+M_o^\dagger$. In fact we can prove this form is general and is called
+\emph{Krauss decomposition} or \emph{Krass map}.
+
+\begin{thm}[Krauss]
+  Given a application $\mathbb E : \mathcal{O}(\mathcal{H}_i) \to
+  \mathcal{O}(\mathcal{H}_o)$ is a quantum operation if and only if there exist
+  a set of operators $E_i \in \mathcal{L}(\mathcal{H}_i, \mathcal{H}_o)$ such
+  that $\sum E_i E_i^\dagger \le I$ and:
+  \[\mathbb E(\rho) = \sum_i E_i\rho E_i^\dagger\]
+\end{thm}
+
+\begin{prop}
+  The operation is trace preserving if and only if
+\[\sum_i E_i E_i^\dagger = I\]
+\end{prop}
+
+\begin{proof}
+  \TODO{}
+\end{proof}
+
+\begin{proof}[Proof of the theorem]
+  \TODO{}
+\end{proof}
+
+Any trace preserving quantum operators can thus be expressed as an unread
+quantum measurement. It is like if all the decoherence processes were due to unread
+measurements from the environment. We'll see that in details in next section
+
+\subsection{Interpretation with environment}\label{ssec:interp}
+
+\TODO{}
 
 \section{Likelihood in terms of Krauss maps}
 
-Mainly~\cite{SPRQT16} but some others
+The experiment can be represented as a starting average state $\rho$ that we
+want to determine with tomography. This state evolve according to the
+experimental setup and thanks to some measurements made by the experimenter. For
+a given run of the experiment, the result are $y_1,\ldots,y_m$.
+The state $\rho_i$ will be the state just after the measurement $i$. The
+evolution from $\rho_{i-1}$ to $\rho_i$ is given by a quantum operation that
+depends on the result of the measurement:
+
+\[\rho_i = \trnorm{\mathbb K_{i,y_i}(\rho_{i-1})}\]
+
+The system of $\mathbb K_{i,y_i}$ is complete for a given $i$. According to
+\cref{prop:qocomp}, The probability of getting the results $y_1, \ldots, y_n$ is
+\[P(y_,,\ldots, y_n) = \Tr(\mathbb K_{m,y_m} \circ \ldots \circ \mathbb K_{1,y_1}(\rho))\]
+
+We can then use the adjoint maps for the Frobenius product (defined by $\Tr(A\mathbb K(B)) = \Tr(\mathbb
+K^*(A)B))$ and get
+\[P(y_,,\ldots, y_n) = \Tr(\rho \mathbb K_{1,y_1}^* \circ \ldots \circ \mathbb
+  K_{m,y_m}^*(I)) = \Tr(\rho E_{y_1,\ldots, y_n})\]
+
+The matrix $E$ is called the \emph{effect matrix} of the measurement
+$y_1,\ldots,y_n$.
+
+\begin{prop}
+  The adjoint of a quantum operation is completely positive so all the $E_i$ are
+  positive hermitian matrices.
+\end{prop}
+
+\begin{proof}
+  \TODO{}
+\end{proof}
+
+
+If we have $n$ sequence of measurement, We'll have the effect
+matrices $E_1, \ldots, E_n$, that represent each measurement. The log-likelihood
+function is thus
+
+\begin{equation}\label{eqn:ll}
+  \ell(\rho) = \sum_i \log (\Tr(\rho E_i))
+\end{equation}
+
+We just need to be able to compute the $\mathbb K_{i,y_i}$, and we'll do that in
+the next section. To compute the adjoint, we simply use the representation as
+Krauss operators Indeed if $\mathbb K(\rho) = \sum\limits_o M_o\rho M_o^\delta$
+then:
+
+\[\mathbb K^*(\rho) = \sum_o M_o^\dagger \rho M_o\]
 
 \section{Computation of Krauss operators for QND measurement}
+
 Mostly from~\cite{VM19} but with a bit of~\cite{Har06}
+
+\TODO{}
 
 \chapter{Convex optimization}
 
+Now we need to find the maximum $\rho\ml$ of $\ell$, given that $\rho\ml$ is in
+$\mathcal{D}$, the set of density matrix. The problem we want to solve is
+\[\maxim {\ell(\rho)} \rho {\rho \in \mathcal{D}}\]
+
+This problem is ``easy'' because it is convex and as we'll see, convex problem
+have fast solution.
+
 \section{Reminders on convex optimization}
 
-Aspremont convex optimization course
+We must now define what is a convex problem, I assume the readers know what is a
+convex set. We must now define convex cones. This presentation is based on \TODO{}
 
-Formal problem, and dual
+\subsection{Convex cones}
+
+\begin{defn}
+  A set $K \subset E$ where $E$ is a vector space on $\R$ is a \emph{cone} if
+  \[\forall x \in K.\, \forall \lambda \in \R_+, \lambda.x  \in K\]
+  The $\lambda$ can be 0 in this definition i.e we must have $0 \in K$.
+\end{defn}
+
+A convex cone is simple a cone that is convex. We are particularly interested in
+proper cones:
+
+\begin{defn}
+  A cone $K \subset E$ is a \emph{proper cone} if
+  \begin{itemize}
+    \item It is closed ($K = \overline K$)
+    \item Is is solid ($ \mathring K \neq \emptyset$)
+    \item Is is pointed (It contains no lines)
+  \end{itemize}
+\end{defn}
+
+In particular the set of vector with non negative coordinate (the positive orthant) or the set of
+positive hermitian matrices ($\mathcal{O}_+(\mathcal{H})$) are proper cones. With those cone we can define a
+generalized inequality:
+
+\begin{defn}
+  Two vector $a$ and $b$ are said to be \emph{inferior according to $K$} which is denoted by $a
+  \leq_K b$ if $b - a \in K$. We say that $a <_K b$ if $b - a \in \mathring K$
+\end{defn}
+
+In particular, the usual componentwise inequality on vectors is the the
+inequality of the positive orthant and the usual inequality on matrices is the
+inequality of $\mathcal{O}_+(\mathcal{H})$.
+
+The last concept we need is the one of duals cones:
+
+\begin{defn}
+  The \emph{dual cone} $K^*$ of a cone $K \subset$ where $E$ is euclidean or hermitian is the set
+  \[ K^* = \{y \in \R^n,\; \forall x \in K,\, \braket y x \geq 0\}\]
+
+  In the hermitian case, the $\geq 0$ mean real and non negative.
+\end{defn}
+
+\TODO{} Check that the hermitian case is not bullshit.
+
+A cone is self dual if it is its own dual. In the literature, the hermitian case
+is sometimes called \emph{internal dual cone}
+
+\begin{prop}
+  The dual of a proper cone is a proper cone
+\end{prop}
+
+\begin{proof}
+  \TODO{}
+\end{proof}
+
+\begin{prop}
+  The cone of positive hermitian matrices is self dual
+\end{prop}
+
+\begin{proof}
+  If $H$ is hermitian and $\langle H | A \rangle \geq 0$ for all $A \in
+  \mathcal{O}_+(\mathcal{H})$, Then if we diagonalize $H$, If there is any
+  negative eigen value, the matrice which has as diagonal one in front of that
+  eigenvalue and 0 in front of other will make the Frobenius product negative
+  which is impossible, thus $H \geq 0$.
+
+  For a general matrice $M$, we have the Cartesian decomposition $M = A + iB$
+  with $A$ and $B$ hermitian. The fact that the Frobenius product is always real positive is
+
+\end{proof}
+
+
+\subsection{Convex problems}
+
+I suppose that the reader knows the usual definition of a convex function,
+however, this can be generalized to proper cone equality:
+
+\begin{defn}
+  A function $f : \dom f \subset E \to F$ where $E$ and $F$ are real vector
+  space is said to be $K$-convex for $K$ a proper cone of $F$ if $\dom f$ is
+  convex and
+  \[\forall \lambda \in [0,1],\, \forall x,y \in \dom f, \lambda f(x) + (1 -
+    \lambda)f(y) \geq_K f(\lambda x + (1-\lambda)y)\]
+\end{defn}
+
+If $K = \R_+$, this is the usual convexity. A convex problem is then a problem
+of the form
+\begin{equation}\label{eqn:stdprb}
+\minima{f_0(x)}{x \in \R^n}{f_i(x) &\leq_{K_i} \\ \!\!h_j(x) &= 0}
+\end{equation}
+where $f_0$ is convex, each $f_i : \R^n \to E_i$ is $K_i$-convex for $i = 1,\ldots,m$ and each
+$h_j : \R^n \to \R$ are affine for $j = 1,\ldots,p$. Obviously, the domain isn't really $\R^n$
+but $\bigcap_i \dom f_i$. However as all convex
+functions can be extended setting their values to $\infty$ outside their domain,
+so the distinction isn't really relevant (affine functions are always defined
+everywhere).
+
+\begin{defn}
+  A point $x$ is said to be \emph{feasible} if it satisfies all the constraint
+  in the ``subject to''.
+\end{defn}
+
+The various convexity constraints ensure that
+
+\begin{prop}
+  The set of feasible points is convex.
+\end{prop}
+
+The \emph{optimum} value of the problem is the minimal value reached or approached by $f_0$ it
+is noted $f_{opt}$ in the rest of this section. In the approached case, it is the
+infimum of all the value taken by $f_0$ on the set of feasible points.
+Any $x$ that reaches $f_{opt}$ is called a \emph{solution point}.
+
+\begin{prop}
+  The set of solution point is always convex (but may be empty).
+\end{prop}
+
+We can also express maximization problems : the concave case of the problem is
+our case of problem in the log-likelihood estimation.
+\[\maxima{f_0(x)}{x \in \R^n}{f_i(x) &\geq_{K_i}\\\!h_j(x)&=0}\]
+
+Where $f_0$ is concave, each $f_i$ is $K_i$-concave and each $h_j$ is affine.
+
+
+\subsection{Dual problem}
+
+A dual problem for a given problem is like the problem viewed from the other
+side. If our main (primal) problem is a minimization, the goal of the dual
+problem is to produce the best possible lower bound. The dual will thus be a
+maximization problem. In order to do that, we first
+need to define the Lagrangian of the problem (which has nothing to do with the
+Lagrangian of classical mechanics).
+
+\begin{defn}
+  Given a problem in form~\ref{eqn:stdprb}, We define its \emph{lagrangian} by
+  the function
+  \[ L:\begin{aligned}[t] \R^n \times \prod E_i \times \R^p \;&\to\; \R\\
+      (x,\eta_1,\ldots,\eta_m,\lambda_1,\ldots,\lambda_p) \;&\mapsto\; f_0(x) +
+      \sum_{i = 1}^m \braket {\eta_i}{f_i(x)} + \sum_{j = 1}^p \lambda_j h_j(x)
+    \end{aligned}
+  \]
+\end{defn}
+
+
+In order for it to be under the minimum of the primal independently of $x$ when the constraints are
+satisfied, we need to minimize on $x$
+
+\begin{defn}
+  The \emph{Lagrange dual function} or simply \emph{dual function} is defined by:
+  \[g(\eta,\lambda) = \inf_{x \in \R^n} L(x,\eta,\lambda)\]
+\end{defn}
+
+\begin{prop}
+  $g$ is concave.
+\end{prop}
+
+\begin{proof}
+  \TODO{}
+\end{proof}
+
+We can now reach our goal to have a lower bound independent of $x$:
+
+\begin{prop}
+  If $\forall i \in \{1,\ldots,n\}, \eta_i \geq_{K_i^*} 0$, and the optimum of the primal is
+  $f_{opt}$, then
+  \[g(\eta,\lambda) \leq f_{opt}\]
+\end{prop}
+
+\begin{proof}
+  Let's take $x$ any value respecting the constraints. We have
+  \[g(\eta,\lambda) \le L(x,\eta,\lambda) \le f_0(x)\]
+  The first inequality comes from minimization over all possible $x$.
+  The second inequality comes from the fact that $f_i(x) \leq_{K_i} 0$ and
+  $\eta_i \geq_{K_i^*} 0$ so, by definition of the dual cone, $\braket
+  {\eta_i}{f_i(x)} \leq 0$. Furthermore all $h_j(x) = 0$. If we minimize over
+  all $x$, we get the property.
+\end{proof}
+
+If we want to find the best lower bound, we thus have the following convex
+problem to solve which is called the \emph{dual problem}
+\begin{equation}\label{eqn:dual}
+\maxim{g(\eta,\lambda)}{\eta,\lambda}{\eta_i \geq_{K_i^*} 0}
+\end{equation}
+
+\subsection{Strong duality and KKT conditions}
+
+Here we study the link between the dual and the primal problem and try to find
+conditions for solutions and various other properties. Suppose we have a problem in
+standard form~\ref{eqn:stdprb} with its optimum $\tilde f$ and it's canonical
+dual~\ref{eqn:dual} with its optimum $\tilde g$. What we have proven in the
+previous section is that
+\[\tilde g \leq \tilde f\]
+
+This is called \emph{weak duality}. In some specific cases, we have $\tilde g =
+\tilde f$, this is called \emph{strong duality}. The fact that a problem is
+strongly dual is very important for it's study and impact various properties.
+One way of proving that a convex problem is strongly dual is:
+\begin {prop}[Slaters' constraint qualification]\label{prop:slater}
+  If the primal convex problem has an internal feasible point, i.e a point that is in
+  the interior of the set of feasible points, that is a point $x$ that satisfies
+  $f_i(x) <_{K_i} 0$ and $h_j(x) = 0$, then the problem is strongly dual.
+\end{prop}
+
+\begin{proof}
+  \TODO{}
+\end{proof}
+
+\begin{prop}[Complementary slackness]
+If strong duality holds and $\tilde x$ is optimal for the primal and $\tilde
+\eta, \tilde{\lambda}$ are optimal for the dual, then:
+\[g(\tilde \eta, \tilde{\lambda}) = L(\tilde x, \tilde{\eta},\tilde{\lambda}) = f(\tilde{x})\]
+and thus $\braket {\tilde\eta_i}{f_i(\tilde{x})} = 0$ for any $i$.
+\end{prop}
+
+\begin{proof}
+  \[ f(\tilde x) = g(\tilde \eta, \tilde{\lambda}) \leq
+    L(\tilde x, \tilde{\eta},\tilde{\lambda}) \leq f(\tilde{x})\]
+\end{proof}
+
+\begin{thm}[KKT conditions]\label{thm:KKT}
+  The Karush-Kuhn-Tucker conditions, given $x,\eta,\lambda$ are:
+  \begin{itemize}
+  \item $x$ is feasible
+  \item For all $i$, $\eta_i \geq_{K_i^*}0$
+  \item For all $i$, $\braket {\eta_i}{f_i({x})} = 0$
+  \item The gradient of the Lagrangian $\dpar L x$ is 0:
+    \[ \nabla f_0(x) + \sum_{i = 1}^m \braket{\eta_i}{\nabla f_i(x)} +
+      \sum_{j=1}^p \lambda_j h_j(x) = 0\]
+  \end{itemize}
+  for a strongly dual convex problem, There are equivalent to the optimality of
+  $x$ for the primal and the optimality of $\eta,\lambda$ for the dual.
+
+\end{thm}
+
+\begin{proof}
+\TODO{}
+\end{proof}
+
+\begin{prop}
+  If we have Slater's condition (\ref{prop:slater}), $x$ is optimal if and only if there exists a
+  $\eta,\lambda$ satisfying the KKT conditions.
+\end{prop}
+
+\begin{proof}
+\TODO{}
+\end{proof}
 
 \section{Solution characterization}
 
-Application of KKT
+We now want to study the optimal solutions of the maximum likelihood problem:
+\[\maximf{\ell(\rho)}{\rho \in \mathcal{D}(\mathcal{H})} \]
+
+which literally means, ``maximize the log-likelihood on density matrices''. In
+standard form, this is:
+
+\[\maxima{\displaystyle\sum_i \log(\Tr(\rho E_i))}{\rho \in \mathcal{O}(\mathcal{H})}
+  {\rho &\geq 0\\\Tr \rho &= 1}
+\]
+
+The optimization is on the vector space $\mathcal{O}(\mathcal{H})$.
 
 \section{Projected gradient method}
 
 Why it converges,
-
 How to do the projection.
+
+\section{The span problem}
 
 \section{Convergence criterion}
 
@@ -1255,8 +1816,8 @@ b = \cov(a \cdot x, b \cdot y)$
 
 We can extend the correlation to the multivariate case by setting
 \[\rho = {V(X)}^{-\frac12}\cov(X,Y){V(Y)}^{-\frac12}\]
-The norm now become the symmetric part of the polar decomposition noted $|\rho|
-= {(\rho\rho^t)}^{\frac12}$. We can now get the theorem that but bound on the
+The norm of $\rho$ now becomes the symmetric part of the polar decomposition:  $|\rho|
+= {(\rho\rho^t)}^{\frac12}$. We can now get the theorem that give the bound on the
 correlation:
 
 \begin{thm}\label{thm:correln}
