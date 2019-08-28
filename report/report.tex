@@ -1476,7 +1476,7 @@ This is called \emph{weak duality}. In some specific cases, we have $\tilde g =
 \tilde f$, this is called \emph{strong duality}. The fact that a problem is
 strongly dual is very important for it's study and impact various properties.
 One way of proving that a convex problem is strongly dual is:
-\begin {prop}[Slaters' constraint qualification]\label{prop:slater}
+\begin{prop}[Slaters' constraint qualification]\label{prop:slater}
   If the primal convex problem has an internal feasible point, i.e a point that is in
   the interior of the set of feasible points, that is a point $x$ that satisfies
   $f_i(x) <_{K_i} 0$ and $h_j(x) = 0$, then the problem is strongly dual.
@@ -1487,10 +1487,10 @@ One way of proving that a convex problem is strongly dual is:
 \end{proof}
 
 \begin{prop}[Complementary slackness]
-If strong duality holds and $\tilde x$ is optimal for the primal and $\tilde
-\eta, \tilde{\lambda}$ are optimal for the dual, then:
-\[g(\tilde \eta, \tilde{\lambda}) = L(\tilde x, \tilde{\eta},\tilde{\lambda}) = f(\tilde{x})\]
-and thus $\braket {\tilde\eta_i}{f_i(\tilde{x})} = 0$ for any $i$.
+  If strong duality holds and $\tilde x$ is optimal for the primal and
+  $\tilde \eta, \tilde{\lambda}$ are optimal for the dual, then:
+  \[g(\tilde \eta, \tilde{\lambda}) = L(\tilde x, \tilde{\eta},\tilde{\lambda}) = f(\tilde{x})\]
+  and thus $\braket {\tilde\eta_i}{f_i(\tilde{x})} = 0$ for any $i$.
 \end{prop}
 
 \begin{proof}
@@ -1569,7 +1569,7 @@ We can also make the $\eta$ disappear from the condition:
   \TODO{}
 \end{proof}
 
-\subsection{Unicity}
+\subsection{Uniqueness}
 
 The simplest case for the solution to exist and be unique is for the problem do
 be strongly convex:
@@ -1588,10 +1588,10 @@ The gradient of $\ell$ is:
 \end{proof}
 
 However if $\Span(E_i)$ is not full, we still have some properties: exact
-solutions will exist and for an affine sub-space of $\mathcal{D}$ orthogonal to
+solutions will exist and fill an affine sub-space of $\mathcal{D}$ orthogonal to
 $\Span(E_i)$. Actually it will be exactly the orthogonal of $\Span(E_i)$
 projected on $\mathcal{D}$. Which solution to choose among those was one of the problem that
-was still unsolved when I arrived, I solve it up to personal taste in \cref{sec:fixspan}
+was still unsolved when I arrived, I solve it up to personal taste in \cref{sec:fixspan}.
 
 
 
@@ -1625,7 +1625,7 @@ Some examples are:
 \begin{itemize}
 \item Choose always the same value
 \item Choose slowly decreasing value independent of the rest.
-\item Choose the best value that minimize $t \mapsto f_0(x + t\nablaf_0(x))$.
+\item Choose the best value that minimize $t \mapsto f_0(x + t\nabla f_0(x))$.
 \item Choose the best value that minimize the second order approximation
   \[t \mapsto f_0(x) + t\|\nabla f_c(x)\|^2 + \frac {t^2} 2 \nabla f_0^t \cdot
   \nabla^2\!f_0 \cdot \nabla f_0\]
@@ -1688,34 +1688,112 @@ would guaranty to stay in $\mathcal{D}$). Our problem is thus equivalent to
 \[\minima{\|d - x\|}{x \in\R^n}{ x&>0\\ \|x\|_1 &= 1}\]
 
 This is therefore just projecting a point on a simplex of dimension $n-1$ in
-$\R^n$, a much simpler problem but still not trivial.
+$\R^n$, a much simpler problem but still not trivial. This problem is still
+convex, and satisfies Slater's condition (\ref{prop:slater}) because $x = \big(\frac1n,\ldots,\frac1n\big)$
+is strictly in the interior of the feasible set. If we minimize the squared,
+norm, we have a $\class \infty$ problem, and thus we can characterize the
+solution with the KKT conditions:
+\begin{itemize}
+\item $x$ is feasible
+\item $n \leq 0$. (dual feasibility)
+\item $n \cdot x = 0$. (complementary slackness)
+\item $\displaystyle 2(x_i-d_i) + n + 2c \mathbf 1 = 0$ ($\nabla \mathcal{L} = 0$).
+\end{itemize}
 
-\TODO{} Understand and explain (Julia)
-
-\begin{verbatim}
-function proj(p::Vector{Float64})
-    p = copy(p);
-    n = length(p);
-    perm = sortperm(p);
-    sump = -1.0;
-    iout = 0;
-    c=0.0;
-    for i0 in n:-1:1
-        sump += p[perm[i0]];
-        c = sump/(n-i0+1);
-        if(p[perm[i0-1]] < c < p[perm[i0]])
-            iout = i0;
-            break;
-        end
-    end
-    p .= c;
-    p[perm[1:iout-1]] .= 0;
-    return p;
-end
-
-\end{verbatim}
+There are two cases: either $x_i > 0$ and $n_i = 0$ and thus $x_i = d_i - c$, or
+$x_i = 0$ and $d_i \leq c$. The $c$ thus cut the set of axis in two parts: those above
+and those below.
 
 
+
+% \
+
+% \
+
+
+% First, we must understand
+% some link between the original point and the projection. In order to do that,
+% let's remember that the space of probability distribution with $n$ event is a
+% polytope of dimension $n-1$ in $\R^n$. In particular it is a simplex.
+% From analysing on which face the projection landed, we get
+
+% \begin{prop}
+%   If $\hat x$ is the projection of $x = (x_1,\ldots,x_n)$ on probability space,
+%   Then, there is a constant $c$ such that either $\hat x_i = 0$ or $\hat x_i =
+%   x_i - c$
+% \end{prop}
+
+% \begin{proof}
+% A face of the probability simplex is fully characterized by a non-empty set of
+% coordinate. The interior is considered to be a face of dimension $n-1$.
+% A set $S$ represent the face $F_S$ defined by
+% \[F_S = \left\{x \in \R_+^n\colon \sum\limits_{i \in S} x_i = 1 \text{ and } \forall i \notin S,
+% x_i =0\right\}\]
+% $F_S$ is of dimension $|S| - 1$.
+
+% If the projection $\hat x$ of $x$ landed on a face $F_S$, Then $\hat x$ is the
+% projection of $x$ on the affine space $A_S$ generated by $F_S$. If this projection
+% would have been outside $F_S$, Then the original projection on the polytope
+% would not have been on $F_S$.
+% In order to project on $A_S$, we first project on $\Span(A_S) = \Span(F_S)$
+% which is $V_S = \Span{(e_i)}_{i \in S}$. Therefore we have all $\hat x_i = 0$
+% for $i \notin S$. Then we project from $V_S$ to $A_S$, but $A_S$ is an
+% hyperplane of $V_S$ so we just have to remove a given amount of the normal
+% vector of $A_S$ in $V_S$ which is the vector $n$ with one at positions in $S$
+% and zeroes elsewhere. The amount of $n$ we remove is named $c$, and we thus have
+% the result.
+% \end{proof}
+
+% Now we just have to determine the right set $S$ and amount $c$ from a vector $x$
+% to have a good projection algorithm. For a given $S$, the $c$ is forced to a
+% single value which is:
+
+% \[c = \frac{\sum\limits_{i \in S}\! x_i\; -1}{|S|}\]
+
+% We'll name $x_S$ the projection of $x$ on $A_S$. We need to find among all
+% $x_S$ that are in their face $F_S$, the nearest to $x$.
+
+% \begin{lem}
+%   $x_S \in F_S$ if and only if $\forall i \in S,\; x_i > c$.
+% \end{lem}
+
+% \begin{proof}
+%   $A_S \cap \R_+^n = F_S$
+% \end{proof}
+
+% Now we need to know the best $F_S$ that work. We name $\hat x_S$ the projection of
+% $x$ on $F_S$
+
+% \begin{lem}
+%   For each dimension $d$ the face $F_S$ of dimension $d$ that is the nearest of $x$ is the $S$
+%   that contains the $d$ biggest coordinate. The nearest is defined by projecting
+%   on $F_S$ and not on $A_S$.
+% \end{lem}
+
+% \begin{proof}
+% \end{proof}
+
+
+
+\begin{thm}
+  The following algorithm computes the right $S$ and $c$ for the projection:
+\begin{itemize}
+\item Sort $x$ into $d_{p(1)} \geq \cdots \geq d_{p(n)}$.
+\item Find $i_0$, the first index such that $c_{i_0} > d_{p(i_0+1)}$ with
+  \[c_k = \frac{\sum\limits_{i = 1}^{k}\! d_{p(i)}\; -1}{|S|}\]
+\item For $i \leq i_0$, $x_{p(i)} = d_{p(i)} - c$
+\item For $i > i_0$, $x_{p(i)} = 0$.
+\end{itemize}
+\end{thm}
+
+\begin{proof}
+  \Cref{prop:slaterKKT} ensures the uniqueness of the solution. We just need to
+  find one point that satisfies the KKT conditions. One can check condition by
+  condition, that the solution computed by this algorithm satisfies all KKT
+  conditions. The only non-trivial point is that $d_{p(i_0)} \geq c_{i_0}$, and
+  this is true because it is equivalent to $d_{p(i_0)} \geq c_{i_0 -1}$ which is
+  true because $i_0 -1$ didn't satisfy the condition.
+\end{proof}
 
 \chapter{First Results}
 \section{Extracting the results and basic error}
