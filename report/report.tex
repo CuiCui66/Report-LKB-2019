@@ -1195,7 +1195,7 @@ measurements from the environment. We'll see that in details in next section
 
 \TODO{}
 
-\section{Likelihood in terms of Krauss maps}
+\section{Likelihood in terms of quantum maps}
 
 The experiment can be represented as a starting average state $\rho$ that we
 want to determine with tomography. This state evolve according to the
@@ -1306,8 +1306,6 @@ The last concept we need is the one of duals cones:
   In the hermitian case, the $\geq 0$ mean real and non negative.
 \end{defn}
 
-\TODO{} Check that the hermitian case is not bullshit.
-
 A cone is self dual if it is its own dual. In the literature, the hermitian case
 is sometimes called \emph{internal dual cone}
 
@@ -1387,6 +1385,23 @@ our case of problem in the log-likelihood estimation.
 
 Where $f_0$ is concave, each $f_i$ is $K_i$-concave and each $h_j$ is affine.
 
+\subsection{Strong convexity}
+
+\begin{defn}
+  A function, $f : \R^n \to \R$ is strongly convex on a set $A$, if is $\class
+  2$ on $A$ and if there is a constant $\mu$ such that
+  for any point of $A$, we have
+  \[\dparn f x 2 \geq \mu.I\]
+  where $\dparn f x 2$ is the hessian matrix of $f$.
+\end{defn}
+
+A problem is strongly convex if $f_0$ is strongly convex on the feasible set
+which is closed (This happens if all constraints function are continuous for example).
+
+\begin{prop}
+  A strongly convex problem has exactly one solution that is reached in a single point
+  \[f_{opt} = f(x_{opt})\]
+\end{prop}
 
 \subsection{Dual problem}
 
@@ -1490,8 +1505,8 @@ and thus $\braket {\tilde\eta_i}{f_i(\tilde{x})} = 0$ for any $i$.
   \item For all $i$, $\eta_i \geq_{K_i^*}0$
   \item For all $i$, $\braket {\eta_i}{f_i({x})} = 0$
   \item The gradient of the Lagrangian $\dpar L x$ is 0:
-    \[ \nabla f_0(x) + \sum_{i = 1}^m \braket{\eta_i}{\nabla f_i(x)} +
-      \sum_{j=1}^p \lambda_j h_j(x) = 0\]
+    \[ \nabla f_0(x) + \sum_{i = 1}^m \nabla\braket{\eta_i}{f_i(x)} +
+      \sum_{j=1}^p \lambda_j \nabla h_j(x) = 0\]
   \end{itemize}
   for a strongly dual convex problem, There are equivalent to the optimality of
   $x$ for the primal and the optimality of $\eta,\lambda$ for the dual.
@@ -1502,7 +1517,7 @@ and thus $\braket {\tilde\eta_i}{f_i(\tilde{x})} = 0$ for any $i$.
 \TODO{}
 \end{proof}
 
-\begin{prop}
+\begin{prop}\label{prop:slaterKKT}
   If we have Slater's condition (\ref{prop:slater}), $x$ is optimal if and only if there exists a
   $\eta,\lambda$ satisfying the KKT conditions.
 \end{prop}
@@ -1512,6 +1527,8 @@ and thus $\braket {\tilde\eta_i}{f_i(\tilde{x})} = 0$ for any $i$.
 \end{proof}
 
 \section{Solution characterization}
+
+\subsection{Characterization}
 
 We now want to study the optimal solutions of the maximum likelihood problem:
 \[\maximf{\ell(\rho)}{\rho \in \mathcal{D}(\mathcal{H})} \]
@@ -1523,18 +1540,182 @@ standard form, this is:
   {\rho &\geq 0\\\Tr \rho &= 1}
 \]
 
-The optimization is on the vector space $\mathcal{O}(\mathcal{H})$.
+The optimization is on the vector space $\mathcal{O}(\mathcal{H})$. This problem
+satisfies Slater's condition (\ref{prop:slater}) as the identity matrix is alway
+in the interior of $\mathcal{D}$. Therefore all results for previous section are
+available, in particular we can characterize the solution using the KKT
+conditions (\ref{thm:KKT}). In particular:
+
+\begin{prop}
+  $\rho\ml$ is an optimal solution if and only if there
+exists $\eta \ge 0$ and $\lambda$ such that
+\[\braket \eta {\rho\ml} = 0 \quad \text{and} \quad \nabla \ell + \eta +
+  \lambda I = 0\]
+\end{prop}
+
+\begin{proof}
+  Using \cref{prop:slaterKKT} and $\displaystyle\dpar{\braket \eta \rho}\rho = \eta$.
+\end{proof}
+
+
+We can also make the $\eta$ disappear from the condition:
+\begin{prop}
+  $\rho$ is an optimal solution if and only if $[\rho, \nabla \ell] = 0$ and
+  there is a $\lambda$ such as $\lambda P \le \nabla f \le \lambda I$, where $P$
+  is the orthogonal projector on the range of $\rho$.
+\end{prop}
+
+\begin{proof}
+  \TODO{}
+\end{proof}
+
+\subsection{Unicity}
+
+The simplest case for the solution to exist and be unique is for the problem do
+be strongly convex:
+
+\begin{prop}
+  If $\Span_i(E_i) = \mathcal{O}(\mathcal{H})$, then the problem is strongly convex.
+\end{prop}
+
+\begin{proof}
+The gradient of $\ell$ is:
+\begin{equation}
+\nabla \ell = \sum_i \frac{E_i}{\Tr(\rho E_i)}
+\end{equation}
+
+  \TODO{}
+\end{proof}
+
+However if $\Span(E_i)$ is not full, we still have some properties: exact
+solutions will exist and for an affine sub-space of $\mathcal{D}$ orthogonal to
+$\Span(E_i)$. Actually it will be exactly the orthogonal of $\Span(E_i)$
+projected on $\mathcal{D}$. Which solution to choose among those was one of the problem that
+was still unsolved when I arrived, I solve it up to personal taste in \cref{sec:fixspan}
+
+
+
+
+
+
+
 
 \section{Projected gradient method}
 
-Why it converges,
-How to do the projection.
+In this section the goal is to actually compute a solution $\rho\ml$ to the
+max-log-likelihood problem up to
+numerical errors.
 
-\section{The span problem}
+\subsection{Algorithm}
 
-\section{Convergence criterion}
+On unconstrained convex problem, the simplest way to find the optimum is to a
+``gradient descent''. It means that when we go downward (toward lower $f_0$)
+following the gradient. The algorithm start from $x = x_0$ and is:
 
-\paragraph{TODO} Ask Rouchon or understand.
+\begin{itemize}
+\item Compute $\nabla f_0(\rho)$.
+\item Choose an $\varepsilon$
+\item Move by $h = -\varepsilon \nabla f_0(x)$, i.e. $x \leftarrow x + h$.
+\end{itemize}
+
+\
+
+\noindent The choice of $\varepsilon$ is complex and has important consequences.
+Some examples are:
+\begin{itemize}
+\item Choose always the same value
+\item Choose slowly decreasing value independent of the rest.
+\item Choose the best value that minimize $t \mapsto f_0(x + t\nablaf_0(x))$.
+\item Choose the best value that minimize the second order approximation
+  \[t \mapsto f_0(x) + t\|\nabla f_c(x)\|^2 + \frac {t^2} 2 \nabla f_0^t \cdot
+  \nabla^2\!f_0 \cdot \nabla f_0\]
+\end{itemize}
+
+In practice the last one was chosen.
+\begin{prop}
+  If $f_0$ is strongly convex,
+  the gradient descent algorithm with second order approximation converges
+  toward a solution for any unconstrained problem
+\end{prop}
+
+\begin{proof}
+  \TODO{}
+\end{proof}
+
+However out problem is not unconstrained. The solution must in the feasible set
+$\mathcal{D}$. One way of dealing with that is to project the new point $x + h$
+back to $\mathcal{D}$. Projecting a point on a compact convex set is always
+doable. We'll see how to it numerically in \cref{ssec:proj}
+
+\begin{prop}
+  For a constrained strongly convex problem, the projected gradient descent
+  method with second order approximation converges
+\end{prop}
+
+\begin{proof}
+  \TODO{}
+\end{proof}
+
+In practice we'll do ``gradient ascent'' as in our problem as we are maximizing a
+concave function. The full algorithm is thus:
+
+\begin{itemize}
+\item Compute $\nabla f_0(\rho)$ and $\nabla^2 f_0(\rho)$
+\item Choose an $\varepsilon$ that maximizes (can be done in $O(1)$ time):
+  \[t \mapsto f_0(x) + t\|\nabla f_c(x)\|^2 + \frac {t^2} 2 \nabla f_0^t \cdot
+  \nabla^2\!f_0 \cdot \nabla f_0\]
+\item Move by $h = \varepsilon \nabla f_0(x)$.
+\item Project on $\mathcal{D}$. $x \leftarrow P_\mathcal{D}(x+h)$.
+\end{itemize}
+
+\subsection{Projection}\label{ssec:proj}
+
+For a given point $x \in \mathcal{O}(\mathcal{H})$, its projection on
+$\mathcal{D}$ is the point of $\mathcal{D}$ that is the nearest from $x$. We
+want to:
+\[\minim{\|x - \rho\|}{\rho}{\rho \in \mathcal{D}}\]
+
+Let first diagonalize $x \in \mathcal{O}(\mathcal{H})$ into $x = UDU^\dagger$.\\
+We have $\|x - \rho\| = \|D - U^\dagger \rho U\|$ but we have
+$U^\dagger \rho U \in \mathcal{D}\iff
+\rho \in \mathcal{D}$, thus our problem is equivalent to:
+\[\minim{\|D - \rho\|}{\rho}{\rho \in \mathcal{D}}\]
+
+But any outdiagonal coefficient of $\rho$ would only increase the distance, as
+we can remove all of them and stay in $\mathcal{D}$ (Removing only part of them
+would guaranty to stay in $\mathcal{D}$). Our problem is thus equivalent to
+(given that $D = diag(d)$):
+\[\minima{\|d - x\|}{x \in\R^n}{ x&>0\\ \|x\|_1 &= 1}\]
+
+This is therefore just projecting a point on a simplex of dimension $n-1$ in
+$\R^n$, a much simpler problem but still not trivial.
+
+\TODO{} Understand and explain (Julia)
+
+\begin{verbatim}
+function proj(p::Vector{Float64})
+    p = copy(p);
+    n = length(p);
+    perm = sortperm(p);
+    sump = -1.0;
+    iout = 0;
+    c=0.0;
+    for i0 in n:-1:1
+        sump += p[perm[i0]];
+        c = sump/(n-i0+1);
+        if(p[perm[i0-1]] < c < p[perm[i0]])
+            iout = i0;
+            break;
+        end
+    end
+    p .= c;
+    p[perm[1:iout-1]] .= 0;
+    return p;
+end
+
+\end{verbatim}
+
+
 
 \chapter{First Results}
 \section{Extracting the results and basic error}
@@ -1601,7 +1782,7 @@ Maybe some stuff will go in the appendices
 
 \subsection{Low rank}
 
-\section{Fix the non full span problem}
+\section{Fix the non full span problem}\label{sec:fixspan}
 
 \subsection{Centering}
 
