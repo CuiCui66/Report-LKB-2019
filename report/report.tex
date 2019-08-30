@@ -350,7 +350,7 @@ express the Hamiltonian in a similar way: $H = \hbar \omega(\sigma_+\sigma_- - \
 
 
 
-\subsection{Ramsey zone: Interaction with classical field}
+\subsection{Ramsey zone: Interaction with classical field}\label{sec:ramsey}
 
 3.3.2 of~\cite{Har06} and I.2.1.b of~\cite{SayPHD11}
 
@@ -359,16 +359,16 @@ field at pulsation $\omega_f$, resonant (or near the resonance) with the atomic
 transition. The field at the position of the atom will
 be denoted by:
 \[\bs E = 2\mathcal{E}
-  \mat{u_x\sin(\omega_f t + \varphi + \varphi_x)\\
-    u_y\sin(\omega_f t + \varphi + \varphi_y)\\
-    u_z\sin(\omega_f t + \varphi + \varphi_z)}\]
-where $u_x^2 + u_y^2 +u_z^2 = 1$. We do not merge the global phase $\phi$ into
+  \mat{u_x\cos(\omega_f t + \varphi + \varphi_x)\\
+    u_y\cos(\omega_f t + \varphi + \varphi_y)\\
+    u_z\cos(\omega_f t + \varphi + \varphi_z)}\]
+where $u_x^2 + u_y^2 +u_z^2 = 1$. We do not merge the global phase $\varphi$ into
 the component phase to be able to use it later. This can be represented more
-cleanly using $\bs u_f = \big(u_x e^{i\varphi_x},u_y e^{i\varphi_y},u_z
-e^{i\varphi_z}\big)$:
+cleanly using $\bs u_f = \big(u_x e^{-i\varphi_x},u_y e^{-i\varphi_y},u_z
+e^{-i\varphi_z}\big)$:
 \begin{equation}\label{eqn:field}
-\bs E = i\mathcal{E} (\bs u_f\, e^{-i\omega_f t-\varphi} - \bs u_f^*\,
-  e^{i\omega_f t + \varphi})
+\bs E = \mathcal{E} (\bs u_f\, e^{-i\omega_f t-\varphi} + \bs u_f^*\,
+  e^{+i\omega_f t + \varphi})
 \end{equation}
 
 
@@ -390,10 +390,10 @@ and $d$ is the value of the electric dipole
 moment. They are defined by $ q \bra g \bs R \ket e = d \bs u_a$. The field
 Hamiltonian has now the expression:
 
-\[ H_f = -id\mathcal{E} \mat{\bs 0 &
-  \bs u_a^* \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} - \bs u_f^*\,
+\[ H_f = -d\mathcal{E} \mat{\bs 0 &
+  \bs u_a^* \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} + \bs u_f^*\,
   e^{i\omega_f t + \varphi})\\
-\bs u_a \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} - \bs u_f^*\,
+\bs u_a \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} + \bs u_f^*\,
   e^{i\omega_f t + \varphi}) & \bs 0
 }\]
 
@@ -410,24 +410,24 @@ frequencies elsewhere. The frequency of the atom in this new frame will be
 $\Delta_r = \omega_a - \omega_f$.
 Our new Hamiltonian $H_1 = e^{i\frac{H_0}\hbar t}(H_f + H_a - H_0)e^{-i\frac{H_0}\hbar t}$ is thus:
 \[H_1 = \frac{\hbar \Delta_r}2 \sigma_Z -
-  id\mathcal{E} \mat{\bs 0 &
-    \bs u_a^* \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} - \bs u_f^*\,
+  d\mathcal{E} \mat{\bs 0 &
+    \bs u_a^* \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} + \bs u_f^*\,
     e^{i\omega_f t + \varphi}) e^{i\omega_f t}\\
-    \bs u_a \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} - \bs u_f^*\,
+    \bs u_a \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} + \bs u_f^*\,
     e^{i\omega_f t + \varphi}) e^{-i\omega_f t} & \bs 0
   }\]
 
 The two term that oscillate at frequency $2\omega_f$ are too fast to have
-lasting effects, we'll neglect them: This is called the secular approximation:
+lasting effects, we'll neglect them: this is called the secular approximation.
 The new Hamiltonian is thus:
 \begin{equation}\label{eqn:RamseyH}
-H_1 = \frac{\hbar \Delta_r}2 \sigma_Z -i\hbar \frac{\Omega_r}2
-  \big(e^{-i\varphi}\sigma_+ - e^{i\varphi}\sigma_-\big)
+H_1 = \frac{\hbar \Delta_r}2 \sigma_Z -\hbar \frac{\Omega_r}2
+  \big(e^{-i\varphi}\sigma_+ + e^{i\varphi}\sigma_-\big)
 \end{equation}
 
 where $\Omega_r=\frac{2d}{\hbar}\mathcal{E}\bs u_a^* \cdot \bs u_f = \frac{2d}{\hbar}\mathcal{E}\braket{\bs u_a}{\bs u_f}$. We can put
 some of $\varphi$ in $\bs u_f$ in \cref{eqn:field} to make $\Omega_r$ real
-positive. The phase $\phi$ is specific to the phase difference between the atom
+positive. Thus, the phase $\varphi$ is specific to the phase difference between the atom
 and the field. It can tuned by changing the phase of the field that we control.
 
 If use the vector operator $\bs \sigma = (\sigma_X,\sigma_Y,\sigma_Z)$, Our
@@ -439,8 +439,8 @@ H_1 = \hbar \frac{\Omega_r'}2 \bs \sigma \cdot \bs n
 where
 
 \[ \Omega_r' = \sqrt{\Delta_r^2 + \Omega_r^2} \hspace {1cm}
-  \text{and}\hspace{1cm} \bs n = \frac 1 {\Omega'_r}(-\Omega_r \sin \varphi,\;
-  \Omega_r \cos \varphi,\; \Delta_r)\]
+  \text{and}\hspace{1cm} \bs n = \frac 1 {\Omega'_r}(-\Omega_r \cos \varphi,\;
+  -\Omega_r \sin \varphi,\; \Delta_r)\]
 
 One can show that $H_1$ represents a precession of the state of the atom on the
 Bloch sphere around $\bs n$ at frequency $\Omega_r'$. This precession is named
@@ -475,7 +475,7 @@ defined by:
 
 We need to find how to represent a field oscillating at frequency $\omega_c$.
 A general formula for a specific mode of the classical field is
-\[\bs E(r) = i \mathcal{E}\big(\bs f(\bs r) \alpha e^{i\omega_c t} - \bs f^*(\bs r)
+\[\bs E(r) = \mathcal{E}\big(\bs f(\bs r) \alpha e^{i\omega_c t} + \bs f^*(\bs r)
   \alpha^* e^{-\omega_c t}\big)\]
 
 where $\mathcal{E}$ is a general normalisation factor in $\SI{}{V/m}$, that
@@ -503,7 +503,7 @@ represent classical state.
 
 Therefore we define the electric field operator to be
 \begin{equation}\label{eqn:Eop}
-\bs E(\bs r) = i \mathcal{E}\big(\bs f(\bs r) a - \bs f^*(\bs r)
+\bs E(\bs r) = \mathcal{E}\big(\bs f(\bs r) a + \bs f^*(\bs r)
   a^\dagger \big)
 \end{equation}
 
@@ -531,6 +531,8 @@ photon in the cavity.
 
 3.4 of~\cite{Har06} and I.3 of~\cite{SayPHD11}
 
+Simplifications : atom and field in phase, $f(r) = 1$ at the atomic position
+
 In this section we'll see what happens when we put an two-level atomic system in
 a cavity at or near resonance frequencies. The system are then coupled during
 all interaction time, in particular the state $\ket{g,n+1}$ and $\ket{e,n}$,
@@ -542,19 +544,79 @@ use is called the James-Cumming model.
 In the general case, we just reuse the dipolar approximation Hamiltonian for the
 interaction:
 \[H_i = - \bs D \cdot \bs E\]
-By using \cref{eqn:D} and \cref{eqn:Eop}, we get:
-
-\[H_i = - d(\bs u_a \sigma_- + \bs u_a^* \sigma_+) \cdot i \mathcal{E}\big(\bs f(\bs r) a - \bs f^*(\bs r)
+By using \cref{eqn:D} and \cref{eqn:Eop}, and assuming the atom is at
+position $\bs r$, we get :
+\[H_i = - d(\bs u_a \sigma_- + \bs u_a^* \sigma_+) \cdot \mathcal{E}\big(\bs
+  f(\bs r) a - \bs f^*(\bs r)
   a^\dagger \big)
   \]
 
 
+For sake of simplification, We'll assume the atom is more or less in the middle
+of the cavity, we'll thus assume that $\bs f(r) = \bs u_c$ of unit length.
+If we do the same Heisenberg picture as in \cref{sec:ramsey}, We'll see that
+term associated with pure energy gain ($\sigma_+a^\dagger$) or loss ($\sigma_-a$)
+oscillate very quickly at the order of $2\omega_c$,
+where the one that correspond to absorbing ($\sigma_+a$) or emitting
+($\sigma_-a^\dagger$) photons oscillate at the difference $\Delta_c = \omega_a -
+\omega_c$. We can
+thus do the secular approximation again to have:
+\begin{equation}
+  H_i = \frac{\hbar \Omega_0}2 (\sigma_+a + \sigma_-a^\dagger)
+\end{equation}
 
+where:
+\[\Omega_0 = -2\frac {\mathcal{E}d \braket{\bs u_a}{\bs u_c}}{\hbar}\]
+Here again, for the sake of simplification, we'll assume that the field of the
+cavity and the atom are in phase, and thus $\braket{\bs u_a}{\bs u_c}$ is real
+negative so that $\Omega_0 > 0$. This value in named the \emph{Vacuum Rabi
+  frequency}, we'll see later why. The full Hamiltonian is then:
+\begin{equation}
+H_{ac} = \frac{\hbar \omega_a}2 \sigma_Z + \hbar \omega_c \big(N +
+  \tfrac12\big) + \frac{\hbar \Omega_0}2 (\sigma_+a + \sigma_-a^\dagger)
+\end{equation}
 
+With this Hamiltonian, the state $\ket{e,n}$ and $\ket{g,n+1}$ are coupled 2 by
+2 except $\ket{g,0}$ which is stationary. On the space $\mathcal{S}_n =
+\Span(\ket{e,n},\ket{g,n+1})$, the Hamiltonian is:
+\[\twoline H_n = \hbar \mat{\omega_c(n+1) + \frac{\Delta_c}2& \frac{\Omega_n}2\\
+    \frac{\Omega_n}2&\omega_c(n+1) - \frac{\Delta_c}2}\]
+
+Where $\Omega_n = \sqrt{n+1} \,\Omega_0$. The eigenvectors are written:
+\newcommand{\tnt}{\frac{\theta_n}2}
+\begin{align*}
+  \ket{+,n} &= \cos \tnt \,\ket{e,n} + \sin \tnt \ket{g,n+1}\\
+  \ket{-,n} &= \sin \tnt \,\ket{e,n} - \cos \tnt \ket{g,n+1}\\
+\end{align*}
+
+\vspace{-0.5cm}
+
+Where $\theta_n \in [0,\pi]$ and $\tan \theta_n = \frac {\Omega_n}{\Delta_c}$.
+Those state are called \emph{dressed states}.
+We can define again $\Omega'_n = \sqrt{\Omega_n^2 + \Delta_c^2}$ to have the energies as:
+\[E_{\pm,n} = \hbar \omega_c(n+1) \pm \frac{\hbar \Omega_n'}2\]
+
+\TODO{} Copy paste figure I.16 from~\cite{SayPHD11}.
+
+\subsubsection{Effective interaction time}
+\newcommand{\eff}{_{e\!f\!\!f}}
+
+Let's go back to the hypothesis that $\bs f(\bs r)$ is of unit length. According
+to~\cite{SayPHD11}, it is proven in~\cite{Har06} that, if the atom crosses the
+cavity horizontally, instead of actually caring about the exact form of the
+field, we can assume that everything behave like the atom traversed a full blown
+field with $\|\bs f(\bs r)\| = 1$ that has an effective width $w\eff$. For an
+atom at speed $v$, all happens as if it submitted to the Hamiltonian $H_{ac}$
+during:
+\[t\eff = \frac{w\eff}v\]
 
 \subsubsection{Resonant case}
 
+\TODO{} Oscillation de Rabi quantique
+
 \subsubsection{Dispersive case}
+
+
 
 \subsubsection{Adiabatic passage}
 
@@ -1781,7 +1843,7 @@ We can also make the $\eta$ disappear from the condition:
   \TODO{}
 \end{proof}
 
-\subsection{Uniqueness}
+\subsection{Uniqueness}\label{ssec:uniq}
 
 The simplest case for the solution to exist and be unique is for the problem do
 be strongly convex:
@@ -2031,7 +2093,9 @@ O(\frac 1 N)$. The standard deviation due to the dispersion of measurements
  around this value tends to be:
 \newcommand{\pr}{_{||}}
 \newcommand{\inv}{^{-1}}
-\[ V_A = \Tr(A\pr \mathbb R\inv(A\pr)) +O(\frac 1 {N^2})\]
+\begin{equation}\label{eqn:var}
+V_A = \Tr(A\pr \mathbb R\inv(A\pr)) +O(\frac 1 {N^2})
+\end{equation}
 where:
 \begin{itemize}
 \item $\mathcal{D}_r$ is the submanifold of $\mathcal{D}$ of matrices with rank $r$
@@ -2111,7 +2175,9 @@ e^{-\beta E_i}$. The thermal state is thus the following density matrix:
 \[\zeta_\beta = \sum_i p_i \ket i \bra i\]
 
 This can be expressed more compactly with:
-\[\zeta_\beta = \trnorm{e^{\beta H}}\]
+\begin{equation}
+  \zeta_\beta = \trnorm{e^{\beta H}}
+\end{equation}
 where $H$ is the Hamiltonian. This is true for any quantum system of finite dimension.
 
 In the case of a thermal qubit with energy gap $E_g$, we let $p_\beta(E_g) =\frac
@@ -2228,14 +2294,53 @@ Plots and error bars?
 \paragraph{TODO} Need to save the data needed for the report
 
 \chapter{Error estimation and validity proofs}
-\section{Quick approach : Monte carlo estimation}
+
+As seen in previous chapter most of our thermodynamics quantities involves
+directly or indirectly entropy or other statistical quantity of the density
+matrix. However the proof of validity in~\cite{SPRAL17} only covers the case of
+observable i.e function such as $f(\rho) = \Tr(\rho A)$ with $A \in
+\mathcal{O}(\mathcal{H})$. In our case the entropy is not a observable, it is not even
+linear. It depends not on quantum properties but on the statistical part of the
+density matrix. And even worse, it's derivative goes to infinity on the edge of
+$\mathcal{D}$. The two problem are then for a generic function $f : \mathcal{D}
+\to \R$:
+\begin{itemize}
+\item Is the average value of $f(\rho)$ indeed $f(\rho\ml)$?
+\item How to compute the error of value of such general $f$ on the reconstructed
+  matrix as \cref{eqn:var} do not work
+\end{itemize}
+
+My first approach was to do the second point was a Monte-Carlo simulation
+explained in \cref{sec:MC}. It gave quite good results especially because,
+before that, the team had absolutely no idea of what the error on various
+entropy-related value where. It was thus impossible to evaluate how a point a
+bit off the theoretical curve fitted there.
+
+However this first approach was filled with more or less wrong independence
+hypothesis (I was force to assume independence nearly everywhere). So I dived
+into~\cite{SPRAL17} and proved the first point to be true and found a way to
+adapt \cref{eqn:var} to our case.
+
+In the end another problem was that, as explained in \cref{ssec:uniq}, if
+$\Span(E_i)$ is not the full space, the solution is not unique. We need a way to
+pick the ``best solution'', As this is not well defined I propose two possible
+definition all based on maximizing a score function in \cref{sec:fixspan}
+
+\section{Quick approach : Monte carlo estimation}\label{sec:MC}
+
+\subsection{Target distribution}
+
 % Only on specific case of probability vectors
 \subsection{Reminders on Markov chains}
+
+Put a link to the course I found. If I do not have time to fill in stuff.
 
 Continuous Markov chain notes
 
 \subsection{Truncated gaussian simulation}
 % Convergence proofs : L O L !
+
+\subsection{Error propagation}
 
 \section{Probability distribution around maximum}
 
@@ -2249,25 +2354,63 @@ Will probably need the transition from the z hessian to the usual notation here.
 
 Use \cite{SPRAL17} but generalise. Will try to compact the proofs
 
-Maybe some stuff will go in the appendices
+Maybe some stuff will go in the appendices or be referred in the paper.
 \subsection{Full rank}
 
 \subsection{Low rank}
 
 \section{Fix the non full span problem}\label{sec:fixspan}
 
-\subsection{Centering}
+\subsection{Centering function}
 
-Explain approach coefficient by coefficient
+As explained in \cref{ssec:uniq}, when the $E_i$ do not span the whole space of
+positive hermitian matrices, the solution to the max-likelihood problem is not
+unique. We need to decide a way to pick one. The simplest way to do that is to
+choose a centering function $c : \mathcal{D} \to \R$ such that, the higher $c$
+is, the more ``centered'', the density matrix is. This function must satisfy
+some properties to make sense
 
-Prove the logarithmic barrier
+\begin{defn}
+  A function $c : \mathcal{D}(\mathcal{H}) \to \R$ is a \emph{centering function} if:
+
+  \begin{enumerate}
+  \item It must be concave, so that being between other matrices is always better.
+  \item $\displaystyle \argmax_{\rho \in \mathcal{D}} c = \frac I{\dim
+      \mathcal{H}}$.
+  \item $c$ must be unitary invariant: $c(U\rhoU^\dagger) = c(\rho)$ for $U \in \mathcal{U}(\mathcal{H})$
+  \item In dimension $2$, the density matrix is inside the Bloch sphere which is
+    linearly isomorphic to $\mathcal{D}$. Any vector space cutting this space
+    gives either a disc or a segment that has an obvious center. $c$ must give
+    that center.
+  \end{enumerate}
+\end{defn}
+
+All those constraint are qualitative constraints that ensure that $c$ makes sense
+as a centering function. If a function does not satisfy those condition, It is
+not a good centering function. But satisfying them does not guaranty that the function
+make sense from the physical point of view. I have two good example for
+centering function that I will present in the next subsections. I don't think
+there is a perfect centering function waiting to be found, be why not.
+
+\subsubsection{Log-Determinant}
+
+\TODO{} prove 4 conditions
+
+\subsubsection{Von Neumann-Entropy}
+
+
+\TODO{} prove 4 conditions
+
+\subsubsection{Graphical Comparaison}
+
+put 4 cases i.e 8 diagrams.
 
 \subsection{Two objective optimisation}
 
 Compare approachs and prove them :
 \begin{itemize}
-  \item Projected gradient on argmax
-  \item Central path method
+  \item Projected gradient on argmax : not feasible
+  \item Central path method : \TODO{} prove it
 \end{itemize}
 
 \chapter{Final Results}
