@@ -88,6 +88,8 @@
 
 \newcommand{\class}[1]{{\mathscr{C}^{#1}}}
 
+\newcommand{\trnorm}[1]{\frac{#1}{\Tr\left({#1}\right)}}
+
 
 
 
@@ -118,8 +120,8 @@
     \mathbf{subject\;to}\quad \begin{aligned}[t]#3\end{aligned}
   \end{cases}}
 
-
-
+\newcommand{\gap}{\hspace{1.5cm}}
+\newcommand{\twoline}{\vphantom{\frac\int\int}}
 
 
 
@@ -278,7 +280,7 @@ Hilbert space.
 \chapter{Experimental setup and goal}
 
 In this chapter I expect a basic knowledge of quantum mechanics, Hilbert space and
-Schrodinger equations. In the while report I will use the usual bra-ket notation
+Schrodinger equations. In the whole report I will use the usual bra-ket notation
 and therefore a scalar product linear to the right.
 
 I will first describe the experiment in high-level point of view, then I'll
@@ -287,13 +289,13 @@ reconstruction is needed.
 
 \section{Basic setup description}
 
-In this section I will describe the experiment I worked with at the LKB.\@This
+In this section I will describe the experiment I worked with at the LKB.\@ This
 experience studies the interaction between Rydberg circular atoms and light in
-cavities.
-We produce Rydberg atoms in a known state, then we send them through a
+supra-conductive cavities.
+We produce Rydberg atoms in a known circular state, then we send them through a
 cavities with a very small number of resonating photons (usually less than
-eight). The atom then goes through a detector that ideally do projectile
-measurement of the state. The cavity can be tune via stark effect so the
+eight). The atom then goes through a detector that ideally do projective
+measurement of the state. The cavity can be tuned via stark effect so the
 interaction can be resonant (the cavity frequencies correspond to a gap between
 states) or diffusive (The frequencies and the gap do not match).
 
@@ -304,54 +306,59 @@ of an atom, we can make give heat to the cavity (emit a photon) even if the atom
 is colder than the cavity. I will define the notion of temperature of single
 atom later.
 
-Most of the formulas come from~\cite{Har06}
+Most of the formulas come from~\cite{Har06} and~\cite{SayPHD11}
 
 
 \subsection{Rydberg Ciruclar atoms}
 
-The atoms are prepared in a specific circular Rydberg state called ground state
+Section 3.3.1 of~\cite{Har06} and I.2.1.a of~\cite{SayPHD11}
+
+The atoms are prepared in a specific circular Rydberg state called ``ground'' state
 $\ket g$. It correspond the energy level $n = 50$. We will also use $\ket e$
-called excited state which is the circular state at $n = 51$ and $\ket f$, the
-``fundamental state'' which is at $n = 49$. In theory the atom should never get
-in any other state during our protocol.
+called ``excited'' state which is the circular state at $n = 51$ and $\ket f$, the
+``fundamental'' state which is at $n = 49$. In theory the atom should never get
+in any other state during our protocol, I'll explain why in \cref{ssec:ststab}.
 The gap between $\ket e$ and $\ket g$ is
 approximately $\SI{51}{GHz}$, whereas the gap between $\ket g$ and $\ket f$ is
-around $\SI{49}{GHz}$.
+around $\SI{54}{GHz}$. Those are microwave frequencies.
 
 In most of our calculation we will manipulate our states by pairs, and not as the
-whole triplet, because each interaction the atom will do with our setup, will be
-done at, or near a resonance frequency. In such case, the Hamiltonian we will
+whole triplet, because the atom will only interact with our setup at, or near,
+a resonance frequency. We'll use the base $(\ket e, \ket g)$ in that order, but
+the same is true for $(\ket g, \ket f)$. In such case, the Hamiltonian we will
 use is:
 \[H = \frac {\hbar \omega}2 \sigma_Z\]
  where $\omega$ is the gap frequency and $\sigma_Z$ in one of the
  three Pauli matrices used in two-levels systems:
-\[\sigma_Z = \mat{1&0\\0&1} \quad \quad \sigma_X = \mat{0&1\\1&0} \quad \quad
+\[\twoline \sigma_Z = \mat{1&0\\0&-1} \gap \sigma_X = \mat{0&1\\1&0} \gap
   \sigma_Y = \mat{0&-i\\i&0}\]
 
 It is important to note that the $X,Y,Z$ axis here have nothing to do with the
 real world spatial axis but there are just a convention due to the fact that
-this two-level system looks a spin-system, where those axis would have had a
+this two-level system behaves like a spin-system, where those axis would have had a
 spatial meaning.
 
-From those operator we may also build the raising and lowering operators:
-\[\sigma_+ = \frac{\sigma_X + i \sigma_Y}2 = \ket 1 \bra 0 \quad \quad \quad \quad
-  \sigma_- = \frac{\sigma_X - i \sigma_Y}2 = \ket 0 \bra 1\]
+From those operators we may also build the raising and lowering operators:
+\[\sigma_+ = \frac{\sigma_X + i \sigma_Y}2 = \ket e \bra g = \mat{0&1\\0&0}
+  \gap
+  \sigma_- = \frac{\sigma_X - i \sigma_Y}2 = \ket g \bra e= \mat{0&0\\1&0}\]
 
-Those operator are the equivalent of anihilation and creation operator in usual
+Those operator are the equivalent of annihilation and creation operator in usual
 harmonic oscillator (That I will present in \cref{ssec:rescav}). We can even
-express the Hamiltonian in a similar way, $H = \hbar \omega(\sigma_+\sigma_- - \frac12)$
+express the Hamiltonian in a similar way: $H = \hbar \omega(\sigma_+\sigma_- - \frac12)$
 
 
 
 
-\subsection{Ramsay zone: Interaction with classical field}
+\subsection{Ramsey zone: Interaction with classical field}
 
-In what we call Ramsay zone, the atom will be submitted to a classical oscillating
-field, resonant with the transition. I'll use $\ket e$ and $\ket g$ has my
-excited and normal states, but it works the same The field at the position of the atom will
+3.3.2 of~\cite{Har06} and I.2.1.b of~\cite{SayPHD11}
+
+In what we call Ramsey zone, the atom will be submitted to a classical oscillating
+field at pulsation $\omega_f$, resonant (or near the resonance) with the atomic
+transition. The field at the position of the atom will
 be denoted by:
-
-\[\bs E = \mathcal{E}
+\[\bs E = 2\mathcal{E}
   \mat{u_x\sin(\omega_f t + \varphi + \varphi_x)\\
     u_y\sin(\omega_f t + \varphi + \varphi_y)\\
     u_z\sin(\omega_f t + \varphi + \varphi_z)}\]
@@ -359,23 +366,31 @@ where $u_x^2 + u_y^2 +u_z^2 = 1$. We do not merge the global phase $\phi$ into
 the component phase to be able to use it later. This can be represented more
 cleanly using $\bs u_f = \big(u_x e^{i\varphi_x},u_y e^{i\varphi_y},u_z
 e^{i\varphi_z}\big)$:
-\[\bs E = i\mathcal{E} (\bs u_f\, e^{-i\omega_f t-\varphi} - \bs u_f^*\,
-  e^{i\omega_f t + \varphi})\]
+\begin{equation}\label{eqn:field}
+\bs E = i\mathcal{E} (\bs u_f\, e^{-i\omega_f t-\varphi} - \bs u_f^*\,
+  e^{i\omega_f t + \varphi})
+\end{equation}
+
 
 With that field we can now express the Hamiltonian $H_f$ of the
 interaction between the electric dipole of the
-atom and the electric field. It is $H_f = - \bs D \cdot \bs E$.
+atom and the electric field. It is $H_f = - \bs D \cdot \bs E$ as proven in
+section 3.1.2 of~\cite{Har06}.
 The dipole operator has a simple expression in terms
-of the position operator $\bs R$ of the electron which is $\bs D = q \bs R$.
-In our circular states, we have $\bra e R \ket e = 0$ and $\bra g R \ket g = 0$,
-so we only care about the off diagonal terms. We want to write the dipole
+of the position operator $\bs R$ of the electron realtive to  which is $\bs D = q \bs R$.
+In our circular states that have cylindrical symmetry,
+we have $\bra e R \ket e = 0$ and $\bra g R \ket g = 0$,
+so we only care about the off-diagonal terms. We want to write the dipole
 operator as:
-\[\bs D = d\mat{\bs 0&\bs u_a^*\\\bs u_a&\bs 0}\]
-Such that $\bs u_a$ expressed the direction and $d$ the value of electric dipole
+\begin{equation}\label{eqn:D}
+  \bs D = d\mat{\bs 0&\bs u_a^*\\\bs u_a&\bs 0} = d(\bs u_a \sigma_- + \bs u_a^* \sigma_+)
+\end{equation}
+Such that $\bs u_a$ has unit length and expresses the direction
+and $d$ is the value of the electric dipole
 moment. They are defined by $ q \bra g \bs R \ket e = d \bs u_a$. The field
 Hamiltonian has now the expression:
 
-\[ H_f = id\mathcal{E} \mat{\bs 0 &
+\[ H_f = -id\mathcal{E} \mat{\bs 0 &
   \bs u_a^* \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} - \bs u_f^*\,
   e^{i\omega_f t + \varphi})\\
 \bs u_a \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} - \bs u_f^*\,
@@ -384,57 +399,249 @@ Hamiltonian has now the expression:
 
 \
 
-The free Hamiltonian of the system being $H_a = \frac{\hbar \omega_a}2 \sigma_Z$.
-We'll need to express the evolution of the system by separating both evolutions.
+The free Hamiltonian of the system being $H_a = \frac{\hbar \omega_a}2 \sigma_Z$,
+we'll need to express the evolution of the system by separating both evolutions.
 We will place ourselves in an interaction picture (explanation
 in~\cref{app:pict}). Both the free and interaction Hamiltonian make the state turn
-around, We want to see the difference between the two of them. Therefore, We
-will remove $H_0 = \frac{\hbar \omega_r}2 \sigma_Z$. We remove the Hamiltonian
-with the frequency of the field and not the atom to simplify the field
-frequencies elsewhere. Our new Hamiltonian $H_1 = e^{i\frac{H_0}\hbar t}(H_f + H_a - H_0)e^{i\frac{H_0}\hbar t}$ is thus:
-\[H_1 =  \]
+around, and we want to see the difference between the two of them. Therefore, we
+will remove $H_0 = \frac{\hbar \omega_f}2 \sigma_Z$. We remove the Hamiltonian
+with the frequency of the field and not of the atom to simplify the field
+frequencies elsewhere. The frequency of the atom in this new frame will be
+$\Delta_r = \omega_a - \omega_f$.
+Our new Hamiltonian $H_1 = e^{i\frac{H_0}\hbar t}(H_f + H_a - H_0)e^{-i\frac{H_0}\hbar t}$ is thus:
+\[H_1 = \frac{\hbar \Delta_r}2 \sigma_Z -
+  id\mathcal{E} \mat{\bs 0 &
+    \bs u_a^* \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} - \bs u_f^*\,
+    e^{i\omega_f t + \varphi}) e^{i\omega_f t}\\
+    \bs u_a \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} - \bs u_f^*\,
+    e^{i\omega_f t + \varphi}) e^{-i\omega_f t} & \bs 0
+  }\]
+
+The two term that oscillate at frequency $2\omega_f$ are too fast to have
+lasting effects, we'll neglect them: This is called the secular approximation:
+The new Hamiltonian is thus:
+\begin{equation}\label{eqn:RamseyH}
+H_1 = \frac{\hbar \Delta_r}2 \sigma_Z -i\hbar \frac{\Omega_r}2
+  \big(e^{-i\varphi}\sigma_+ - e^{i\varphi}\sigma_-\big)
+\end{equation}
+
+where $\Omega_r=\frac{2d}{\hbar}\mathcal{E}\bs u_a^* \cdot \bs u_f = \frac{2d}{\hbar}\mathcal{E}\braket{\bs u_a}{\bs u_f}$. We can put
+some of $\varphi$ in $\bs u_f$ in \cref{eqn:field} to make $\Omega_r$ real
+positive. The phase $\phi$ is specific to the phase difference between the atom
+and the field. It can tuned by changing the phase of the field that we control.
+
+If use the vector operator $\bs \sigma = (\sigma_X,\sigma_Y,\sigma_Z)$, Our
+Hamiltonian can be written:
+\begin{equation}
+H_1 = \hbar \frac{\Omega_r'}2 \bs \sigma \cdot \bs n
+\end{equation}
+
+where
+
+\[ \Omega_r' = \sqrt{\Delta_r^2 + \Omega_r^2} \hspace {1cm}
+  \text{and}\hspace{1cm} \bs n = \frac 1 {\Omega'_r}(-\Omega_r \sin \varphi,\;
+  \Omega_r \cos \varphi,\; \Delta_r)\]
+
+One can show that $H_1$ represents a precession of the state of the atom on the
+Bloch sphere around $\bs n$ at frequency $\Omega_r'$. This precession is named
+``Rabi oscillation''. The pulsation $\Omega_r$ which is the frequency or
+precession when the the frequencies match is name ``Rabi pulsation''
+
+\TODO{} include figure 3.15 of~\cite{Har06}
+
+By controlling the phase between the electric field and the atom and the
+duration of impulsions (The vector rotate of an angle $\Omega'_r\Delta t$), we
+can make all possible rotation i.e nearly all unitary operation on this two
+state system. In practice both parameters need to be carefully calibrated
+because they have huge effects with very small variation.
 
 \subsection{Resonant cavities}\label{ssec:rescav}
 
-Harmonic oscillator.
+Harmonic oscillator: 3.1.1 of~\cite{Har06} and I.1.2.a of~\cite{SayPHD11}
+
+A field mode in a cavity at a specific pulsation $\omega_c$ can be modeled
+as an usual one-dimensional harmonic oscillator. The Hilbert space will be
+$\mathcal{H}_C = \C^\N$. (\TODO{} topology?). The basis of this space is composed of vectors $\ket n$
+that are called \emph{Fock states}. The main operator of such a space is the
+number operator $N = \sum_n n\ket n \bra n$. The state $\ket n$ represent a
+state with exactly $n$ photons. There are also the annihilation $a$ and creation $a^\dagger$ operators:
+
+\[a = \sum_n \sqrt{n} \ket {n-1} \bra{n}\]
+
+They are defined such that $N = a^\dagger a$. The energy of the cavity is
+defined by:
+
+\[H_c = \hbar \omega_c \big(N + \tfrac 12\big)\]
+
+We need to find how to represent a field oscillating at frequency $\omega_c$.
+A general formula for a specific mode of the classical field is
+\[\bs E(r) = i \mathcal{E}\big(\bs f(\bs r) \alpha e^{i\omega_c t} - \bs f^*(\bs r)
+  \alpha^* e^{-\omega_c t}\big)\]
+
+where $\mathcal{E}$ is a general normalisation factor in $\SI{}{V/m}$, that
+we'll compute later, $\bs f$
+is polarisation function that give the orientation of the field depending the
+position and that depending on the shape of the cavity and on Maxwells equation.
+We normalize it to $\|\bs f\|_\infty = 1$. And finally, $\alpha$ is the complex amplitude
+of the field. We want to find a quantum state that represent this classical
+field.
+
+We know that on classical harmonic oscillatiors, the eigenvectors of $a$ named
+\emph{coherent state} represent directly classical state. As a remainder, For
+each complex number $\alpha \in \C$, there is a unique state (up to phase shift)
+$\ket \alpha$ such that $a \ket \alpha = \alpha \ket \alpha$.
+Let's prove that in the case of field mode oscillator, the coherent state also
+represent classical state.
+
+\begin{prop}
+  A coherent state $\ket{\phi(0)} = \ket \alpha$ evolves as:
+  \[ \ket {\phi(t)} = \ket {\alpha e^{i\omega_c t}} \]
+\end{prop}
+
+\begin{proof}\TODO{}
+\end{proof}
+
+Therefore we define the electric field operator to be
+\begin{equation}\label{eqn:Eop}
+\bs E(\bs r) = i \mathcal{E}\big(\bs f(\bs r) a - \bs f^*(\bs r)
+  a^\dagger \big)
+\end{equation}
+
+It will behave exactly as a classical field for coherent state and be a
+superposition of classical field for other states. We can determine the value of
+$\mathcal{E}$ from the field energy operator:
+
+\[ H = \int \varepsilon_0 |\hat {\bs E}|^2 \dd^3 \bs r \]
+
+\begin{prop}
+  The value we get for $\mathcal{E}$ is
+\[ \mathcal{E} = \sqrt{\frac{\hbar \omega_c}{2 \varepsilon_0 \mathcal{V}}}\]
+where $\mathcal{V} = \int \bs |f(\bs r)|^2\dd^3\bs r$ is the effective mode volume
+\end{prop}
+
+\begin{proof} \TODO{}
+\end{proof}
+
+The value $\mathcal{E}$ is kind of the average (more like r.m.s) field per
+photon in the cavity.
+
+\TODO{} Field Quadrature ($X_\pi$) ?
 
 \subsection{Atom-cavity interaction}
 
+3.4 of~\cite{Har06} and I.3 of~\cite{SayPHD11}
+
+In this section we'll see what happens when we put an two-level atomic system in
+a cavity at or near resonance frequencies. The system are then coupled during
+all interaction time, in particular the state $\ket{g,n+1}$ and $\ket{e,n}$,
+blend together as if absorbing and emitting photons continuously. The model we
+use is called the James-Cumming model.
+
+\subsubsection{General case}
+
+In the general case, we just reuse the dipolar approximation Hamiltonian for the
+interaction:
+\[H_i = - \bs D \cdot \bs E\]
+By using \cref{eqn:D} and \cref{eqn:Eop}, we get:
+
+\[H_i = - d(\bs u_a \sigma_- + \bs u_a^* \sigma_+) \cdot i \mathcal{E}\big(\bs f(\bs r) a - \bs f^*(\bs r)
+  a^\dagger \big)
+  \]
+
+
+
+
+
+\subsubsection{Resonant case}
+
+\subsubsection{Dispersive case}
+
+\subsubsection{Adiabatic passage}
+
 \subsection{Protocol}
+
+
+\TODO{} Basic protocol without explanation of Luis specific protocol?
 
 From Luis notes.
 
 
 \section{Experimental details and calibration}
 
-From Clement's thesis
+This section explain some part of the little experimental details that I've seen
+or interacted with. There is also a bunch of thing I don't know as this
+experiment is the work of several year of research. It can be skipped for a
+first reading as the details are not essential to understand the rest of this report.
 
-\subsection{State preparation}
+\TODO{} Anything that is too slow gets out
+
+From~\cite{SayPHD11}
+
+
+\subsection{Atomic State preparation}
+
+I.2.3.b
+
 
 % oven
 % speed filtering Laser with doppler + resonnance
 % State filtering (n=52)
 % We ignore non-Rydeberg atoms
 
+\subsection{Cavity state preparation}
+
+Stuff about coherent state in 3.1.3?
+
+The right stuff is probably in 3.2
+
+I.1.2.b
+
+\subsection{State stability}\label{ssec:ststab}
+
+I.2.3.a
+
+\subsection{Stark shift}
+
+I.2.3.a?
+
 \subsection{Detection of atom}
+
+I.2.3.d
 
 % see thesis for functioning of detector
 
 \subsection{Cooling and relaxation times}
 
+I.1.2.b
+
 % Say some stuff about cooling
 
-\section{Reconstruction}
+\section{QND Mesurement}
 
-Still from~\cite{Har06} and Clement's thesis
+The base here, The Krauss map formalism in chapter 3
 
-\subsection{Ramsay interferometer}
+Still from~\cite{Har06} and~\cite{SayPHD11}
+
+\subsection{Ramsey interferometer}
+
+I.2.2 and 3.3.3
+
+Say stuff about stark shift for controlling the observing phase of
+interferometer : I.2.3.c
 
 \subsection{Phase shift of QND atoms}
+
+Dispersive interaction: I.3 and 3.4.4
+
+Pick among I.4
 
 \subsection{What data we have as an output}
 
 Personal
+
+Explain we need a estimator to build an idea of the state from the e, g we get.
+
+Explain the superposition is irrelevant
 
 
 
@@ -570,7 +777,7 @@ In order to have a better interpretation of Fischer information, if the
 likelihood is at least $\class 2$ in $\theta$, we can rewrite
 it as a hessian:
 
-\begin{prop}
+\begin{prop}\label{prop:fisherhessian}
   Under sufficient regularity assumption,
   the Fischer information can also be written as the opposite of the Hessian of the
   log-likelihood function.
@@ -1021,14 +1228,13 @@ quite simple given the probability expression: $\sum M_n^\dagger M_n = I$.
   If we have a mixed state $\rho$, the action of this generalized measurement is
   to measure $o$ with probability, $\Tr(M_o\rho M_o^\dagger)$. The outcome would
   then be:
-  \[\frac{M_o\rho M_o^\dagger}{\Tr(M_o\rho M_o^\dagger)}\]
+  \[\trnorm{M_o\rho M_o^\dagger}\]
 \end{prop}
 
 The question that is important now, is what happens when we forget the value of
 the measurement. We can have each outcome $o$ with the corresponding
 probability, so the resulting state is:
-\[\rho_f = \sum_o \Tr(M_o\rho M_o^\dagger)\frac{M_o\rho M_o^\dagger}{\Tr(M_o\rho
-    M_o^\dagger)}
+\[\rho_f = \sum_o \Tr(M_o\rho M_o^\dagger)\trnorm{M_o\rho M_o^\dagger}
   =\sum_o M_o\rho M_o^\dagger \]
 
 
@@ -1132,8 +1338,6 @@ observer has learnt some classical information on the system. A \emph{complete s
 operation such that $\sum_o \mathbb M_o$ is trace preserving. We can evaluate
 this system like a generalized measurement, The probability of the outcome $o$
 is $\Tr(\mathbb M_o(\rho))$ and the output state is:
-
-\newcommand{\trnorm}[1]{\frac{#1}{\Tr\left({#1}\right)}}
 
 \[\trnorm{\mathbb M_o(\rho)}\]
 
@@ -1246,9 +1450,17 @@ then:
 
 \section{Computation of Krauss operators for QND measurement}
 
-Mostly from~\cite{VM19} but with a bit of~\cite{Har06}
+Mostly from~\cite{VM19} but with a bit of~\cite{Har06} and of~\cite{SayPHD11}.
 
-\TODO{}
+\TODO{}:
+\begin{itemize}
+  \item Formalism from~\cite{SayPHD11} I.4
+  \item Read again the annex of~\cite{VM19}.
+  \item Say stuff about decoherence and Linbald? Probably nothing else that ``it
+    exists'' : Do not have time to read chapter 4 of~\cite{Har06}
+  \item Error correction from detector.
+  \item Explain data filtering and thus the consequence.
+\end{itemize}
 
 \chapter{Convex optimization}
 
@@ -1795,41 +2007,223 @@ and those below.
   true because $i_0 -1$ didn't satisfy the condition.
 \end{proof}
 
+
+
+
+
+
+
 \chapter{First Results}
-\section{Extracting the results and basic error}
 
-Mention the results already proven and put a plot of reconstructed state with
-the errorbars we already had.
+In this chapter I will present the actual experimental protocol we realized and the
+first result that we done before I arrived.
+Most of the work in this section is still unpublished and is the
+content of the internship of Luis Najera.
 
-We get error on matrix value and photon number
+\section{Extracting the results and basic errors}
+
+Now we can reconstruct $\rho\ml$, the density matrix that maximizes the
+log-likelihood of our measurement. In next section, I'll explain the exact
+experiment we used. But first let's see how to use the result of the
+reconstruction.~\cite{SPRAL17}~proves that for any observable, as the number of
+measurement grow, the average value of an observable $A$ is $\Tr(\rho_{ML}A) +
+O(\frac 1 N)$. The standard deviation due to the dispersion of measurements
+ around this value tends to be:
+\newcommand{\pr}{_{||}}
+\newcommand{\inv}{^{-1}}
+\[ V_A = \Tr(A\pr \mathbb R\inv(A\pr)) +O(\frac 1 {N^2})\]
+where:
+\begin{itemize}
+\item $\mathcal{D}_r$ is the submanifold of $\mathcal{D}$ of matrices with rank $r$
+\item $A\pr$ is
+  the orthogonal projection on the tangent space to $\mathcal{D}_{\rk \rho}$ in
+  $\rho$:
+  \[A\pr = A - \frac{\Tr(AP\ml)}{\Tr(P\ml)}P\ml - (I-P\ml)A(I-P\ml)\]
+\item $\mathbb R$ is the hessian of $\ell_{|\mathcal{D}_{\rk \rho}}$ in $\rho$:
+  \[\mathbb{R}(A) = \sum_i \frac{\Tr(A{E_i}\pr)}{\Tr^2(\rho\ml E_i)} {E_i}\pr +
+    (\lambda I - \nabla \ell(\rho\ml))A\rho\ml^+ +
+    \rho\ml^+A(\lambda I - \nabla \ell(\rho\ml))\]
+  The $\rho^+$ is the moore-penrose pseudo inverse (inversion of non-zero eigen
+  values). The $\mathbb R$ is the Fischer information on the submanifold
+  $\mathcal{D}_{\rk \rho}$ as proven in \cref{prop:fisherhessian}
+\end{itemize}
+
+Please take care that is not the standard deviation of the quantum measurement
+due to quantum uncertainty, nor the deviation due to the probabilistic nature of
+$\rho\ml$. This deviation comes from the dispersion of the effect matrices
+$E_i$. If all the $E_i$ are the same, $\rho\ml = \trnorm{E_i}$ and $V_A = 0$ for
+any $A$. Furthermore and it is a known problem of max-likelihood method, $V_A$
+do not measure the deviation due to how few experiment there are. If we have
+only one $E_i$, the max-likelihood algorithm will tell that $\rho\ml =
+\trnorm{E_1}$ with 0 deviation. I didn't had time to address that in this
+internship and no one in my team did it before, so we just assume we have
+enough measurement do that the $O(\frac1n)$ is small enough i.e significantly
+smaller than $V_A$.
+
+\begin{rem} The individual coefficient can observed with $E_{ij} = \TODO$. We
+  can thus compute the deviation on each population and coherence individually.
+  Those deviation are \emph{not} independent.
+\end{rem}
+
+\TODO{} Take an image from a paper of reconstructed matrix.
 
 \section{Maxwell Demon experiment}
 
-% Here or first chapter
-Mainly Luis notes and presentation
+\subsection{Overview}
+
+The goal of this experiment is to study heat exchange and thermodynamics at a
+individual quantum level. In particular, with some quantum manipulation, we
+create a Maxwell Demon context where a colder atom can give heat to a hotter
+cavity.
+
+The protocol is the following:
+
+\begin{itemize}
+\item The cavity a cleared by sending a bunch a Rydberg atom in groud state
+  $\ket g$ into it so that they absorb any remaining photons. The temperature of
+  the cavity is then $T = \SI{0}{K}$.
+\item A thermal field is build inside the cavity a given initial temperature
+  $T_C$. This temperature is different from the cryostat temperature, so it
+  isn't stable (but the relaxing time is high enough).
+\item A single Rydberg atom is sent through the setup.
+\item At the first Ramsey zone it is set to temperature $T_a$.
+\item At the second Ramsey zone is may or may not undergo an action from the Maxwell
+  demon system, that make it interact with the fundamental level $\ket f$
+\item The atom interacts with the second cavity at temperature $T_C$, emiting
+  and absorbing photons.
+\item The atom is observed to be in either $\ket e$, $\ket g$ or $\ket f$.
+\item A bunch of non-resonant QND atoms are sent to observe the state of the cavity.
+\item We reconstruct the state of the cavity by max-like estimation thanks to
+  the QND measurements.
+\end{itemize}
+
+\subsection{Thermal state}
+
+We first need to define what is a thermal state at temperature $T$. Ideally it
+is the statistical state that
+reaches a quantum system when interacting with a thermostat
+(a macroscopic system) at temperature $T$. According the Maxwell-Bolzman
+distribution, the probability to be in state $i$ of energy $E_i$ is:
+\[p_i = \frac {e^{-\beta E_i}} Z\]
+
+where $\beta = \frac 1 k_B T$, and $Z$ is the partition function $Z = \sum
+e^{-\beta E_i}$. The thermal state is thus the following density matrix:
+\[\zeta_\beta = \sum_i p_i \ket i \bra i\]
+
+This can be expressed more compactly with:
+\[\zeta_\beta = \trnorm{e^{\beta H}}\]
+where $H$ is the Hamiltonian. This is true for any quantum system of finite dimension.
+
+In the case of a thermal qubit with energy gap $E_g$, we let $p_\beta(E_g) =\frac
+{e^{-\beta E_g}}{1 + e^{-\beta E_g}} $ be the probability of being in the top state .
+
+\subsection{Atom state}
+
+The Rydberg atom is prepared in state $\zeta_\beta^S$. This state is a thermal
+mix of $\ket e$ and $\ket g$. In practice atoms are in pure state. The Ramsey
+zone, just to a rotation with the right angle to bring $\ket g$ to:
+
+\[(1-p_\beta(\hbar \omega_{eg}))\ket g +
+e^{i\phi}p_\beta(\hbar \omega_{eg}) \ket e\]
+The angle and thus the temperature is chosen by the experimenter. However the
+axis of the rotation is random, and thus the phase $\phi$ is also random. The
+average of those state with random $\phi$ is indeed $\zeta_\beta^S$.
+
+However the goal of the experiment is to make the $\ket e$-$\ket g$ system
+interact with $\ket f$. In order to decompose those interaction. We'll
+artificially split our system into two qubits $\mathcal{H}^S$ and $\mathcal{H}^D$, for the
+main system $e$-$g$ and the demon system $g$-$f$ respectively. The atom is thus
+represented by the System $\mathcal{H}^S \otimes \mathcal{H}^D$. The mapping is:
+
+\[\ket e = \ket {1^S1^D} \hspace{2cm} \ket g = \ket{0^S1^D} \hspace{2cm} \ket f
+  = \ket{0^S0^D}\]
+
+The system is built in such a way that the first qubit is only about the $e$-$g$
+interaction and the demon qubit is only about the $g$-$f$ interaction. The state
+$\ket 1^S0^D$ is purely fictitious and always has probability zero in all our
+calculation. This decomposition allow to speak about entanglement and other
+concept that need multiple systems on a single atom.
+
+The initial atom state is thus:
+\[\zeta_\beta^S \otimes \ket {1^D} \bra {1^D}\]
+
+\subsection{Maxwell demon: readout}
+
+The demon action happens just before the cavity to avoid spontaneous emissions or
+absorbtion of random thermal photons.
+
+The goal of the demon is simply to send the state $\ket g$ to $\ket f$ in order
+to make only the excited state interact with the cavity. That way, the atom can
+only emit energy to the cavity and cannot receive energy from it. This is called
+readout because in terms of qubit, the system qubit is ``copied'' on the demon
+qubit. In order to make that unitary we also need to send $\ket f$ on $\ket g$
+but no atom should be in $\ket f$ in the initial state. The corresponding quantum
+gate in the 2-qubit system is an inverted C-Not: The second bit is flipped if
+the first on is 0.
+
+However, in practice, the efficiency of the demon in not 100\%. In order to
+represent both the experimental imperfection and sometimes the possibility for
+the experimenter to chose a partial efficiency, we'll describe the demon readout
+as a rotation
+
+\TODO{} Can I forget the imperfect demon ?
+
+\subsection{Cavity interaction: Feadback}
+
+Inside the cavity the atom undergo an adiabatic passage that forced absorption
+or emission of an atom: If the atom is in state $\ket g$ it will absorb an atom,
+and if it is in state $\ket e$, it will emit. As the passage is done only around
+$\omega_{eg}$, the state $\ket f$ do not interact at all with the cavity:
+\begin{align*}
+  \ket{g,n+1} &\mapsto \ket{e,n}\\
+  \ket{g,0} &\mapsto \ket{g,0}\\
+  \ket{e,n} &\mapsto \ket{g,n+1}\\
+  \ket{f,n} &\mapsto \ket{f,n}\\
+\end{align*}
+
+If the demon qubit is set to one, the unitary operation applied to the $SC$
+system is:
+\[U = \ket{00}\bra{00} + \ket 1 \bra 0 \otimes a + \ket 0 \bra 1 \otimes a^\dagger\]
+
+where $a$ is the annihilation operator of the cavity.
 
 
-\section{Reminders on Quantum information}
+
+\section{Quantum information}
 
 Wikipédia
 
 \subsection{Classical Information theory}
 
+Entropy
+Conditional entropy,
+Mutual information.
+\ldots
+\TODO{} list all concepts needed
+
+\TODO{} Classical information theory should go in annex?
+
 \subsection{Quantum information theory}
+
+entropy, relative entropy, \ldots
+Mutual information.
+\TODO{} list all concepts needed
 
 \section{Thermodynamical analysis}
 
-Built the new second law from
 
-Mainly the long notes from Luis
+
+Put here 5.2 from Luis's note: Proof of the new second law.
+
+\TODO{} Compute theoretical values in ideal state?
 
 
 \section{Experimental results}
 
 \paragraph{Combination of reconstructions} How we build the matrices
-experimentally : from code
+experimentally: from code
 
-Plots and error bars ?
+Plots and error bars?
 
 \paragraph{TODO} Need to save the data needed for the report
 
@@ -1895,7 +2289,7 @@ Equations of covariance propagation. All first order error.
 Well crafted bullshit
 
 \chapter*{Conclusion} %and bibliography
-\addcontentsline{toc}{chapter}{Conclusion - Thanks - Bibliography}
+\addcontentsline{toc}{chapter}{Conclusion~--~Thanks~--~Bibliography}
 
 Conclusion
 
@@ -1931,7 +2325,7 @@ Conclusion
 
 {\let\clearpage\relax \bibliography{report}}
 
-
+\addtocontents{toc}{\setcounter{tocdepth}{0}}
 \appendix
 
 \chapter{Quantum mechanics pictures}\label{app:pict}
@@ -2119,4 +2513,6 @@ correlation:
 \section{First order approximation}
 
 
+
+\addtocontents{toc}{\setcounter{tocdepth}{2}}
 \end{document}
