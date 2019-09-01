@@ -3,7 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
-\usepackage[left=2cm,top=1.5cm,right=2cm,bottom=2cm]{geometry}
+\usepackage[left=3cm,top=1.5cm,right=3cm,bottom=2cm]{geometry}
 
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -191,11 +191,67 @@
 % \pagenumbering{gobble} % to avoid counting contents page in report
 \tableofcontents
 
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract~--~Notations}
+
+I need to do a ten line abstract
+
+\vfill
+
+\paragraph{\Huge Notations}
+
+\
+
+\vspace{1.5cm}
+
+\begin{itemize}
+  \item $\lambda,\mu,x,w,n$: scalar, generic vector and function are normal
+    letters.
+    Usually, I try to use greek letters for scalars, but this is not always the case.
+  \item $A,B,H$: quantum operator or more generally matrices are capital letters
+  \item $\bs u, \bs E$, 3D vectors or 3D quantum operator are in bold, capital
+    letter for operators.
+  \item $\mathcal{E}$: curved letter are generally for sets.
+  \item $\mathbb H, \mathbb E$: Apart from usual sets ($\R,\C,\N,\Z$) doubled
+    letters represent super-operator i.e operators from matrices to matrices.
+  \item $x^*$: complex conjugate of $x$.
+  \item $A^t$: transposed matrix of $A$.
+  \item $A^\dagger$: transpose conjugate of $A$: $A^\dagger = {(A^t)}^*$.
+  \item $x \cdot y$: The real scalar product $\sum_i x_i y_i$. On complex vectors it
+    will still be the same formula and thus $x^* \cdot y = \braket x y$.
+  \item $\braket x y$: complex scalar product, semi-linear to left i.e.\ physicist convention.
+  \item $\ket x$, $\bra x$: I use Dirac bra-ket notation.
+  \item $x > y$: for two vector of $\R^n$, $x > y$ means component wise inequality
+  \item $A > B$: $A - B$ is Hermitian positive definite. (semidefinite for $A
+    \geq B$)
+  \item $\mathcal{H}$: A Hilbert space
+  \item $\mathcal{L}(\mathcal{H})$: The set of operator a $\mathcal{H}$
+  \item $\mathcal{L}(\mathcal{H}, \mathcal{H}')$: The set of operator from
+    $\mathcal{H}$ to $\mathcal{H}'$.
+  \item $\mathcal{U}(\mathcal{H})$: The set of unitary matrice on $\mathcal{H}$
+    (orthogonal if $\mathcal{H}$ is a real vector space)
+  \item $\mathcal{O}(\mathcal{H})$: The set of observable i.e of Hermitian matrice on $\mathcal{H}$
+  \item $\mathcal{S}(\mathcal{H})$: The set of real symmetric matrices.
+  \item $\mathcal{D}(\mathcal{H})$: The set of density matrices (I'll explain later)
+  \item $\R_+$, $\mathcal{O}_+(\mathcal{H})$: The set of non-negative real, of
+    positive semi-definite hermitian matrices.
+  \item $\nabla f$: gradient on mono-result function, but also jacobian matrix
+    on multi-result function
+  \item $\nabla^2 f$: Hessian matrix
+  \item $\dpar f x, \partial_x f$: Partial derivative. If $x$ is a vector, it is
+    a partial gradient or a partial jacobian matrix.
+  \item $\dparn f x 2$: 2nd partial derivative, but may be a partial Hessian if
+    $x$ is a vector
+\end{itemize}
+
+
+
 \chapter*{Introduction}
 % \pagenumbering{arabic}
 \addcontentsline{toc}{chapter}{Introduction}
 
-This report details my internship with Pierre Rouchon and Igor dotsenko on
+This report details my internship with Pierre Rouchon and Igor Dotsenko on
 Quantum tomography by maximum-likelihood reconstruction. It was done mainly at
 the Laboratory Kessler-Brosel (LKB) in the Collège de France.
 
@@ -219,7 +275,7 @@ In order to study this experiment, we need to measure the state of the cavity.
 That state cannot be measured directly, so we do it by quantum tomography using
 maximum-likelihood reconstruction. This construction takes into account all the
 measurements made and deduce a density matrix. To find it, one needs to solve a
-convex optimisation problem on the set of density matrix (hermitian positive
+convex optimisation problem on the set of density matrix (Hermitian positive
 definite matrix of trace 1). This was done using a gradient descent method with
 projection of the gradient on the domain.
 
@@ -257,24 +313,16 @@ about my understanding of prior work that I had to do in order to do what I did.
 The last two are about my personal contributions.
 
 In the first chapter I
-present the experiment, its modelisation and what we want to prove. In the
+present the experiment, its formal modelisation and why we need quantum tomography. In the
 second I explain the basics of maximum likelihood reconstruction then I show in
 the third chapter how to apply this method for our particular case. In the
-fourth chapter I show how to solve the convex optimization problem. Then I can
+fourth chapter I show how to solve the convex optimization problem that appeared. Then I can
 explain the state of the results before I arrived in chapter 5. In chapter 6 I
 explain what I did for computing errorbars for non-linear function and at last
 I explain the final results in chapter 7.
 
 \vfill
 
-\paragraph{Notations:} I'll use the bra-ket notation and thus my Hilbertian
-products are linear on the right. On $\R^n$ I'll use $>$ and $\geq$ for
-component wise inequality. On $\mathcal{M}_n(\C)$, $A > B$ mean that $A-B$ is hermitian
-positive definite and $A \geq B$ means that $A - B$ is hermitian positive
-semi-definite. This works obviously also on $\mathcal{M}_n(\R)$. The conjugate will be
-denoted by $A^*$, the transpose by $A^t$, and the transpose conjugate by
-$A^\dagger$. The same notations will be used on any self-operator space of any finite dimension
-Hilbert space.
 
 
 \chapter{Experimental setup and goal}
@@ -306,12 +354,13 @@ of an atom, we can make give heat to the cavity (emit a photon) even if the atom
 is colder than the cavity. I will define the notion of temperature of single
 atom later.
 
-Most of the formulas come from~\cite{Har06} and~\cite{SayPHD11}
+Most of the formulas come from the chapter 3 of~\cite{Har06} and the first part
+of~\cite{SayPHD11}
 
 
 \subsection{Rydberg Ciruclar atoms}
 
-Section 3.3.1 of~\cite{Har06} and I.2.1.a of~\cite{SayPHD11}
+% From Section 3.3.1 of~\cite{Har06} and I.2.1.a of~\cite{SayPHD11}
 
 The atoms are prepared in a specific circular Rydberg state called ``ground'' state
 $\ket g$. It correspond the energy level $n = 50$. We will also use $\ket e$
@@ -352,7 +401,7 @@ express the Hamiltonian in a similar way: $H = \hbar \omega(\sigma_+\sigma_- - \
 
 \subsection{Ramsey zone: Interaction with classical field}\label{sec:ramsey}
 
-3.3.2 of~\cite{Har06} and I.2.1.b of~\cite{SayPHD11}
+% From 3.3.2 of~\cite{Har06} and I.2.1.b of~\cite{SayPHD11}
 
 In what we call Ramsey zone, the atom will be submitted to a classical oscillating
 field at pulsation $\omega_f$, resonant (or near the resonance) with the atomic
@@ -457,7 +506,7 @@ because they have huge effects with very small variation.
 
 \subsection{Resonant cavities}\label{ssec:rescav}
 
-Harmonic oscillator: 3.1.1 of~\cite{Har06} and I.1.2.a of~\cite{SayPHD11}
+% Harmonic oscillator: 3.1.1 of~\cite{Har06} and I.1.2.a of~\cite{SayPHD11}
 
 A field mode in a cavity at a specific pulsation $\omega_c$ can be modeled
 as an usual one-dimensional harmonic oscillator. The Hilbert space will be
@@ -475,12 +524,12 @@ defined by:
 
 We need to find how to represent a field oscillating at frequency $\omega_c$.
 A general formula for a specific mode of the classical field is
-\[\bs E(r) = \mathcal{E}\big(\bs f(\bs r) \alpha e^{i\omega_c t} + \bs f^*(\bs r)
+\[\bs e(r) = \mathcal{E}\big(\bs f(\bs r) \alpha e^{i\omega_c t} + \bs f^*(\bs r)
   \alpha^* e^{-\omega_c t}\big)\]
 
 where $\mathcal{E}$ is a general normalisation factor in $\SI{}{V/m}$, that
 we'll compute later, $\bs f$
-is polarisation function that give the orientation of the field depending the
+is a polarisation function that give the orientation of the field depending the
 position and that depending on the shape of the cavity and on Maxwells equation.
 We normalize it to $\|\bs f\|_\infty = 1$. And finally, $\alpha$ is the complex amplitude
 of the field. We want to find a quantum state that represent this classical
@@ -511,7 +560,7 @@ It will behave exactly as a classical field for coherent state and be a
 superposition of classical field for other states. We can determine the value of
 $\mathcal{E}$ from the field energy operator:
 
-\[ H = \int \varepsilon_0 |\hat {\bs E}|^2 \dd^3 \bs r \]
+\[ H = \int \varepsilon_0 |{\bs E}|^2 \dd^3 \bs r \]
 
 \begin{prop}
   The value we get for $\mathcal{E}$ is
@@ -525,13 +574,9 @@ where $\mathcal{V} = \int \bs |f(\bs r)|^2\dd^3\bs r$ is the effective mode volu
 The value $\mathcal{E}$ is kind of the average (more like r.m.s) field per
 photon in the cavity.
 
-\TODO{} Field Quadrature ($X_\pi$) ?
-
 \subsection{Atom-cavity interaction}
 
-3.4 of~\cite{Har06} and I.3 of~\cite{SayPHD11}
-
-Simplifications : atom and field in phase, $f(r) = 1$ at the atomic position
+% From 3.4 of~\cite{Har06} and I.3 of~\cite{SayPHD11}
 
 In this section we'll see what happens when we put an two-level atomic system in
 a cavity at or near resonance frequencies. The system are then coupled during
@@ -596,7 +641,7 @@ Those state are called \emph{dressed states}.
 We can define again $\Omega'_n = \sqrt{\Omega_n^2 + \Delta_c^2}$ to have the energies as:
 \[E_{\pm,n} = \hbar \omega_c(n+1) \pm \frac{\hbar \Omega_n'}2\]
 
-\TODO{} Copy paste figure I.16 from~\cite{SayPHD11}.
+\TODO{} Copy figure I.16 from~\cite{SayPHD11}.
 
 \subsubsection{Effective interaction time}
 \newcommand{\eff}{_{e\!f\!\!f}}
@@ -612,20 +657,15 @@ during:
 
 \subsubsection{Resonant case}
 
-\TODO{} Oscillation de Rabi quantique
-
 \subsubsection{Dispersive case}
-
-
 
 \subsubsection{Adiabatic passage}
 
 \subsection{Protocol}
 
+Here I wanted to explain the general protocol of an experiment in this setup. The
+specific protocol from Luis will come in chapter 5.
 
-\TODO{} Basic protocol without explanation of Luis specific protocol?
-
-From Luis notes.
 
 
 \section{Experimental details and calibration}
@@ -635,9 +675,9 @@ or interacted with. There is also a bunch of thing I don't know as this
 experiment is the work of several year of research. It can be skipped for a
 first reading as the details are not essential to understand the rest of this report.
 
-\TODO{} Anything that is too slow gets out
-
 From~\cite{SayPHD11}
+
+I'll see if I have time to do that.
 
 
 \subsection{Atomic State preparation}
@@ -680,30 +720,26 @@ I.1.2.b
 
 \section{QND Mesurement}
 
-The base here, The Krauss map formalism in chapter 3
+Here I need to explain how QND measurement works
 
 Still from~\cite{Har06} and~\cite{SayPHD11}
 
 \subsection{Ramsey interferometer}
 
-I.2.2 and 3.3.3
+I.2.2 of~\cite{SayPHD11} and 3.3.3 of ~\cite{Har06}
 
 Say stuff about stark shift for controlling the observing phase of
-interferometer : I.2.3.c
+interferometer : I.2.3.c of~\cite{SayPHD11}
 
 \subsection{Phase shift of QND atoms}
 
-Dispersive interaction: I.3 and 3.4.4
-
-Pick among I.4
+Pick among I.4~\cite{SayPHD11}
 
 \subsection{What data we have as an output}
 
-Personal
+Explain that get long trace for $e$ and $g$.
 
-Explain we need a estimator to build an idea of the state from the e, g we get.
-
-Explain the superposition is irrelevant
+Explain we need a estimator to build an idea of the state from the data we get.
 
 
 
@@ -782,8 +818,6 @@ gradient of the log-likelihood function. This is called the
 \emph{score}. We have $s_x(\theta) = \partial_\theta \ell_x(\theta)$. The
 lower the score (its norm, actually), the better our estimation.
 
-As we move around the optimal likelihood value \TODO{} bullshit
-
 \begin{prop} The expectation of the score is 0.
 \end{prop}
 \begin{proof}
@@ -791,7 +825,7 @@ As we move around the optimal likelihood value \TODO{} bullshit
 \end{proof}
 
 We can then study the variance of score. The lower this variance is, The more
-$\theta$ value \TODO{} bullshit
+$\theta$ value \TODO{} give intuition
 
 We can then make an important remark
 
@@ -847,7 +881,7 @@ it as a hessian:
 \end{prop}
 
 \begin{proof}
-  TODO
+  \TODO{}
 \end{proof}
 
 
@@ -887,9 +921,7 @@ when $X = (X_1,\ldots,X_n)$ where all the $X_i$ come from the same law
 $P_\theta(X_0)$ and are independent and $n \to \infty$,
 we will have nice convergence properties. In particular, it will converge in
 probability to the right
-$\theta$ and saturate the Cramér-Rao bound as $n \to \infty$. I will prove that
-claim in our specific context in chapter 6 \textbf{TODO} proper reference.
-
+$\theta$ and saturate the Cramér-Rao bound as $n \to \infty$.
 \
 
 In practice, as most probability laws are log-concave (in particular the normal
@@ -899,17 +931,19 @@ additive instead of multiplicative:
 \[\mathcal{L}_x(\theta) = \prod_i \mathcal{L}_{x_i}(\theta) \quad \quad \quad
   \quad \ell_x(\theta) = \sum_i \ell_{x_i}(\theta)\]
 
-In particular, as probability goes down to zero quickly and we will be working on
-64 bits machine floating point numbers. There is a high risk of $\mathcal{L}$ to
+In particular, probability goes down to zero quickly and we will be working on
+64 bits machine floating point numbers, so there is a high risk of $\mathcal{L}$ to
 be simply computed to zero on the machine when it is just really small. For
 information the natural logarithm of the minimum positive 64 bits floating point number
 is $-740$.
 
-\subsection{Informal properties}
+% \subsection{Informal properties}
 
-Put the probability function according to Vincent's thesis.
+% I do not remember exactly what I wanted to put here this will probably get deleted.
 
-Add the case at the edge of $\mathcal{D}$.
+% Put the probability function according to Vincent's thesis.
+
+% Add the case at the edge of $\mathcal{D}$.
 
 \chapter{Effect matrices computation}
 
@@ -1459,7 +1493,8 @@ measurements from the environment. We'll see that in details in next section
 
 \subsection{Interpretation with environment}\label{ssec:interp}
 
-\TODO{}
+\TODO{} Express quantum operations as a unitary evolution with a environment and then a
+partial trace.
 
 \section{Likelihood in terms of quantum maps}
 
@@ -1512,17 +1547,21 @@ then:
 
 \section{Computation of Krauss operators for QND measurement}
 
-Mostly from~\cite{VM19} but with a bit of~\cite{Har06} and of~\cite{SayPHD11}.
+Here I wanted to show some examples of how to compute a Krauss operator for a QND
+atoms, and other various technicality about how to get effect matrices. It is
+done in the annexes of~\cite{VM19}.
 
-\TODO{}:
-\begin{itemize}
-  \item Formalism from~\cite{SayPHD11} I.4
-  \item Read again the annex of~\cite{VM19}.
-  \item Say stuff about decoherence and Linbald? Probably nothing else that ``it
-    exists'' : Do not have time to read chapter 4 of~\cite{Har06}
-  \item Error correction from detector.
-  \item Explain data filtering and thus the consequence.
-\end{itemize}
+% Mostly from~\cite{VM19} but with a bit of~\cite{Har06} and of~\cite{SayPHD11}.
+
+% \TODO{}:
+% \begin{itemize}
+%   \item Formalism from~\cite{SayPHD11} I.4
+%   \item Read again the annex of~\cite{VM19}.
+%   \item Say stuff about decoherence and Linbald? Probably nothing else that ``it
+%     exists'' : Do not have time to read chapter 4 of~\cite{Har06}
+%   \item Error correction from detector.
+%   \item Explain data filtering and thus the consequence.
+% \end{itemize}
 
 \chapter{Convex optimization}
 
@@ -1530,13 +1569,14 @@ Now we need to find the maximum $\rho\ml$ of $\ell$, given that $\rho\ml$ is in
 $\mathcal{D}$, the set of density matrix. The problem we want to solve is
 \[\maxim {\ell(\rho)} \rho {\rho \in \mathcal{D}}\]
 
-This problem is ``easy'' because it is convex and as we'll see, convex problem
-have fast solution.
+This problem is ``easy'' because it is convex and as we'll see, convex problems
+have fast solutions.
 
 \section{Reminders on convex optimization}
 
 We must now define what is a convex problem, I assume the readers know what is a
-convex set. We must now define convex cones. This presentation is based on \TODO{}
+convex set. We must now define convex cones. This presentation is based on
+lecture notes from Alexandre Aspremont (\TODO{} Proper reference).
 
 \subsection{Convex cones}
 
@@ -1978,77 +2018,6 @@ There are two cases: either $x_i > 0$ and $n_i = 0$ and thus $x_i = d_i - c$, or
 $x_i = 0$ and $d_i \leq c$. The $c$ thus cut the set of axis in two parts: those above
 and those below.
 
-
-
-% \
-
-% \
-
-
-% First, we must understand
-% some link between the original point and the projection. In order to do that,
-% let's remember that the space of probability distribution with $n$ event is a
-% polytope of dimension $n-1$ in $\R^n$. In particular it is a simplex.
-% From analysing on which face the projection landed, we get
-
-% \begin{prop}
-%   If $\hat x$ is the projection of $x = (x_1,\ldots,x_n)$ on probability space,
-%   Then, there is a constant $c$ such that either $\hat x_i = 0$ or $\hat x_i =
-%   x_i - c$
-% \end{prop}
-
-% \begin{proof}
-% A face of the probability simplex is fully characterized by a non-empty set of
-% coordinate. The interior is considered to be a face of dimension $n-1$.
-% A set $S$ represent the face $F_S$ defined by
-% \[F_S = \left\{x \in \R_+^n\colon \sum\limits_{i \in S} x_i = 1 \text{ and } \forall i \notin S,
-% x_i =0\right\}\]
-% $F_S$ is of dimension $|S| - 1$.
-
-% If the projection $\hat x$ of $x$ landed on a face $F_S$, Then $\hat x$ is the
-% projection of $x$ on the affine space $A_S$ generated by $F_S$. If this projection
-% would have been outside $F_S$, Then the original projection on the polytope
-% would not have been on $F_S$.
-% In order to project on $A_S$, we first project on $\Span(A_S) = \Span(F_S)$
-% which is $V_S = \Span{(e_i)}_{i \in S}$. Therefore we have all $\hat x_i = 0$
-% for $i \notin S$. Then we project from $V_S$ to $A_S$, but $A_S$ is an
-% hyperplane of $V_S$ so we just have to remove a given amount of the normal
-% vector of $A_S$ in $V_S$ which is the vector $n$ with one at positions in $S$
-% and zeroes elsewhere. The amount of $n$ we remove is named $c$, and we thus have
-% the result.
-% \end{proof}
-
-% Now we just have to determine the right set $S$ and amount $c$ from a vector $x$
-% to have a good projection algorithm. For a given $S$, the $c$ is forced to a
-% single value which is:
-
-% \[c = \frac{\sum\limits_{i \in S}\! x_i\; -1}{|S|}\]
-
-% We'll name $x_S$ the projection of $x$ on $A_S$. We need to find among all
-% $x_S$ that are in their face $F_S$, the nearest to $x$.
-
-% \begin{lem}
-%   $x_S \in F_S$ if and only if $\forall i \in S,\; x_i > c$.
-% \end{lem}
-
-% \begin{proof}
-%   $A_S \cap \R_+^n = F_S$
-% \end{proof}
-
-% Now we need to know the best $F_S$ that work. We name $\hat x_S$ the projection of
-% $x$ on $F_S$
-
-% \begin{lem}
-%   For each dimension $d$ the face $F_S$ of dimension $d$ that is the nearest of $x$ is the $S$
-%   that contains the $d$ biggest coordinate. The nearest is defined by projecting
-%   on $F_S$ and not on $A_S$.
-% \end{lem}
-
-% \begin{proof}
-% \end{proof}
-
-
-
 \begin{thm}
   The following algorithm computes the right $S$ and $c$ for the projection:
 \begin{itemize}
@@ -2082,7 +2051,7 @@ first result that we done before I arrived.
 Most of the work in this section is still unpublished and is the
 content of the internship of Luis Najera.
 
-\section{Extracting the results and basic errors}
+\section{Extracting the results and basic errors}\label{sec:basicerr}
 
 Now we can reconstruct $\rho\ml$, the density matrix that maximizes the
 log-likelihood of our measurement. In next section, I'll explain the exact
@@ -2094,7 +2063,7 @@ O(\frac 1 N)$. The standard deviation due to the dispersion of measurements
 \newcommand{\pr}{_{||}}
 \newcommand{\inv}{^{-1}}
 \begin{equation}\label{eqn:var}
-V_A = \Tr(A\pr \mathbb R\inv(A\pr)) +O(\frac 1 {N^2})
+V_A = \Tr(A\pr \mathbb H\inv(A\pr)) +O(\frac 1 {N^2})
 \end{equation}
 where:
 \begin{itemize}
@@ -2103,8 +2072,8 @@ where:
   the orthogonal projection on the tangent space to $\mathcal{D}_{\rk \rho}$ in
   $\rho$:
   \[A\pr = A - \frac{\Tr(AP\ml)}{\Tr(P\ml)}P\ml - (I-P\ml)A(I-P\ml)\]
-\item $\mathbb R$ is the hessian of $\ell_{|\mathcal{D}_{\rk \rho}}$ in $\rho$:
-  \[\mathbb{R}(A) = \sum_i \frac{\Tr(A{E_i}\pr)}{\Tr^2(\rho\ml E_i)} {E_i}\pr +
+\item $\mathbb H$ is the hessian of $\ell_{|\mathcal{D}_{\rk \rho}}$ in $\rho$:
+  \[\mathbb{H}(A) = \sum_i \frac{\Tr(A{E_i}\pr)}{\Tr^2(\rho\ml E_i)} {E_i}\pr +
     (\lambda I - \nabla \ell(\rho\ml))A\rho\ml^+ +
     \rho\ml^+A(\lambda I - \nabla \ell(\rho\ml))\]
   The $\rho^+$ is the moore-penrose pseudo inverse (inversion of non-zero eigen
@@ -2227,13 +2196,6 @@ but no atom should be in $\ket f$ in the initial state. The corresponding quantu
 gate in the 2-qubit system is an inverted C-Not: The second bit is flipped if
 the first on is 0.
 
-However, in practice, the efficiency of the demon in not 100\%. In order to
-represent both the experimental imperfection and sometimes the possibility for
-the experimenter to chose a partial efficiency, we'll describe the demon readout
-as a rotation
-
-\TODO{} Can I forget the imperfect demon ?
-
 \subsection{Cavity interaction: Feadback}
 
 Inside the cavity the atom undergo an adiabatic passage that forced absorption
@@ -2257,41 +2219,29 @@ where $a$ is the annihilation operator of the cavity.
 
 \section{Quantum information}
 
-Wikipédia
+Here I wanted to present quickly all the concept of information theory and
+quantum information theory that were need for Luis results.
 
 \subsection{Classical Information theory}
 
-Entropy
-Conditional entropy,
-Mutual information.
-\ldots
-\TODO{} list all concepts needed
+% Entropy
+% Conditional entropy,
+% Mutual information.
+% \ldots
 
-\TODO{} Classical information theory should go in annex?
 
 \subsection{Quantum information theory}
 
-entropy, relative entropy, \ldots
-Mutual information.
-\TODO{} list all concepts needed
+% entropy, relative entropy, \ldots
+% Mutual information.
 
 \section{Thermodynamical analysis}
 
-
-
-Put here 5.2 from Luis's note: Proof of the new second law.
-
-\TODO{} Compute theoretical values in ideal state?
-
+Here I wanted to explain the results that Luis had obtained about the second
 
 \section{Experimental results}
 
-\paragraph{Combination of reconstructions} How we build the matrices
-experimentally: from code
-
-Plots and error bars?
-
-\paragraph{TODO} Need to save the data needed for the report
+Here I wanted to put the plots that we had before the new error-bar techniques arrived.
 
 \chapter{Error estimation and validity proofs}
 
@@ -2328,36 +2278,380 @@ definition all based on maximizing a score function in \cref{sec:fixspan}
 
 \section{Quick approach : Monte carlo estimation}\label{sec:MC}
 
-\subsection{Target distribution}
-
-% Only on specific case of probability vectors
-\subsection{Reminders on Markov chains}
-
-Put a link to the course I found. If I do not have time to fill in stuff.
-
-Continuous Markov chain notes
-
-\subsection{Truncated gaussian simulation}
-% Convergence proofs : L O L !
-
-\subsection{Error propagation}
+Here I wanted to explain the Monte-Carlo algorithm I did to first compute an
+estimation of the errors at the beginning of the internship
 
 \section{Probability distribution around maximum}
 
-Full rank and partial rank case
+Here I wanted to give an informal intuition about the probability distribution
+around $\rho\ml$ by developing the log-likelihood function with Taylor. One can
+get informally the same results as in next section but with far less calculus.
 
-Give the formula that we will prove by intuition
+\section{Complete first order error-bars}\label{sec:errbar}
 
-Will probably need the transition from the z hessian to the usual notation here.
+\TODO{} Clarify the measures
 
-\section{Complete first order error-bars}
+All the theorems in this section are generalizations,
+adaptations, and improvements from~\cite{SPRAL17}. The goal here is to compute,
+the expected value and the variance of a generic function $h(\rho)$
+with $\rho$ following the prior distribution $P_0$
+(density of probability) knowing all the measurement
+we did. If $\Span E_i$ is the full space,
+we will prove that when the number $N$ of measurement go to infinity, the
+expectation is
+\[E(h(\rho)) = h(\rho\ml) + O(N\inv)\]
 
-Use \cite{SPRAL17} but generalise. Will try to compact the proofs
+and the variance is:
+\[V(h(\rho)) = \Tr(\nabla h\pr \mathbb H\inv(\nabla h\pr)) +O(\frac 1 {N^2})\]
 
-Maybe some stuff will go in the appendices or be referred in the paper.
+Where $\nabla h$ is the gradient of $h$ in $\mathcal{O}_0$ the set of Hermitian
+matrices of null-trace, and $A\pr$ and $\mathbb H$ are the same that below
+\cref{eqn:var}. Both asymptotic value are independent of $P_0$. Obviously some
+regularity condition that will be given later are needed on $h$. If we set
+$h(\rho) = \Tr(A\rho)$, we'll find back the result of \cref{sec:basicerr}.
+
+I tried and achieved to have quite low regularity condition so that people could
+use those result with low-regularity function. In particular, the conditions are
+tailored to that the entropy meet them even if its derivative goes to infinity
+on the edge of $\mathcal{D}$.
+
+$\mathcal{L}(\rho) = e^{\ell(\rho)}$ is the density of probability of having
+the measurements we had given the density matrix $\rho$. Therefor, according to
+Bayes law, We have
+\[E(h(\rho)) = \frac{I_h}{I_1}\]
+where:
+\[I_h = \int h(\rho) e^{\ell(\rho)} P_0(\rho) \dd \rho \]
+
+However to do asymptotic we need to grow a single variable. We'll write our
+asymptotic development as if we repeat the experiment and get again the same
+results. The number of repetition that'll grow to infinity will be $N$, so we
+will write:
+\[E_h(N) = \frac{I_h(N)}{I_1(N)}\]
+where:
+\[I_h(N) = \int h(\rho) e^{N\ell(\rho)} P_0(\rho) \dd \rho \]
+
+ans study $E_h(N)$ as $N \to \infty$. To compute variances, we only need to get
+the expectation of:
+\[h_V = \left(h - \lim_{N \to \infty} E_h(N)\right)^2\]
+
+
+
 \subsection{Full rank}
 
-\subsection{Low rank}
+We'll start by studying what happens when $\rk \rho\ml = n$ i.e when $\rho\ml$
+is in the interior of $\mathcal{D}$. In order to that, we new a few technical theorems.
+
+\begin{thm}\label{thm:asy1}
+  Let $g : U \to \R$ that is $\class 1$ on $U$ a neighborhood of 0. If $g(0)
+  \neq 0$, we have at $N \to \infty$:
+  \[\int_{z \in U} g(z)e^{-\frac N2\|z\|^2} \dd z = g(0){\left(\frac
+      {2\pi}{N}\right)}^{\frac n 2} +
+    O\left({N^{-\frac n 2 -1}}\right)\]
+\end{thm}
+
+\begin{proof}
+
+  We can decompose $g$ in $g(z) = g(0) + h(z)$ with $h(z) = O(\|z\|)$ as $g$ is
+  $\class{1}$ in 0, thus:
+\[\int_{z \in U} g(z)e^{-\frac N2\|z\|^2} \dd z = g(0)\int_{z \in U} e^{-\frac
+    N2\|z\|^2} \dd z + \int_{z \in U} h(z)e^{-\frac N2\|z\|^2} \dd z\]
+
+But:
+\begin{align*}
+  \left |\int_{z \in U} h(z)e^{-\frac N2\|z\|^2} \dd z\right|
+  &\leq C \int_{z \in U} \|z\|e^{-\frac N2\|z\|^2} \dd z\\
+  &\leq C \int_{z \in \R^n} \|z\|e^{-\frac N2\|z\|^2} \dd z\\
+  &\leq CA_n \int_{r \in \R_+} re^{-\frac N2 r^2} \dd r\\
+  &\leq CA_n \int_{r \in \R_+} re^{-\frac N2 r^2} \dd r\\
+  &\leq O\left({N^{-\frac n 2 -1}}\right)
+\end{align*}
+
+Where $C$ is the constant such that $|h(z)| \leq C \|z\|$, $A_n$ is the surface
+of the hypersphere of $\R^n$ and the last line comes from \cref{eqn:gausspown}.
+
+Up to exponentially small term ($O(e^{N\delta})$ for a given $\delta$), we have
+(using \cref{eqn:gaussdimn}):
+
+\[g(0)\int_{z \in U} e^{-\frac
+    N2\|z\|^2} \dd z \approx g(0)\int_{z \in \R^n} e^{-\frac
+    N2\|z\|^2} \dd z = g(0) {\left(\frac
+      {2\pi}{N}\right)}^{\frac n 2}\]
+
+\end{proof}
+
+\
+
+
+However when $g(0) = 0$, the previous theorem does not give anymore the first
+order term but just a bound on the integral which may not be very useful in
+certain cases. We'll thus look in more details at the case $g(0) = 0$. We'll
+assume additionally that $\nabla g = 0$, because that is what happens for our
+case that require that theorem.
+
+
+\begin{thm}\label{thm:asy2}
+ Let $g : U \to \R$ that is $\class 3$ on $U$ a neighborhood of 0. If $g(0) = 0$
+ and $\nabla g(0) = 0$, We have at $N \to \infty$:
+  \[\int_{z \in U} g(z)e^{-\frac N2\|z\|^2} \dd z = \frac{\Tr(\nabla^2 g(0))}N {\left(\frac
+        {2\pi}{N}\right)}^{\frac n 2} +
+    O\left({N^{-\frac n 2 -2}}\right)\]
+\end{thm}
+
+\begin{proof}
+\TODO{} using \cref{lem:gausssymtr}
+\end{proof}
+
+\
+
+Up until now, we used a simple Gaussian in the exponential, but in practice,
+what we want in there is our log-likelihood function $\ell$, let's do a generic
+theorem then:
+
+\begin{thm}\label{thm:asymid}
+  Let $U$ be an open set containing $0$. Let $f : U \to \R$ of class $\class 4$.
+  Let $g : U \to \R$ of class $\class 1$.
+  Assume that $f$ has a unique global non critical maximum in $0$
+  ($\nabla f = 0$ and $\nabla^2 f < 0$). We have at $N \to \infty$:
+  \[\int_{z \in U} g(z)e^{Nf(z)} \dd z = g(0)
+    {\left(\frac {2\pi}{N}\right)}^{\frac n 2}
+    \frac {e^{Nf(0)}}{\sqrt{\left|\det \nabla^2 f\right|}}
+    + O(e^{Nf(0)} N^{-\frac n 2 -1})\]
+
+  Additionally, If $g(0) = 0$ and $\nabla g(0) = 0$, and $f \in \class 6$ and $g
+  \in \class 3$, we have:
+
+  \[\int_{z \in U} g(z)e^{N f(z)} \dd z =
+    \frac{\Tr\left(-\nabla^2 g(0) {\left(\nabla^2 f(0)\right)}^{-1}\right)}N
+    {\left(\frac {2\pi}{N}\right)}^{\frac n 2}
+    \frac {e^{Nf(0)}}{\sqrt{\left|\det \nabla^2 f\right|}}
+    + O\left(e^{Nf(0)}{N^{-\frac n 2 -2}}\right)\]
+\end{thm}
+
+\begin{proof}
+First we assume $f(0) = 0$ without loss of generality (it suffice to divide every
+thing by $e^{Nf(0)}$). The Morse lemma (\ref{lem:morse}) tells us that there is
+a $V \in \mathcal{N}(0)$ and
+a diffeomorphism $\psi : V \to V'$ with $\psi(0) = 0$ such that
+\[f(z) = - \frac12 \|\psi(z)\|^2 \gap \text{and}\gap \nabla \psi(0) =
+  \sqrt{-\nabla^2 f}\]
+
+Because the hessian of $f$ is negative definite in 0 and the maximum is unique,
+all values of $f$ outside of $V$ are below a
+constant $-\delta$. So all the part of the integral outside of $v$ are
+$O(e^{-N\delta})$ and thus negligible. We can now study the integral only on $V$.We can then make a change of variable on $\psi$:
+
+\[\int_{z \in V} g(z)e^{Nf(z)} = \int_{z \in V'}
+  g(\psi^{-1}(z))e^{-\frac N2\|z\|^2} J(z) \dd z\]
+
+with $J(z) = |\det{\nabla \psi^{-1}}|$. We can then set $g_0(z) =
+g(\psi^{-1}(z))J(z)$. We have:
+
+
+and look at the two cases:
+\begin{itemize}
+  \item As $f \in \class 4$, we have $\psi \in \class 2$ (and thus also
+    $\psi^{-1}$) and finally $J \in \class 1$, but $g$ is also in $\class 1$, so
+    $g_0$ is in $\class 1$. We can then apply \cref{thm:asy1} and get the result
+    we want with:
+\[g_0(0) = g(\psi^{-1}(0))J(0) = g(0)\frac 1 {\det {\nabla \psi(0)}} =
+  \frac {g(0)}{\sqrt{\left|\det \nabla^2 f\right|}}
+  \]
+
+
+  \item As $f \in \class 6$, we have $\psi \in \class 4$ (and thus also
+    $\psi^{-1}$) and finally $J \in \class 3$, but $g$ is also in $\class 3$, so
+    $g_0$ is in $\class 3$. We can then apply \cref{thm:asy2} and get the result
+    we want with:
+    \[\nabla g_0^t = \nabla g^t \nabla \psi\inv \times J + g \circ \psi\inv
+      \times \nabla J\]
+    but as $g(0) = 0$, we have $g(\psi^{-1}(0)) = 0$ and furthermore $\nabla
+    g(0) = 0$ so $\nabla (g \circ \psi^{-1})(0) = 0$. Finally, the only remaining term is:
+    \begin{align*}
+      \nabla^2 g_0(0))
+      &= \nabla^2 (g \circ \psi\inv) \times J(0)\\
+      &= {(\nabla \psi^{-1}(0))}^t\nabla^2 g(0) {(\nabla \psi^{-1}(0))} \times
+         \frac {1}{\sqrt{\left|\det \nabla^2 f\right|}}
+    \end{align*}
+    If we put that to the trace, we get the result we wanted.
+
+\end{itemize}
+
+\end{proof}
+
+\subsection{Partial rank}
+
+When $\rho\ml$ is not of full rank, we are on the edge of $\mathcal{D}$. We must
+thus study what happens to the results of the previous section, when we are on
+the edge. Luckily, we can just study the case of edges on which only one
+dimension is missing. Indeed when more dimension are missing, there is a trick
+to bring it back to only one dimension missing.
+
+\begin{rem}
+All formulas here work
+with only $x$ i.e if $n$, the dimension of $z$, is 0. It suffice to note that the
+Lebesgue measure of the point is 1 and all the proofs work.
+\end{rem}
+
+\begin{thm}\label{thm:asyp1}
+  Let U be an open set of $\R_+ \times \R^n$ where $(0,0) \in U$. The $\R_+$
+  coordinate will be $x$ and the $\R^n$ coordinate will be $z$. Let $g : U \to
+  \R$ by a function $\class 1$ The derivative against the edge i.e on $x$ are
+  taken as one-sided derivative. We have as $N \to \infty$:
+
+  \[\int_{(x,z) \in U} x^m g(x,z)e^{-N(x + \frac 12 \|z\|^2)} \,\dd x\, \dd z =
+    g(0,0)\,m! {(2\pi)}^{\frac n 2} N^{-\frac n 2 - m - 1} + O(N^{-\frac n 2 - m - 2})\]
+\end{thm}
+
+\begin{proof} With the now usual argument, we can restrict ourselves to a
+  rectangular set $U' = [0,\eta) \times U_z \subset U$.
+  Here we decompose $g$ in $g(x,z) = h(z) + x g_1(x,z)$ with $h(z) = g(0,z)$ (We
+  can do that because $g$ is $\class 1$). As
+  $g_1$ is bounded on $U$, we have:
+\begin{align*}
+  \int_{(x,z) \in U'} x^{m+1}g_1(x,z)e^{-N(x + \frac 12 \|z\|^2)} \,\dd x\, \dd z
+  &\leq
+  \|g_1\|_\infty\int_{(x,z) \in U'} x^{m+1}e^{-N(x + \frac 12 \|z\|^2)} \,\dd x\, \dd z\\
+    &=O(N^{-\frac n 2 - m - 2})
+\end{align*}
+
+This is because we can split the integral and use \cref{eqn:gaussdimn} and \cref{eqn:gamma}\\
+On the other hand, thanks to \cref{eqn:gaussdimn} and \cref{thm:asy1}, we have:
+\begin{align*}
+  \int_{(x,z) \in U'} x^{m}h(z)e^{-N(x + \frac 12 \|z\|^2)} \,\dd x\, \dd z
+  &= \int_0^\eta x^{m}e^{-Nx} \,\dd x \times
+    \int_{z \in U_z} h(z)e^{-\frac N2 \|z\|^2} \, \dd z\\
+  &= m! N^{-m-1} \times( h(0){\left(\frac
+      {2\pi}{N}\right)}^{\frac n 2} +
+    O\left({N^{-\frac n 2 -1}}\right))
+\end{align*}
+
+\end{proof}
+
+
+\begin{thm}\label{thm:asyp2}
+  If we add to the previous theorem the hypothesis that $g(0) = 0$, $\nabla g(0) =
+  0$ and $g$ is $\class 3$ on the
+  variable $z$ (i.e.\ for any $x$, $z \mapsto g(x,z) \in \class 3$), we have:
+  \[\int_{(x,z) \in U} x^m g(x,z)e^{-N(x + \frac 12 \|z\|^2)} \,\dd x\, \dd z
+    = \frac{m!\Tr\left(\dparn g z 2\right)}{N^{m+2}}
+    {\left(\frac {2\pi}{N}\right)}^{\frac n 2}
+    + O\left({N^{-\frac n 2 -m -3}}\right)\]
+\end{thm}
+
+\begin{proof}
+  We use the same $U'$ as in last proof.
+  By applying \cref{lem:dec} twice, we get
+  \[g(x,z) = h(z) + x^2g_2(x,z)\]
+  For that same reason as in previous proof, The integral on $x^2g_2$ is
+  $O(N^{-\frac n2 - m - 3})$. We can then, like the previous proof, split the
+  integral and use \cref{eqn:gaussdimn} and \cref{thm:asy2} to get the result.
+\end{proof}
+
+Like in the previous section we now need to take care about a generic function
+$f$ in the exponential. We can't use the \cref{thm:asymid} because it assume a
+null gradient for $f$ but here $\dpar f x$ could be negative.
+
+\begin{thm}\label{thm:asypmid}
+   Let U be an open set of $\R_+ \times \R^n$ where $(0,0) \in U$. The $\R_+$
+  coordinate will be $x$ and the $\R^n$ coordinate will be $z$. Let $f:U \to \R$
+  be a function of class $\class 4$ and $g : U \to
+  \R$ be a function of class $\class 1$. The derivative against the edge i.e on $x$ are
+  taken as one-sided derivative. Assume that $f$ has a global non-critical
+  maximum in $0$ so that $\dpar f z(0) = 0$ and $\dparn f z 2(0) < 0$. Furthermore, we
+  assume that $\dpar f x(0) < 0$. We have as $N \to \infty$:
+
+  \[\int_{(x,z) \in U} x^m g(x,z)e^{Nf(x)} \,\dd x\, \dd z =
+    \frac{g(0,0)\,m! {(2\pi)}^{\frac n 2}}{N^{\frac n 2 + m + 1}} \times
+    \frac{e^{Nf(0,0)}}{\sqrt{\left|\det \dparn f z 2\right|} \left(-\dpar f x\right)^{m+1}} + O(e^{Nf(0,0)}N^{-\frac n 2 - m - 2})\]
+
+  Additionally, if $g(0) - 0$, $\nabla g(0) = 0$, $g$ is $\class 3$ on
+  variable $z$ and $f$ is $\class 6$, We have as $N \to \infty$:
+
+   \[\int_{(x,z) \in U} x^m g(x,z)e^{-N(x + \frac 12 \|z\|^2)} \,\dd x\, \dd z
+    = \frac{m!\Tr\left(\dparn g z 2\right)}{N^{m+2}}
+    {\left(\frac {2\pi}{N}\right)}^{\frac n 2}
+    + O\left({N^{-\frac n 2 -m -3}}\right)\]
+\end{thm}
+
+\begin{proof}
+  We start by supposing $f(0,0) = 0$ by dividing everything by $e^{Nf(0,0)}$.
+
+  We now do a change a variable to bring back $f$ to be $-x -\frac12\|z\|^2$ like in
+  the proof of \cref{thm:asymid}.
+  To that change of variable we decompose $f$ in $f(x,z) = h(z) + xf_1(x,z)$
+  with $h(z) = f(0,z)$. The change of variable $\tilde x = xf_1(x,z)$ and
+  $\tilde z = \psi(z)$ where $\psi$ is the Morse lemma decomposition of $h$ will
+  give the right result. Doing the actual variable change and computing the
+  Jacobian is left to the reader.
+  The regularity analysis is the same as in \cref{thm:asymid}
+\end{proof}
+
+
+
+\subsection{Application}
+
+
+\begin{thm}
+  For any $h$ with exact regularity condition to determine.
+  \[E_h(N) = h(\rho\ml) + O\left(\frac 1N\right)\]
+  and for any $h$ such that $h(\rho\ml)$ = 0 and some regularity conditions to determine:
+  \[E_h(N) = \frac{\displaystyle \Tr \left( - \dparn h z 2  \left( \dparn \ell z
+        2\right)\inv\right)}{2N} + O\left(\frac 1 {N^2}\right)\]
+  Where $z$ is the variable that represent the tangent space at the edge of
+  $\mathcal{D}$ at $\rho\ml$.
+\end{thm}
+
+\begin{proof}[Proof if $\rho\ml$ has full rank]
+\TODO{} Adapt from~\cite{SPRAL17}
+\end{proof}
+
+\begin{proof}[Proof if $\rho\ml$ has partial rank and $\nabla \ell \neq \lambda I$]
+\TODO{} Adapt from~\cite{SPRAL17}
+\end{proof}
+
+The corner case where the $\rho\ml$ is on the edge of $\mathcal{D}$ but the
+gradient toward the exterior is 0 is not done in this report as in the original
+paper~\cite{SPRAL17}. The probability that such an event happens is really low
+(if it is not 0) in particular if we take into account the numerical errors of
+the implementation. However it can still probably be done by splitting again the
+$x$ and $z$ variable but keeping $x$ as a quadratic variable in the function in
+the exponential.
+
+
+
+
+\begin{thm}
+  For any $h : \mathcal{D} \to \R$ with exact regularity condition to determine
+  we have expectation:
+  \[E_h(N) = h(\rho\ml) + O\left(\frac 1N\right)\]
+  and variance:
+  \[V_h(N) = E_{h_V}(N) = \frac{\Tr(\nabla h\pr \mathbb H\inv(\nabla h\pr))}N +O(\frac 1 {N^2})\]
+  where:
+\begin{itemize}
+\item $\mathcal{D}_r$ is the submanifold of $\mathcal{D}$ of matrices with rank $r$
+\item $A\pr$ is
+  the orthogonal projection on the tangent space to $\mathcal{D}_{\rk \rho}$ in
+  $\rho$:
+  \[A\pr = A - \frac{\Tr(AP\ml)}{\Tr(P\ml)}P\ml - (I-P\ml)A(I-P\ml)\]
+\item $\mathbb H$ is the hessian of $\ell_{|\mathcal{D}_{\rk \rho}}$ in $\rho$:
+  \[\mathbb{H}(A) = \sum_i \frac{\Tr(A{E_i}\pr)}{\Tr^2(\rho\ml E_i)} {E_i}\pr +
+    (\lambda I - \nabla \ell(\rho\ml))A\rho\ml^+ +
+    \rho\ml^+A(\lambda I - \nabla \ell(\rho\ml))\]
+  Where $\rho^+$ is the moore-penrose pseudo inverse.
+\end{itemize}
+
+\end{thm}
+
+\begin{proof}
+\TODO{} Adapt from~\cite{SPRAL17}
+\end{proof}
+
+
+If we remove the $N$ factor and replace $N\ell$ by just $\ell$, the $N$
+denominator will enter $\mathbb H$ and we will have the results that were announced at
+the beginning of the~\cref{sec:errbar}
+
+
 
 \section{Fix the non full span problem}\label{sec:fixspan}
 
@@ -2377,7 +2671,7 @@ some properties to make sense
   \item It must be concave, so that being between other matrices is always better.
   \item $\displaystyle \argmax_{\rho \in \mathcal{D}} c = \frac I{\dim
       \mathcal{H}}$.
-  \item $c$ must be unitary invariant: $c(U\rhoU^\dagger) = c(\rho)$ for $U \in \mathcal{U}(\mathcal{H})$
+  \item $c$ must be unitary invariant: $c(U\rho U^\dagger) = c(\rho)$ for $U \in \mathcal{U}(\mathcal{H})$
   \item In dimension $2$, the density matrix is inside the Bloch sphere which is
     linearly isomorphic to $\mathcal{D}$. Any vector space cutting this space
     gives either a disc or a segment that has an obvious center. $c$ must give
@@ -2390,51 +2684,53 @@ as a centering function. If a function does not satisfy those condition, It is
 not a good centering function. But satisfying them does not guaranty that the function
 make sense from the physical point of view. I have two good example for
 centering function that I will present in the next subsections. I don't think
-there is a perfect centering function waiting to be found, be why not.
+there is a perfect centering function waiting to be found, but I obviously can't
+prove it.
 
 \subsubsection{Log-Determinant}
 
-\TODO{} prove 4 conditions
+\TODO{} prove the 4 conditions
 
-\subsubsection{Von Neumann-Entropy}
+\subsubsection{Von Neumann Entropy}
 
 
-\TODO{} prove 4 conditions
+\TODO{} prove the 4 conditions
 
 \subsubsection{Graphical Comparaison}
 
-put 4 cases i.e 8 diagrams.
+\TODO{} I have a software that generate heatmaps to illustrate how much centered
+those two function are. I pick a random density matrix and two orthogonal null-trace matrices
+and plot the heatmap of $\det$ and $S$ in the affine planned spanned by those
+tree matrices.
 
 \subsection{Two objective optimisation}
 
-Compare approachs and prove them :
-\begin{itemize}
-  \item Projected gradient on argmax : not feasible
-  \item Central path method : \TODO{} prove it
-\end{itemize}
+I want to explain that optimizing the centering function on the argmax of the
+log-likelihood function is not doable directly. However I wanted to prove that
+by optimizing $\ell +
+\varepsilon c$ and reducing progressively $\varepsilon$ we get that point $c$ is
+strictly concave.
+
+
 
 \chapter{Final Results}
 
 \section{Approximations and implementation}
 
-Gradient of entropy, projections, ...
-
-Relevant implementation details
-
-Equations of covariance propagation. All first order error.
+Here I wanted to explain how I made a new error propagation method using and
+propagating covariance matrices. I start from the covariance matrice that is
+$\mathbb H$ and then apply gradient of all the function we use on both side
+until the end. Obviously the fact the entropy as sometimes infinite gradient on
+the edge make the whole thing a bit more complex
 
 \section{Plots}
 
-\paragraph{TODO} Gather data for plots
-
-\section{Interpretation}
-
-Well crafted bullshit
+Here I just wanted to present some plot from the experiment with all the errorbars.
 
 \chapter*{Conclusion} %and bibliography
 \addcontentsline{toc}{chapter}{Conclusion~--~Thanks~--~Bibliography}
 
-Conclusion
+I still have to do a conclusion
 
 
 
@@ -2449,12 +2745,18 @@ Conclusion
 
 \begin{itemize}
 
-\item Thanks to Igor Dotsenko for welcoming me in his lab, showing me his
-  experimental setup and giving me interesting things to do around it.
-\item Pierre Rouchon
-\item Valentin Metillon
-\item Luis Najera
-
+\item Thanks to Igor Dotsenko for welcoming me in his lab, showing me their
+  experimental setup, giving me interesting things to do around it.
+\item Thanks to Pierre Rouchon for giving me interesting corner-case problems to solve
+  around log-likelihood maximization and helping me along the way when I was stuck
+\item Thanks to Luis Najera for having a great internship project thus allowing
+  me to contribute on the corner-cases of an interesting project. Thanks also to
+  him for answering all my question about the codebase and helping me to
+  implement some parts of my works. Also thank to him for answering various
+  physical question when I had trouble understanding quantum electro-dynamics or
+  just quantum information theory.
+\item Thanks to Valentin Metillon for helping me to understand various thing
+  about physics and statistics.
 \end{itemize}
 
 \vfill
@@ -2654,6 +2956,93 @@ correlation:
 
 
 \section{First order approximation}
+
+\chapter{Some useful calculus}
+
+
+\begin{equation}\label{eqn:gaussdimn}
+  \int_{z \in\R^n} e^{-\frac N2 \|z\|^2} \dd z = {\left(\frac
+      {2\pi}{N}\right)}^{\frac n 2}
+\end{equation}
+\begin{equation}\label{eqn:gausspown}
+  \int_{r \in\R_+} r^{n+1} e^{-\frac N2 r^2} \dd r = 2^{\frac n2}N^{-\frac n2
+    -1}\Gamma\left(\frac n 2 + 1\right)
+\end{equation}
+
+On integers, we have a simple value for the gamma-like integral:
+
+\begin{equation}\label{eqn:gamma}
+  \int_{r \in\R_+} r^{m} e^{- N r} \dd r = m! N^{-m-1}
+\end{equation}
+
+
+
+\begin{lem}\label{lem:gausssymtr}
+  Let $S$ be an real symmetric matrix of dimension $n$, we have:
+  \[\int_{z \in \R^n} \bra z S \ket z e^{-\frac N 2 \|z\|^2} \dd z =
+    \frac{\Tr(S)}N {\left(\frac
+        {2\pi}{N}\right)}^{\frac n 2} \]
+\end{lem}
+\begin{proof} Take spectral decomposition and compute.
+  \TODO{}
+\end{proof}
+
+\section{Morse lemma}
+
+\begin{lem}\label{lem:dec}
+  Let $f : U \subset \R^n \to \R^m$, be $\class{n}$ with $U \in \mathcal{N}(0)$.
+  Suppose that $f(0) = 0$. Then we have $g : U \to \mathcal{L}(\R^n,\R^m)$ of
+  class $\class {n-1}$ such
+  that:
+  \[f(x) = g(x) x\]
+  and with $g(0) = \nabla f(0)$
+\end{lem}
+
+\begin{proof}
+  $g(x) = \int_0^1 \nabla f(tx) \dd t$
+\end{proof}
+
+\begin{lem}\label{lem:dec2}
+  Let $f : U \subset \R^n \to \R$, be $\class{n}$ with $U \in \mathcal{N}(0)$.
+  Suppose that $f(0) = 0$ and $\nabla f(0) = 0$.
+  Then we have $h : U \to \mathcal{S}(\R^n)$ (Symmetric matrices) of class
+  $\class {n-2}$ such
+  that $h(0) = \nabla^2 f(0)$ and:
+  \[f(x) = \bra x h(x) \ket x\]
+\end{lem}
+
+\begin{proof}
+  We apply \cref{lem:dec} on $f$ to get $g$, that we see as a gradient $g :U \to
+  \R^n$. Then we apply it again on $g$ to get $h_0$, then we take the symmetric part:
+  \[h = \frac{h_0 + h_0^t}2\]
+
+  We also have: $h_0(0) = \nabla g(0) = \nabla^2 f(0) = h(0)$
+\end{proof}
+
+
+\begin{lem}[Morse lemma]\label{lem:morse}
+  Let $f : U \subset \R^n \to \R$, be $\class{n}$ with $U \in \mathcal{N}(0)$.
+  Suppose that $f(0) = 0$, $\nabla f(0) = 0$ and $\nabla^2 f > 0$.
+  Then we have a neighborhood $V$ of 0 and $\psi : V \to \R^n$ of class
+  $\class{n-2}$, a such that on $V$:
+  \[f(x) = \|\psi(x)\|^2\]
+
+  If $n \geq 3$, we can have $\psi$ a diffeomorphism with $\nabla \psi(0) = \sqrt{\nabla^2 f(0)}$
+\end{lem}
+
+\begin{proof}
+  We take $h$ as in \cref{lem:dec2}. As $h$ is continuous, we can take $V$ such
+  that $h > 0$ on $V$ ($h(0) = \nabla^2 f > 0$).
+
+  We can then define $\psi(x) = \sqrt{h(x)} x$. With the square root being the
+  $\class{\infty}$ square root on the positive definite matrices.
+  If $n \geq 3$, then $h$ is $\class 1$, thus we have: $\nabla \psi(0) =
+  \sqrt{h(0)} = \sqrt{\nabla^2 f(0)}$. As $\nabla^2
+  f(0) > 0$, we have $\nabla \psi(0)$ invertible, so by local inversion theorem,
+  we can reduce the size of $V$ to make $\psi$ a diffeomorphism on $V$.
+
+\end{proof}
+
 
 
 
