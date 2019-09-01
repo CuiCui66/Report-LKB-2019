@@ -1,9 +1,9 @@
-\documentclass[10pt]{report}
+\documentclass[10pt,a4paper]{report}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
-\usepackage[left=3cm,top=1.5cm,right=3cm,bottom=2cm]{geometry}
+\usepackage[left=2.5cm,top=1.5cm,right=2.5cm,bottom=2cm]{geometry}
 
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -23,6 +23,8 @@
 \usepackage{mathrsfs}
 \usepackage{siunitx}
 \setlist{nosep}
+% \usepackage[justification=justified,singlelinecheck=false]{caption}
+\usepackage{subcaption}
 
 
 \theoremstyle{plain}
@@ -126,11 +128,11 @@
 
 
 % \usepackage{titlesec}
-% \titleformat{\chapter}[hang] 
+% \titleformat{\chapter}[hang]
 
 % \makeatletter
 % \def\@makechapterhead#1{%
-%   \vspace*{0\p@}% %%% removed!
+%   \vspace*{50\p@}% %%% removed!
 %   {\parindent \z@ \raggedright \normalfont
 %     \ifnum \c@secnumdepth >\m@ne
 %         \huge\bfseries \@chapapp\space \thechapter
@@ -142,7 +144,7 @@
 %     \vskip 30\p@
 %   }}
 % \def\@makeschapterhead#1{%
-%   \vspace*{0\p@}% %%% removed!
+%   \vspace*{50\p@}% %%% removed!
 %   {\parindent \z@ \raggedright
 %     \normalfont
 %     \interlinepenalty\@M
@@ -154,6 +156,8 @@
 % \usepackage{titlesec}
 % \titlespacing*{\section}{0pt}{.7\baselineskip}{.5\baselineskip}
 % \titlespacing*{\subsection}{0pt}{.4\baselineskip}{.3\baselineskip}
+
+\graphicspath{{../img/}}
 
 \begin{document}
 
@@ -194,8 +198,21 @@
 
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract~--~Notations}
+In this report, I explain the content of my internship with Igor Dotsenko and
+Pierre Rouchon at the LKB in the Collège de France. I studied quantum
+electro-dynamics in cavities, and in particular an experiment made by another
+intern Luis Najera. He developed a way to send energy from a colder atom to an
+hotter cavity by using some quantum manipulation using Rabi oscillations. In
+order to extract result form this experiment, they used quantum tomography, in
+particular max log-likelihood estimation. In their original state of the art, when I
+arrived, the results of such estimations were only proven when observing usual
+quantum observable. However Luis was doing quantum thermodynamics ans thus
+needed to use among other the von-Neumann entropy of the quantum state. I thus
+extended the proofs of such estimation to handle that case. Additionally, I also experimented
+with a method to solve a problem to due insufficient measurement of the quantum system.
 
-I need to do a ten line abstract
+
+
 
 \vfill
 
@@ -264,12 +281,12 @@ The specific physical project on which I worked with Igor Dotsenko is the
 internship project of Luis Najera about thermodynamics in the case of
 atom-cavity interaction in quantum optics. More precisely, we send an circular
 Rydberg atom in a resonant cavity containing photons. The state of the cavity is
-thermal i.e it follow the Bose-Einstein distribution. The atom then interacts
+thermal i.e it follows the Bose-Einstein distribution. The atom then interacts
 with the cavity. If the atom is in a thermal state between two atomic level that
 are at the same frequency than the cavity then a thermal exchange will occur in
 the expected way. However if we pump one of the state of the atom in a hidden
 state, like a Maxwell demon, we can can apparently break the second law and make
-a cold atom give head to a hotter cavity.
+a cold atom give heat to a hotter cavity.
 
 In order to study this experiment, we need to measure the state of the cavity.
 That state cannot be measured directly, so we do it by quantum tomography using
@@ -287,23 +304,22 @@ relaxation decrease the precision of the reconstruction.
 
 With this measurements, we can now get and interpret the results of our Maxwell
 demon experiment. However, to be able to interpret measurement, we need to know
-the error on the reconstructed state. The original paper [ref here] on
-tomography only provide the standard deviation of usual quantum operator which
+the error on the reconstructed state. The original proofs in~\cite{SPRAL17} on
+tomography only provide the standard deviation of usual quantum operators which
 are linear in the density matrix. However to do our analysis of the second law,
 we need to evaluate the error on the entropy.
 
-In order to do that, I had to extract from the reconstruction the probability
-distribution around the maximum which is our estimator. But this distribution
-cannot be samples easily because its a mix of Gaussian and exponential law
-truncated into the domain of density matrix. Into to sample from this
-probability I use an adapted hit and run method to build a Markov chain on the
-density matrix space (but discrete time) whose stationary distribution is the
-wanted distribution. By sampling this chain long enough, I can get the statistic
-average and standard deviation of any real function of the density matrix space.
+In order to do that, I first tried to use a Monte carlo algorithm to use the
+distribution around the estimated value to sample the examined function. I cound
+then deduce an average and a standard deviation. Later, I improved the proofs
+of~\cite{SPRAL17} to prove that evaluating the function on the estimator is
+indeed asymptotically the average of the function around the estimator. I could
+then also get an analytic value of the standard deviation around any
+function of the density matrix. Additionally I also worked on fixing convergence
+problems when the information given by the experiment is incomplete.
 
-In the end we get nice plots with errorbars and we were able to determine which
-point we realistic within the error-bars and which were completely wrong. We
-could then redo the bad point and reach a clean conclusion.
+In the end we get error-bars on our plots and we were able to determine which
+points were within the error-bars from the theory and which were not.
 
 \
 
@@ -317,8 +333,8 @@ present the experiment, its formal modelisation and why we need quantum tomograp
 second I explain the basics of maximum likelihood reconstruction then I show in
 the third chapter how to apply this method for our particular case. In the
 fourth chapter I show how to solve the convex optimization problem that appeared. Then I can
-explain the state of the results before I arrived in chapter 5. In chapter 6 I
-explain what I did for computing errorbars for non-linear function and at last
+explain the results that were obtained before I arrived in chapter 5. In chapter 6 I
+explain what I did for computing errorbars for non-linear function and some other work and at last
 I explain the final results in chapter 7.
 
 \vfill
@@ -366,7 +382,9 @@ The atoms are prepared in a specific circular Rydberg state called ``ground'' st
 $\ket g$. It correspond the energy level $n = 50$. We will also use $\ket e$
 called ``excited'' state which is the circular state at $n = 51$ and $\ket f$, the
 ``fundamental'' state which is at $n = 49$. In theory the atom should never get
-in any other state during our protocol, I'll explain why in \cref{ssec:ststab}.
+in any other state during our protocol.
+%\TODO{}
+% , I'll explain why in \cref{ssec:ststab}.
 The gap between $\ket e$ and $\ket g$ is
 approximately $\SI{51}{GHz}$, whereas the gap between $\ket g$ and $\ket f$ is
 around $\SI{54}{GHz}$. Those are microwave frequencies.
@@ -484,9 +502,7 @@ Hamiltonian can be written:
 \begin{equation}
 H_1 = \hbar \frac{\Omega_r'}2 \bs \sigma \cdot \bs n
 \end{equation}
-
 where
-
 \[ \Omega_r' = \sqrt{\Delta_r^2 + \Omega_r^2} \hspace {1cm}
   \text{and}\hspace{1cm} \bs n = \frac 1 {\Omega'_r}(-\Omega_r \cos \varphi,\;
   -\Omega_r \sin \varphi,\; \Delta_r)\]
@@ -494,9 +510,20 @@ where
 One can show that $H_1$ represents a precession of the state of the atom on the
 Bloch sphere around $\bs n$ at frequency $\Omega_r'$. This precession is named
 ``Rabi oscillation''. The pulsation $\Omega_r$ which is the frequency or
-precession when the the frequencies match is name ``Rabi pulsation''
+precession when the the frequencies match is name ``Rabi pulsation''. It is
+represented on the Bloch sphere in \cref{fig:rabi}
 
-\TODO{} include figure 3.15 of~\cite{Har06}
+\begin{figure}
+  \includegraphics[width=\textwidth]{Rabi.png}
+  \caption{
+    Precession of the state $\bs u$ on the Bloch sphere. (a) When
+    $\Omega_r$ and $\Delta_r$ are of same magnitude. The angle at which
+    $\Omega_r$ is placed is $\varphi$. (b) When $\Delta_r$ is large :
+    off-resonance case. (c) When $\Delta_r =0$: full resonance case ($\varphi
+    = 0$).
+}
+  \label{fig:rabi}
+\end{figure}
 
 By controlling the phase between the electric field and the atom and the
 duration of impulsions (The vector rotate of an angle $\Omega'_r\Delta t$), we
@@ -510,20 +537,20 @@ because they have huge effects with very small variation.
 
 A field mode in a cavity at a specific pulsation $\omega_c$ can be modeled
 as an usual one-dimensional harmonic oscillator. The Hilbert space will be
-$\mathcal{H}_C = \C^\N$. (\TODO{} topology?). The basis of this space is composed of vectors $\ket n$
+$\mathcal{H}_C = \C^\N$.
+% (\TODO{} topology?).
+The basis of this space is composed of vectors $\ket n$
 that are called \emph{Fock states}. The main operator of such a space is the
 number operator $N = \sum_n n\ket n \bra n$. The state $\ket n$ represent a
 state with exactly $n$ photons. There are also the annihilation $a$ and creation $a^\dagger$ operators:
-
 \[a = \sum_n \sqrt{n} \ket {n-1} \bra{n}\]
 
 They are defined such that $N = a^\dagger a$. The energy of the cavity is
 defined by:
-
 \[H_c = \hbar \omega_c \big(N + \tfrac 12\big)\]
 
 We need to find how to represent a field oscillating at frequency $\omega_c$.
-A general formula for a specific mode of the classical field is
+A general formula for a specific mode of the classical field is:
 \[\bs e(r) = \mathcal{E}\big(\bs f(\bs r) \alpha e^{i\omega_c t} + \bs f^*(\bs r)
   \alpha^* e^{-\omega_c t}\big)\]
 
@@ -547,7 +574,8 @@ represent classical state.
   \[ \ket {\phi(t)} = \ket {\alpha e^{i\omega_c t}} \]
 \end{prop}
 
-\begin{proof}\TODO{}
+\begin{proof}Left to the reader.
+  %\TODO{}
 \end{proof}
 
 Therefore we define the electric field operator to be
@@ -568,13 +596,14 @@ $\mathcal{E}$ from the field energy operator:
 where $\mathcal{V} = \int \bs |f(\bs r)|^2\dd^3\bs r$ is the effective mode volume
 \end{prop}
 
-\begin{proof} \TODO{}
+\begin{proof} Left to the reader.
+  %\TODO{}
 \end{proof}
 
-The value $\mathcal{E}$ is kind of the average (more like r.m.s) field per
+The value $\mathcal{E}$ is some kind of the average (more like r.m.s) field per
 photon in the cavity.
 
-\subsection{Atom-cavity interaction}
+\subsection{Atom-cavity interaction}\label{sec:atomcav}
 
 % From 3.4 of~\cite{Har06} and I.3 of~\cite{SayPHD11}
 
@@ -603,7 +632,7 @@ If we do the same Heisenberg picture as in \cref{sec:ramsey}, We'll see that
 term associated with pure energy gain ($\sigma_+a^\dagger$) or loss ($\sigma_-a$)
 oscillate very quickly at the order of $2\omega_c$,
 where the one that correspond to absorbing ($\sigma_+a$) or emitting
-($\sigma_-a^\dagger$) photons oscillate at the difference $\Delta_c = \omega_a -
+($\sigma_-a^\dagger$) photons oscillate at the difference $\delta = \omega_a -
 \omega_c$. We can
 thus do the secular approximation again to have:
 \begin{equation}
@@ -624,8 +653,8 @@ H_{ac} = \frac{\hbar \omega_a}2 \sigma_Z + \hbar \omega_c \big(N +
 With this Hamiltonian, the state $\ket{e,n}$ and $\ket{g,n+1}$ are coupled 2 by
 2 except $\ket{g,0}$ which is stationary. On the space $\mathcal{S}_n =
 \Span(\ket{e,n},\ket{g,n+1})$, the Hamiltonian is:
-\[\twoline H_n = \hbar \mat{\omega_c(n+1) + \frac{\Delta_c}2& \frac{\Omega_n}2\\
-    \frac{\Omega_n}2&\omega_c(n+1) - \frac{\Delta_c}2}\]
+\[\twoline H_n = \hbar \mat{\omega_c(n+1) + \frac{\delta}2& \frac{\Omega_n}2\\
+    \frac{\Omega_n}2&\omega_c(n+1) - \frac{\delta}2}\]
 
 Where $\Omega_n = \sqrt{n+1} \,\Omega_0$. The eigenvectors are written:
 \newcommand{\tnt}{\frac{\theta_n}2}
@@ -636,12 +665,20 @@ Where $\Omega_n = \sqrt{n+1} \,\Omega_0$. The eigenvectors are written:
 
 \vspace{-0.5cm}
 
-Where $\theta_n \in [0,\pi]$ and $\tan \theta_n = \frac {\Omega_n}{\Delta_c}$.
+Where $\theta_n \in [0,\pi]$ and $\tan \theta_n = \frac {\Omega_n}{\delta}$.
 Those state are called \emph{dressed states}.
-We can define again $\Omega'_n = \sqrt{\Omega_n^2 + \Delta_c^2}$ to have the energies as:
+We can define again $\Omega'_n = \sqrt{\Omega_n^2 + \delta^2}$ to have the energies as:
 \[E_{\pm,n} = \hbar \omega_c(n+1) \pm \frac{\hbar \Omega_n'}2\]
 
-\TODO{} Copy figure I.16 from~\cite{SayPHD11}.
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.3]{dressed.png}
+  \caption{The Energy of dressed states at level $n$ in function of $\delta/\Omega_n$.}
+  \label{fig:dressedenergy}
+\end{figure}
+
+Those energies are represented in \cref{fig:dressedenergy}
+
 
 \subsubsection{Effective interaction time}
 \newcommand{\eff}{_{e\!f\!\!f}}
@@ -655,91 +692,104 @@ atom at speed $v$, all happens as if it submitted to the Hamiltonian $H_{ac}$
 during:
 \[t\eff = \frac{w\eff}v\]
 
-\subsubsection{Resonant case}
+% \TODO{}
 
-\subsubsection{Dispersive case}
+% \subsubsection{Resonant case}
 
-\subsubsection{Adiabatic passage}
+% \subsubsection{Dispersive case}
 
-\subsection{Protocol}
+% \subsubsection{Adiabatic passage}
 
-Here I wanted to explain the general protocol of an experiment in this setup. The
-specific protocol from Luis will come in chapter 5.
+% \subsection{Protocol}
+
+% Here I wanted to explain the general protocol of an experiment in this setup. The
+% specific protocol from Luis will come in chapter 5.
 
 
 
 \section{Experimental details and calibration}
 
-This section explain some part of the little experimental details that I've seen
-or interacted with. There is also a bunch of thing I don't know as this
-experiment is the work of several year of research. It can be skipped for a
-first reading as the details are not essential to understand the rest of this report.
+%\TODO{}
 
-From~\cite{SayPHD11}
-
-I'll see if I have time to do that.
-
-
-\subsection{Atomic State preparation}
-
-I.2.3.b
+This section was supposed to explain some part of the little experimental details that I've seen
+or interacted with. I'll try to write it by Monday night. Otherwise, most of the
+details can be found in~\cite{SayPHD11}.
+% There is also a bunch of thing I don't know as this
+% experiment is the work of several year of research. It can be skipped for a
+% first reading as the details are not essential to understand the rest of this report.
 
 
-% oven
-% speed filtering Laser with doppler + resonnance
-% State filtering (n=52)
-% We ignore non-Rydeberg atoms
+% \subsection{Atomic State preparation}
 
-\subsection{Cavity state preparation}
+% I.2.3.b
 
-Stuff about coherent state in 3.1.3?
 
-The right stuff is probably in 3.2
+% % oven
+% % speed filtering Laser with doppler + resonnance
+% % State filtering (n=52)
+% % We ignore non-Rydeberg atoms
 
-I.1.2.b
+% \subsection{Cavity state preparation}
 
-\subsection{State stability}\label{ssec:ststab}
+% Stuff about coherent state in 3.1.3?
 
-I.2.3.a
+% The right stuff is probably in 3.2
 
-\subsection{Stark shift}
+% I.1.2.b
 
-I.2.3.a?
+% \subsection{State stability}\label{ssec:ststab}
 
-\subsection{Detection of atom}
+% I.2.3.a
 
-I.2.3.d
+% \subsection{Stark shift}
 
-% see thesis for functioning of detector
+% I.2.3.a?
 
-\subsection{Cooling and relaxation times}
+% \subsection{Detection of atom}
 
-I.1.2.b
+% I.2.3.d
 
-% Say some stuff about cooling
+% % see thesis for functioning of detector
+
+% \subsection{Cooling and relaxation times}
+
+% I.1.2.b
+
+% % Say some stuff about cooling
 
 \section{QND Mesurement}
 
-Here I need to explain how QND measurement works
+% \TODO{}
 
-Still from~\cite{Har06} and~\cite{SayPHD11}
+QND Measurement works by sending a lots of atoms in a Bell state through the
+cavity at an off-resonance setting. One can deduce from~\cref{sec:atomcav} that
+a atom in a non-resonant regime will undergo a phase shift between the states
+proportional to the number of photon in the cavity. By configuring well the
+Ramsey zones, one can build a Ramsey interferometer and measure this phase
+shift. However the only concrete output we get is a long list of $\ket e$ and
+$\ket g$, so we need a statistical tool to build an representation of the
+density matrix from this date. This what is presented in the next chapter. I
+hope I can write more details by Monday night.
 
-\subsection{Ramsey interferometer}
 
-I.2.2 of~\cite{SayPHD11} and 3.3.3 of ~\cite{Har06}
+% Still from~\cite{Har06} and~\cite{SayPHD11}
 
-Say stuff about stark shift for controlling the observing phase of
-interferometer : I.2.3.c of~\cite{SayPHD11}
+% \subsection{Ramsey interferometer}
 
-\subsection{Phase shift of QND atoms}
+% I.2.2 of~\cite{SayPHD11} and 3.3.3 of ~\cite{Har06}
 
-Pick among I.4~\cite{SayPHD11}
+% Say stuff about stark shift for controlling the observing phase of
+% interferometer : I.2.3.c of~\cite{SayPHD11}
 
-\subsection{What data we have as an output}
+% \subsection{Phase shift of QND atoms}
 
-Explain that get long trace for $e$ and $g$.
+% Pick among I.4~\cite{SayPHD11}
 
-Explain we need a estimator to build an idea of the state from the data we get.
+% \subsection{What data we have as an output}
+
+% Explain that get long trace for $e$ and $g$.
+
+% Explain we need a estimator to build an idea of the state from the data we get.
 
 
 
@@ -821,13 +871,12 @@ lower the score (its norm, actually), the better our estimation.
 \begin{prop} The expectation of the score is 0.
 \end{prop}
 \begin{proof}
-  \TODO{}
+  Left to the reader.
+  % \TODO{}
 \end{proof}
 
-We can then study the variance of score. The lower this variance is, The more
-$\theta$ value \TODO{} give intuition
-
-We can then make an important remark
+We can then study the variance of score and its covariances with other things.
+In particular:
 
 \begin{lem}\label{lem:corscr}
   The covariance of the score and any unbiased estimator is the identity.
@@ -835,7 +884,8 @@ We can then make an important remark
 \end{lem}
 
 \begin{proof}
-  \TODO{}
+  Left to the reader.
+  % \TODO{}
 \end{proof}
 
 In light of the theorem about bounds of \cref{sec:correl}, we can give special
@@ -847,7 +897,7 @@ interest to the variance of the score and its link with the variance of any esti
 \end{defn}
 
 If $\theta \in \R$, this is just the expectation of the square of the score, but
-otherwise. $I(\theta)$ is a covariance matrix thus at least positive
+otherwise, $I(\theta)$ is a covariance matrix thus at least positive
 semi-definite.
 This information value is putting a bound on the minimum variance of any
 unbiased estimator which is called the Cramér–Rao bound.
@@ -881,7 +931,8 @@ it as a hessian:
 \end{prop}
 
 \begin{proof}
-  \TODO{}
+  Left to the reader.
+  % \TODO{}
 \end{proof}
 
 
@@ -895,13 +946,12 @@ it as a hessian:
 \subsection{Definition}
 
 Now that we have proven the best variance possible, We still have to build an
-estimator that approach this bound. There are multiple kind of estimator. The
-one mostly used is the average when $X = (X_1,\ldots,X_n)$ and
+estimator that approach this bound. There are multiple kinds of estimator. The
+mostly used one is the average when $X = (X_1,\ldots,X_n)$ and
 $E_\theta(X_i) = \theta$ and $V_\theta(X_i)$ is small enough. However in more
-complex case this wont work. The goal of the estimator is to produce the more
+complex cases this won't work. The goal of the estimator is to produce the more
 likely $\theta$, ideally the maximum of a density function $p(\theta | X)$.
-Thanks to bayes law, we have (if all measure can be expressed as density
-function \textbf{TODO} put that first):
+If all measure can be expressed as density functions, thanks to bayes law, we'll have:
 \[p(\theta|x) = p_\theta(x) \frac {p(\theta)}{p(x)}
   = p_\theta(x) \frac {p(\theta)}{\int p_{\theta'}(x)p(\theta')\,\dd \theta'}\]
 
@@ -1056,7 +1106,8 @@ rank of the density matrix that gives a lot of information.
 \end{prop}
 
 \begin{proof}
-   \TODO
+  Left to the reader
+  %\TODO{}
 \end{proof}
 
 \begin{defn}
@@ -1085,7 +1136,8 @@ rank of the density matrix that gives a lot of information.
 \end{prop}
 
 \begin{proof}
-   \TODO
+  Left to the reader.
+  % \TODO{}
 \end{proof}
 
 The value $\Tr \rho^2$ has in fact much more interesting properties, and thus
@@ -1103,7 +1155,8 @@ deserves a name.
 \end{prop}
 
 \begin{proof}
-   \TODO
+  Left to the reader.
+  % \TODO{}
 \end{proof}
 
 The main interest of purity is that it remains constant in unitary evolution
@@ -1167,7 +1220,7 @@ If we write $\bs\sigma = (\sigma_X,\sigma_Y,\sigma_Z)$, we can write
 $\rho$ as:
 \[\rho = \frac12 I + \bs r \cdot \bs \sigma\]
 
-where $\bs r \in \R^3$ is usual 3D vector. We can check  However we have:
+where $\bs r \in \R^3$ is an usual 3D vector. Furthermore, we have:
 
 \begin{prop}
   $\rho \geq 0$ if and only if $\|\bs r\| \leq 1$
@@ -1190,7 +1243,7 @@ We can then look at the purity $\gamma$ in function of $\bs r$. We have:
 Mixed state are thus represented in Bloch ``ball''. The pure states are exactly
 the one that are laying on the boundary i.e.\ on the sphere. One can check this
 representation matches the usual Block sphere representation on pure states. The
-uniform state is the center of the ball.
+uniform state $\frac I2$ is the center of the ball.
 
 \subsection{Composite systems, Partial trace}
 
@@ -1239,7 +1292,7 @@ An important remark to be made is that if a pure state in entangled, its partial
 trace will be mixed states. That is because, if we forgot the other space, Our
 space will behave as a statistical mixture and not a quantum superposition
 because depending of what the other state becomes, we can have any different phase.
-For example if we have two qubits, and we have a
+For example if we have two qubits, and we have an
 bell state $\ket \psi = \frac{\ket{00} + \ket{11}}{\sqrt 2}$, then
 \[\Tr_2\big(\ket \Psi \bra \Psi\big) = \frac 12I\]
 
@@ -1251,6 +1304,7 @@ system are open, The undergo interaction with their environment whether it is
 from external measurement or simply thermal relaxation. The goal of this section
 is to build a representation of acceptable transformation for open systems in a
 similar way that we say that any transformation of a closed system is unitary.
+This section is strongly inspired from~\cite{QCQI}.
 
 \subsection{Classical measurement}
 
@@ -1339,7 +1393,7 @@ probability, so the resulting state is:
 
 The goal of this section is to describe a formalism to express the evolution of
 an open quantum system in term of density operators. Another order of presention
-with deeper analysis can be found in (\TODO{} cite the book).
+with deeper analysis can be found in~\cite{QCQI}.
 
 For sake of generality, The input state
 $\mathcal{H}_i$ and the output system $\mathcal{H}_o$ will not be the same. In
@@ -1448,7 +1502,8 @@ property.
 \end{prop}
 
 \begin{proof}
-  \TODO{}
+  Left to the reader.
+  % \TODO{}
 \end{proof}
 
 This obviously works for more than two systems and that's why we can compose
@@ -1480,11 +1535,13 @@ M_o^\dagger$. In fact we can prove this form is general and is called
 \end{prop}
 
 \begin{proof}
-  \TODO{}
+  Left to the reader.
+  % \TODO{}
 \end{proof}
 
 \begin{proof}[Proof of the theorem]
-  \TODO{}
+  Can be found in~\cite{QCQI}.
+  % \TODO{}
 \end{proof}
 
 Any trace preserving quantum operators can thus be expressed as an unread
@@ -1493,8 +1550,9 @@ measurements from the environment. We'll see that in details in next section
 
 \subsection{Interpretation with environment}\label{ssec:interp}
 
-\TODO{} Express quantum operations as a unitary evolution with a environment and then a
-partial trace.
+
+In fact we can also express quantum operations as a unitary evolution with a environment and then a
+partial trace. This approach is explained at the beginning of~\cite{QCQI}.
 
 \section{Likelihood in terms of quantum maps}
 
@@ -1526,7 +1584,8 @@ $y_1,\ldots,y_n$.
 \end{prop}
 
 \begin{proof}
-  \TODO{}
+  Left to the reader.
+  % \TODO{}
 \end{proof}
 
 
@@ -1549,7 +1608,7 @@ then:
 
 Here I wanted to show some examples of how to compute a Krauss operator for a QND
 atoms, and other various technicality about how to get effect matrices. It is
-done in the annexes of~\cite{VM19}.
+done in the supplementary information section of~\cite{VM19}.
 
 % Mostly from~\cite{VM19} but with a bit of~\cite{Har06} and of~\cite{SayPHD11}.
 
@@ -1576,8 +1635,7 @@ have fast solutions.
 
 We must now define what is a convex problem, I assume the readers know what is a
 convex set. We must now define convex cones. This presentation is based on
-lecture notes from Alexandre Aspremont (\TODO{} Proper reference).
-
+lecture notes from Alexandre d'Aspremont, in particular~\cite{ConvAspr}
 \subsection{Convex cones}
 
 \begin{defn}
@@ -1628,24 +1686,25 @@ is sometimes called \emph{internal dual cone}
 \end{prop}
 
 \begin{proof}
-  \TODO{}
+  Left to the reader.
 \end{proof}
 
 \begin{prop}
-  The cone of positive hermitian matrices is self dual
+  The cone of positive hermitian matrices is self dual.
 \end{prop}
 
-\begin{proof}
-  If $H$ is hermitian and $\langle H | A \rangle \geq 0$ for all $A \in
-  \mathcal{O}_+(\mathcal{H})$, Then if we diagonalize $H$, If there is any
-  negative eigen value, the matrice which has as diagonal one in front of that
-  eigenvalue and 0 in front of other will make the Frobenius product negative
-  which is impossible, thus $H \geq 0$.
+% \TODO{} fix that
+% \begin{proof}
+%   If $H$ is hermitian and $\langle H | A \rangle \geq 0$ for all $A \in
+%   \mathcal{O}_+(\mathcal{H})$, Then if we diagonalize $H$, If there is any
+%   negative eigen value, the matrice which has as diagonal one in front of that
+%   eigenvalue and 0 in front of other will make the Frobenius product negative
+%   which is impossible, thus $H \geq 0$.
 
-  For a general matrice $M$, we have the Cartesian decomposition $M = A + iB$
-  with $A$ and $B$ hermitian. The fact that the Frobenius product is always real positive is
+%   For a general matrice $M$, we have the Cartesian decomposition $M = A + iB$
+%   with $A$ and $B$ hermitian. The fact that the Frobenius product is always real positive is
 
-\end{proof}
+% \end{proof}
 
 
 \subsection{Convex problems}
@@ -1750,7 +1809,8 @@ satisfied, we need to minimize on $x$
 \end{prop}
 
 \begin{proof}
-  \TODO{}
+  Left to the reader or can be found in a convex optimization book.
+  % \TODO{}
 \end{proof}
 
 We can now reach our goal to have a lower bound independent of $x$:
@@ -1797,7 +1857,8 @@ One way of proving that a convex problem is strongly dual is:
 \end{prop}
 
 \begin{proof}
-  \TODO{}
+  Left to the reader or can be found in a convex optimization book.
+  % \TODO{}
 \end{proof}
 
 \begin{prop}[Complementary slackness]
@@ -1828,7 +1889,8 @@ One way of proving that a convex problem is strongly dual is:
 \end{thm}
 
 \begin{proof}
-\TODO{}
+  Left to the reader or can be found in a convex optimization book.
+  % \TODO{}
 \end{proof}
 
 \begin{prop}\label{prop:slaterKKT}
@@ -1837,7 +1899,8 @@ One way of proving that a convex problem is strongly dual is:
 \end{prop}
 
 \begin{proof}
-\TODO{}
+  Left to the reader or can be found in a convex optimization book.
+  % \TODO{}
 \end{proof}
 
 \section{Solution characterization}
@@ -1860,7 +1923,7 @@ in the interior of $\mathcal{D}$. Therefore all results for previous section are
 available, in particular we can characterize the solution using the KKT
 conditions (\ref{thm:KKT}). In particular:
 
-\begin{prop}
+\begin{prop}\label{prop:caracKKT}
   $\rho\ml$ is an optimal solution if and only if there
 exists $\eta \ge 0$ and $\lambda$ such that
 \[\braket \eta {\rho\ml} = 0 \quad \text{and} \quad \nabla \ell + \eta +
@@ -1873,14 +1936,15 @@ exists $\eta \ge 0$ and $\lambda$ such that
 
 
 We can also make the $\eta$ disappear from the condition:
-\begin{prop}
+\begin{prop}\label{prop:carac}
   $\rho$ is an optimal solution if and only if $[\rho, \nabla \ell] = 0$ and
   there is a $\lambda$ such as $\lambda P \le \nabla f \le \lambda I$, where $P$
   is the orthogonal projector on the range of $\rho$.
 \end{prop}
 
 \begin{proof}
-  \TODO{}
+  Left to the reader using \cref{prop:caracKKT}
+  % \TODO{}
 \end{proof}
 
 \subsection{Uniqueness}\label{ssec:uniq}
@@ -1892,13 +1956,17 @@ be strongly convex:
   If $\Span_i(E_i) = \mathcal{O}(\mathcal{H})$, then the problem is strongly convex.
 \end{prop}
 
-\begin{proof}
-The gradient of $\ell$ is:
+\begin{proof} In the interior of $\mathcal{D}$, the gradient of $\ell$ is:
 \begin{equation}
 \nabla \ell = \sum_i \frac{E_i}{\Tr(\rho E_i)}
 \end{equation}
 
-  \TODO{}
+and so its hessian is:
+\begin{equation}
+\nabla^2 \ell(X,Y) = - \sum_i \frac{\Tr(XE_i)\Tr(YE_i)}{\Tr(\rho E_i)^2}
+\end{equation}
+
+which is obviously negative ($\nabla^2 \ell(X,X) < 0$ for any $X$).
 \end{proof}
 
 However if $\Span(E_i)$ is not full, we still have some properties: exact
@@ -1914,7 +1982,7 @@ was still unsolved when I arrived, I solve it up to personal taste in \cref{sec:
 
 
 
-\section{Projected gradient method}
+\section{Projected gradient method}\label{sec:projgrad}
 
 In this section the goal is to actually compute a solution $\rho\ml$ to the
 max-log-likelihood problem up to
@@ -1953,7 +2021,8 @@ In practice the last one was chosen.
 \end{prop}
 
 \begin{proof}
-  \TODO{}
+  Left to the reader or can be found in a convex optimization book.
+  % \TODO{}
 \end{proof}
 
 However out problem is not unconstrained. The solution must in the feasible set
@@ -1967,7 +2036,8 @@ doable. We'll see how to it numerically in \cref{ssec:proj}
 \end{prop}
 
 \begin{proof}
-  \TODO{}
+  Left to the reader or can be found in a convex optimization book.
+  % \TODO{}
 \end{proof}
 
 In practice we'll do ``gradient ascent'' as in our problem as we are maximizing a
@@ -1983,6 +2053,9 @@ concave function. The full algorithm is thus:
 \end{itemize}
 
 \subsection{Projection}\label{ssec:proj}
+
+This algorithm is an adaptation of work done by Pierre Six in~\cite{SPHD16},
+made by Pierre Rouchon in the actual codebase.
 
 For a given point $x \in \mathcal{O}(\mathcal{H})$, its projection on
 $\mathcal{D}$ is the point of $\mathcal{D}$ that is the nearest from $x$. We
@@ -2077,7 +2150,8 @@ where:
     (\lambda I - \nabla \ell(\rho\ml))A\rho\ml^+ +
     \rho\ml^+A(\lambda I - \nabla \ell(\rho\ml))\]
   The $\rho^+$ is the moore-penrose pseudo inverse (inversion of non-zero eigen
-  values). The $\mathbb R$ is the Fischer information on the submanifold
+  values). The $\lambda$ is the one from \cref{prop:carac}.
+  The $\mathbb H$ is the Fischer information on the submanifold
   $\mathcal{D}_{\rk \rho}$ as proven in \cref{prop:fisherhessian}
 \end{itemize}
 
@@ -2090,15 +2164,17 @@ do not measure the deviation due to how few experiment there are. If we have
 only one $E_i$, the max-likelihood algorithm will tell that $\rho\ml =
 \trnorm{E_1}$ with 0 deviation. I didn't had time to address that in this
 internship and no one in my team did it before, so we just assume we have
-enough measurement do that the $O(\frac1n)$ is small enough i.e significantly
+enough measurement so that the $O(\frac1N)$ is small enough i.e significantly
 smaller than $V_A$.
 
-\begin{rem} The individual coefficient can observed with $E_{ij} = \TODO$. We
+\begin{rem} The individual coefficient can observed with some specific matrices.
+  % $E_{ij} = \TODO$
+  We
   can thus compute the deviation on each population and coherence individually.
   Those deviation are \emph{not} independent.
 \end{rem}
 
-\TODO{} Take an image from a paper of reconstructed matrix.
+% \TODO{} Take an image from a paper of reconstructed matrix.
 
 \section{Maxwell Demon experiment}
 
@@ -2219,29 +2295,36 @@ where $a$ is the annihilation operator of the cavity.
 
 \section{Quantum information}
 
-Here I wanted to present quickly all the concept of information theory and
-quantum information theory that were need for Luis results.
-
-\subsection{Classical Information theory}
-
-% Entropy
-% Conditional entropy,
-% Mutual information.
-% \ldots
+This section was supposed to explain the base concepts of quantum information
+theory, in particular the Von-Neuman entropy and the related \emph{Mutual
+  information} and \emph{Relative entropy}. I'll try to fill it for Monday
+night, In the meantime, all the information can found on the internet or in the
+litterature, for example in~\cite{QCQI}.
 
 
-\subsection{Quantum information theory}
+% \subsection{Classical Information theory}
 
-% entropy, relative entropy, \ldots
-% Mutual information.
+% % Entropy
+% % Conditional entropy,
+% % Mutual information.
+% % \ldots
+
+
+% \subsection{Quantum information theory}
+
+% % entropy, relative entropy, \ldots
+% % Mutual information.
 
 \section{Thermodynamical analysis}
 
-Here I wanted to explain the results that Luis had obtained about the second
+The intern whose internship project motivated the work of my internship had done
+some interesting work on the second law of thermodynamics. In particular he
+related to the notions of quantum information theory. This section was supposed
+to present his work to motivated mine.
 
 \section{Experimental results}
 
-Here I wanted to put the plots that we had before the new error-bar techniques arrived.
+Here I wanted to put the plots that we had before the my new error-bar work was applied.
 
 \chapter{Error estimation and validity proofs}
 
@@ -2276,20 +2359,25 @@ $\Span(E_i)$ is not the full space, the solution is not unique. We need a way to
 pick the ``best solution'', As this is not well defined I propose two possible
 definition all based on maximizing a score function in \cref{sec:fixspan}
 
-\section{Quick approach : Monte carlo estimation}\label{sec:MC}
+\section{Quick approach : Monte-Carlo estimation}\label{sec:MC}
 
-Here I wanted to explain the Monte-Carlo algorithm I did to first compute an
-estimation of the errors at the beginning of the internship
+At the beginning of my internship, I designed a Monte-Carlo algorithm to sample
+the probability space according the distribution deduced from the deviation on
+each coefficient. The goal was to have a quick and dirty method to quickly get
+error-bars that would have been a little but not too much wrongly estimated.
 
-\section{Probability distribution around maximum}
+In order to do that, I had to create a probability distribution that matched the
+deviation on each coefficient. But this distribution
+cannot be sampled easily because It is the projection of density low on a
+subvector-space.
+In order to do the sampling, I use an adapted hit and run method to build a
+Markov chain on the density matrix space (but discrete time) whose stationary
+distribution is the wanted distribution. By sampling this chain long enough, I
+can get the statistic average and standard deviation of any real function of the
+density matrix space.
 
-Here I wanted to give an informal intuition about the probability distribution
-around $\rho\ml$ by developing the log-likelihood function with Taylor. One can
-get informally the same results as in next section but with far less calculus.
 
 \section{Complete first order error-bars}\label{sec:errbar}
-
-\TODO{} Clarify the measures
 
 All the theorems in this section are generalizations,
 adaptations, and improvements from~\cite{SPRAL17}. The goal here is to compute,
@@ -2311,9 +2399,11 @@ regularity condition that will be given later are needed on $h$. If we set
 $h(\rho) = \Tr(A\rho)$, we'll find back the result of \cref{sec:basicerr}.
 
 I tried and achieved to have quite low regularity condition so that people could
-use those result with low-regularity function. In particular, the conditions are
-tailored to that the entropy meet them even if its derivative goes to infinity
-on the edge of $\mathcal{D}$.
+use those result with low-regularity function. However those conditions are not
+sufficient to deal with the entropy on the edge of $\mathcal{D}$. In the
+\cref{sec:regentropy}, I explain how one can achieve similar results with the
+entropy but with secondary term have a smaller decreasing compared to the main
+term.
 
 $\mathcal{L}(\rho) = e^{\ell(\rho)}$ is the density of probability of having
 the measurements we had given the density matrix $\rho$. Therefor, according to
@@ -2392,13 +2482,18 @@ case that require that theorem.
 \begin{thm}\label{thm:asy2}
  Let $g : U \to \R$ that is $\class 3$ on $U$ a neighborhood of 0. If $g(0) = 0$
  and $\nabla g(0) = 0$, We have at $N \to \infty$:
-  \[\int_{z \in U} g(z)e^{-\frac N2\|z\|^2} \dd z = \frac{\Tr(\nabla^2 g(0))}N {\left(\frac
+  \[\int_{z \in U} g(z)e^{-\frac N2\|z\|^2} \dd z = \frac{\Tr(\nabla^2 g(0))}{2N} {\left(\frac
         {2\pi}{N}\right)}^{\frac n 2} +
     O\left({N^{-\frac n 2 -2}}\right)\]
 \end{thm}
 
 \begin{proof}
-\TODO{} using \cref{lem:gausssymtr}
+  $g$ can be written $g(z) = \frac12\bra z \nabla^2 g(0) \ket z + O(\|z\|^3)$ because it
+  is $\class 3$. The integral on the $O(\|z\|^3)$ part gives $O\left({N^{-\frac
+        n 2 -2}}\right)$ with \cref{eqn:gausspown} with the same method as in
+  the precedent proof.
+
+  We can then use \cref{lem:gausssymtr} to get the result.
 \end{proof}
 
 \
@@ -2421,7 +2516,7 @@ theorem then:
   \in \class 3$, we have:
 
   \[\int_{z \in U} g(z)e^{N f(z)} \dd z =
-    \frac{\Tr\left(-\nabla^2 g(0) {\left(\nabla^2 f(0)\right)}^{-1}\right)}N
+    \frac{\Tr\left(-\nabla^2 g(0) {\left(\nabla^2 f(0)\right)}^{-1}\right)}{2N}
     {\left(\frac {2\pi}{N}\right)}^{\frac n 2}
     \frac {e^{Nf(0)}}{\sqrt{\left|\det \nabla^2 f\right|}}
     + O\left(e^{Nf(0)}{N^{-\frac n 2 -2}}\right)\]
@@ -2530,10 +2625,10 @@ On the other hand, thanks to \cref{eqn:gaussdimn} and \cref{thm:asy1}, we have:
 
 \begin{thm}\label{thm:asyp2}
   If we add to the previous theorem the hypothesis that $g(0) = 0$, $\nabla g(0) =
-  0$ and $g$ is $\class 3$ on the
+  0$ and $g$ is $\class 2$ and in particular $\class 3$ on the
   variable $z$ (i.e.\ for any $x$, $z \mapsto g(x,z) \in \class 3$), we have:
   \[\int_{(x,z) \in U} x^m g(x,z)e^{-N(x + \frac 12 \|z\|^2)} \,\dd x\, \dd z
-    = \frac{m!\Tr\left(\dparn g z 2\right)}{N^{m+2}}
+    = \frac{m!\Tr\left(\dparn g z 2\right)}{2N^{m+2}}
     {\left(\frac {2\pi}{N}\right)}^{\frac n 2}
     + O\left({N^{-\frac n 2 -m -3}}\right)\]
 \end{thm}
@@ -2564,11 +2659,12 @@ null gradient for $f$ but here $\dpar f x$ could be negative.
     \frac{g(0,0)\,m! {(2\pi)}^{\frac n 2}}{N^{\frac n 2 + m + 1}} \times
     \frac{e^{Nf(0,0)}}{\sqrt{\left|\det \dparn f z 2\right|} \left(-\dpar f x\right)^{m+1}} + O(e^{Nf(0,0)}N^{-\frac n 2 - m - 2})\]
 
-  Additionally, if $g(0) - 0$, $\nabla g(0) = 0$, $g$ is $\class 3$ on
+  Additionally, if $g(0) - 0$, $\nabla g(0) = 0$, $g$ is $\class 2$ and in
+  particular $g$ is $\class 3$ on
   variable $z$ and $f$ is $\class 6$, We have as $N \to \infty$:
 
    \[\int_{(x,z) \in U} x^m g(x,z)e^{-N(x + \frac 12 \|z\|^2)} \,\dd x\, \dd z
-    = \frac{m!\Tr\left(\dparn g z 2\right)}{N^{m+2}}
+    = \frac{m!\Tr\left(\dparn g z 2\right)}{2N^{m+2}}
     {\left(\frac {2\pi}{N}\right)}^{\frac n 2}
     + O\left({N^{-\frac n 2 -m -3}}\right)\]
 \end{thm}
@@ -2590,6 +2686,23 @@ null gradient for $f$ but here $\dpar f x$ could be negative.
 
 \subsection{Application}
 
+Here we can finally apply all those asymptotic theorem to our case. I first recall the
+notations. For $h : \mathcal{D} \to \R$, we note:
+\[I_h(N) = \int h(\rho) e^{N\ell(\rho)} P_0(\rho) \dd \rho \]
+Where $P_0$ is the prior probability distribution on density matrices.
+So that we have its expectation:
+\[E_h(N) = \frac{I_h(N)}{I_1(N)}\]
+Its variance is the expectation of:
+\[h_V = \left(h - \lim_{N \to \infty} E_h(N)\right)^2\]
+
+We make some technical assumtions such as:
+\begin{itemize}
+\item $P_0(\rho\ml) > 0$ : If our estimator has a null-probability, the prior
+  distribution doesn't make much sense.
+\item $\mathcal{D} = \mathcal{D}(\C^n)$ : We use simple $n$-dimensional density matrices.
+\end{itemize}
+
+
 
 \begin{thm}
   For any $h$ with exact regularity condition to determine.
@@ -2602,11 +2715,13 @@ null gradient for $f$ but here $\dpar f x$ could be negative.
 \end{thm}
 
 \begin{proof}[Proof if $\rho\ml$ has full rank]
-\TODO{} Adapt from~\cite{SPRAL17}
+  This proof comes straight from~\cite{SPRAL17}. The only thing added would be
+  to check all the regularity conditions which I have only done informally on paper yet.
+  I'll try to do that by Monday night.
 \end{proof}
 
 \begin{proof}[Proof if $\rho\ml$ has partial rank and $\nabla \ell \neq \lambda I$]
-\TODO{} Adapt from~\cite{SPRAL17}
+  Same remark as previous proof.
 \end{proof}
 
 The corner case where the $\rho\ml$ is on the edge of $\mathcal{D}$ but the
@@ -2637,19 +2752,54 @@ the exponential.
   \[\mathbb{H}(A) = \sum_i \frac{\Tr(A{E_i}\pr)}{\Tr^2(\rho\ml E_i)} {E_i}\pr +
     (\lambda I - \nabla \ell(\rho\ml))A\rho\ml^+ +
     \rho\ml^+A(\lambda I - \nabla \ell(\rho\ml))\]
-  Where $\rho^+$ is the moore-penrose pseudo inverse.
+  Where $\rho^+$ is the Moore-Penrose pseudo inverse.
 \end{itemize}
 
 \end{thm}
 
 \begin{proof}
-\TODO{} Adapt from~\cite{SPRAL17}
+  Same remark as in the two last proofs.
 \end{proof}
 
 
 If we remove the $N$ factor and replace $N\ell$ by just $\ell$, the $N$
 denominator will enter $\mathbb H$ and we will have the results that were announced at
 the beginning of the~\cref{sec:errbar}
+
+\subsection{Regularity of Entropy}\label{sec:regentropy}
+
+If look at the previous regularity constraints, the entropy does not satisfy
+them it is not $\class 1$ on the edge, and it's variance is not $\class 2$ on
+the edge. However, if I define intermediate regularity classes as:
+
+\begin{defn}
+  We say that a function $f : \R \to \R$ is of class $\class \beta$ in $0$ if
+  for $k = \lfloor \beta \rfloor$, the function is $\class k$ and we can write:
+  \[f(x) = f(0) + xf^{1}(x) + \ldots + \frac{x^{(k)}}{k!}f^{(k)}(0) +  x^\beta g(x)\]
+  with $g \in \class{0}$.
+\end{defn}
+
+\begin{prop}
+The von-Neumann entropy is of $\class \varepsilon$ for any
+$\varepsilon < 1$ on the edge of $\mathcal{D}$. I'll say the entropy is of class $\class{1-}$
+\end{prop}
+
+\begin{prop}
+The variance of the von-Neumann entropy is of $\class \varepsilon$ for any
+$\varepsilon < 2$ on the edge of $\mathcal{D}$.
+\end{prop}
+
+I won't have time to do that in this report, but we can then reestablish the
+theorem of previous sections and prove that the
+entropy has the usual expectation but with a lower constraint:
+\[E_S(N) = S(\rho\ml) + O(N^{-\varepsilon})\]
+for any $\varepsilon <1$. It is likely that as $\varepsilon \to 1$, the hidden constant
+of the $O$ will explode. Normally it suffice to go over all the proofs of
+previous sections and everything works seamlessly.
+The same kind of result will hold for the variance of the entropy.
+
+I haven't tried them all, but I think all the other entropy-related values like
+mutual-information will also be for the most par of $\class {1-}$.
 
 
 
@@ -2682,35 +2832,111 @@ some properties to make sense
 All those constraint are qualitative constraints that ensure that $c$ makes sense
 as a centering function. If a function does not satisfy those condition, It is
 not a good centering function. But satisfying them does not guaranty that the function
-make sense from the physical point of view. I have two good example for
-centering function that I will present in the next subsections. I don't think
+make sense from the physical point of view. The logarithm of the determinant and
+the von-Neuman entropy are good candidates. I plot heatmaps of them on random
+planes to see how good they are in \cref{fig:heat}. However, I don't think
 there is a perfect centering function waiting to be found, but I obviously can't
 prove it.
 
+I didn't use any of its results directly in the report, but~\cite{Bhatia07} was
+very useful for analysing the structure of the density matrix space in my quest
+for the perfect centering function
+
 \subsubsection{Log-Determinant}
 
-\TODO{} prove the 4 conditions
+The log-determinant is good choice of strictly concave function. It seems to
+really keep the matrices geometrically centered. And on some special case, for
+example if it happens to be quadratic on the vector space studied, It will give
+the exact center (It the determinant is quadratic on a slice of $\mathcal{D}$,
+that slice will be an ellipsoid which has an exact center). The reasons to use
+the log determinant instead of the determinant are twofold: It is strictly
+concave on $\mathcal{D}$, and it will more likely fit on a machine floating
+point number on the edges on of $\mathcal{D}$.
+
+I haven't time to prove formally that the log-determinant satisfy all centering
+function properties, but none of those should be hard to do. I'll try to do that
+by Monday night.
 
 \subsubsection{Von Neumann Entropy}
 
+The Von-Neumann entropy is also a good choice of centering function from a probabilistic
+point of view. Maximizing the entropy means maximizing the incertitude, which
+makes sense when we are moving on direction on which we have zero information.
 
-\TODO{} prove the 4 conditions
+The entropy also satisfies the four conditions and thus is a centering function.
 
-\subsubsection{Graphical Comparaison}
+\begin{figure}
+  \centering
+  \begin{subfigure}[t]{0.49\textwidth}
 
-\TODO{} I have a software that generate heatmaps to illustrate how much centered
-those two function are. I pick a random density matrix and two orthogonal null-trace matrices
-and plot the heatmap of $\det$ and $S$ in the affine planned spanned by those
-tree matrices.
+    \includegraphics[width=0.99\textwidth]{det2.png}
+    \includegraphics[width=0.99\textwidth]{ent2.png}
+    \caption{dimension 2}
+
+  \end{subfigure}
+  \begin{subfigure}[t]{0.49\textwidth}
+    \includegraphics[width=0.99\textwidth]{det3b.png}
+    \includegraphics[width=0.99\textwidth]{ent3b.png}
+    \caption{dimension 3}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.49\textwidth}
+    \includegraphics[width=0.99\textwidth]{det4.png}
+    \includegraphics[width=0.99\textwidth]{ent4.png}
+
+    \caption{dimension 4}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.49\textwidth}
+    \includegraphics[width=0.99\textwidth]{det5.png}
+    \includegraphics[width=0.99\textwidth]{ent5.png}
+    \caption{dimension 5}
+  \end{subfigure}
+
+\caption{In order to compare $\log \circ \det$ and $S$, I plotted them on random affine planes
+slicing $\mathcal{D}$. I pick a random density matrix $A$ and two random orthonormal null
+trace matrices $H_1$ and $H_2$. I then plot $\log \circ \det$ and $S$ in the
+plane $A + x H_1 + y H_2$. In each case $\log\circ \det$ is on top and the
+entropy is below. The colorless area is outside of $\mathcal{D}$}
+\label{fig:heat}
+\end{figure}
+
+\subsubsection{In practice}
+
+That part of my work wasn't directly useful for Luis project, because his effect
+matrices only span the population in Fock base and thus the centering simply
+consists in putting $0$ in each correlation, which I think achieve perfect centering
+whatever the centering function is.
 
 \subsection{Two objective optimisation}
 
-I want to explain that optimizing the centering function on the argmax of the
-log-likelihood function is not doable directly. However I wanted to prove that
-by optimizing $\ell +
-\varepsilon c$ and reducing progressively $\varepsilon$ we get that point $c$ is
-strictly concave.
+In odder to use the centering function, what we want to do is that, after
+optimizing $\ell$ and landing on $M = \argmax_{\rho \in \mathcal{D}} \ell(\rho)$, we
+can optimize the centering function on $M$ and get the most centered matrix that
+maximize $\ell$.
 
+One way of doing it is to do exactly what I just said: Find a $\rho_{int}$ in
+$M$ with a first optimization (projected gradient ascent will find one, even I
+haven't proved it in \cref{sec:projgrad}). Then we could optimize $c$ on $M$.
+However I have no idea how to project a vector on $M$: The projection method
+described in \cref{ssec:proj} only works on the whole $\mathcal{D}$ because
+$\mathcal{D}$ is unitary invariant which is generally not the case of $M$.
+
+An other way of doing that is by using a kind of barrier method with $c$. By optimizing $\ell +
+\varepsilon c$ and reducing progressively $\varepsilon$, we'll the right
+$\rho\ml = \argmax_{\rho \in M} c$.
+
+\begin{prop}
+  If I name $\rho_\varepsilon$ the solution of:
+  \[\maximf{\ell + \varepsilon c}{\rho \in \mathcal{D}}\]
+
+  Then, if $c$ is strictly concave, we'll have:
+
+  \[ \rho_\varepsilon \xrightarrow[\varepsilon \to 0]{} \rho\ml = \argmax_{\rho \in M} c\]
+\end{prop}
+
+\begin{proof}
+  The proof can probably be found in many convex optimization textbooks.
+  %  \TODO{}
+\end{proof}
 
 
 \chapter{Final Results}
@@ -2720,19 +2946,38 @@ strictly concave.
 Here I wanted to explain how I made a new error propagation method using and
 propagating covariance matrices. I start from the covariance matrice that is
 $\mathbb H$ and then apply gradient of all the function we use on both side
-until the end. Obviously the fact the entropy as sometimes infinite gradient on
-the edge make the whole thing a bit more complex
+until the end. Obviously the fact that the entropy has sometimes an infinite gradient on
+the edge make the whole thing a bit more complex. This section will be present
+in the Monday evening version.
 
 \section{Plots}
 
-Here I just wanted to present some plot from the experiment with all the errorbars.
+Here I just wanted to present some plot from the experiment with all the
+errorbars. They will be present in the Monday night version.
 
 \chapter*{Conclusion} %and bibliography
-\addcontentsline{toc}{chapter}{Conclusion~--~Thanks~--~Bibliography}
+\addcontentsline{toc}{chapter}{Conclusion~--~Thanks}
 
-I still have to do a conclusion
+This internship was really interesting; I had to understand a lot of various
+mathematical and physical theory to understand the huge amount of work that my
+predecessor did. Once I did that I could have the pleasure to make a small but
+nevertheless important
+contribution to the field of quantum tomography.
 
+It was really interesting to see the inner working of such a physics lab, and
+to see the amazing experimental setup they have at the LKB. In particular to see
+them running. Before
+this internship I couldn't imagine that physicists were able to control atoms
+and photons one by one to make experiments.
 
+On a more theoretic point of view, this internship greatly improved my
+comprehension of quantum mechanics both on the calculus side and the
+interpretation side including my way of interpreting classical mechanics and
+thermodynamics. It has also improved my knowledge on asymptotic integrals, but
+that is a bit less prone to philosophy.
+
+In the end, this was a great experience where I learnt a lot of things and met a lot
+of interesting people, some of which I want to thank :
 
 \vfill
 
@@ -2741,26 +2986,26 @@ I still have to do a conclusion
 
 \
 
-\vspace{3mm}
+\vspace{1.3cm}
 
 \begin{itemize}
 
 \item Thanks to Igor Dotsenko for welcoming me in his lab, showing me their
-  experimental setup, giving me interesting things to do around it.
+  amazing experimental setup and giving me interesting things to do around it.\\
 \item Thanks to Pierre Rouchon for giving me interesting corner-case problems to solve
-  around log-likelihood maximization and helping me along the way when I was stuck
+  around log-likelihood maximization and helping me along the way when I was stuck.\\
 \item Thanks to Luis Najera for having a great internship project thus allowing
-  me to contribute on the corner-cases of an interesting project. Thanks also to
+  me to contribute to something very interesting. Thanks also to
   him for answering all my question about the codebase and helping me to
-  implement some parts of my works. Also thank to him for answering various
-  physical question when I had trouble understanding quantum electro-dynamics or
-  just quantum information theory.
+  implement some parts of my work. Also thank to him for answering various
+  physical questions when I had trouble understanding quantum electro-dynamics or
+  just quantum information theory.\\
 \item Thanks to Valentin Metillon for helping me to understand various thing
   about physics and statistics.
 \end{itemize}
 
-\vfill
 
+\vfill
 
 % Bibliography
 
@@ -2768,22 +3013,24 @@ I still have to do a conclusion
 
 \bibliographystyle{plain}
 
-{\let\clearpage\relax \bibliography{report}}
+\bibliography{report}
+
+\addcontentsline{toc}{chapter}{Bibliography}
 
 \addtocontents{toc}{\setcounter{tocdepth}{0}}
 \appendix
 
 \chapter{Quantum mechanics pictures}\label{app:pict}
 
-Picture are different way to perceive and express quantum mechanics. They vary
+Pictures are different way to perceive and express quantum mechanics. They vary
 in how the system state and the various operator change over time. All those
 representation yield the same mechanics and are equivalent up to certain change
 of Hilbert space basis dependent on time. Going from one to the other is just up
 to a unitary $U(t)$.
 
-However, non-unitary evolution like decoherence or external measurement
-cannot be moved like that because it is not inversible. Therefore such
-evolutions will always apply to state.
+% However, non-unitary evolution like decoherence or external measurement
+% cannot be moved like that because it is not inversible. Therefore such
+% evolutions will always apply to the state.
 
 \section{Schrodinger picture}
 
@@ -2810,9 +3057,9 @@ following:
       A t \right\rangle\]
 \end{thm}
 
-\begin{proof}
-  \TODO
-\end{proof}
+% \begin{proof}
+%   \TODO{}
+% \end{proof}
 
 
 \section{Heisenberg picture}
@@ -2955,7 +3202,8 @@ correlation:
 
 
 
-\section{First order approximation}
+% \section{First order approximation}
+% \TODO{}
 
 \chapter{Some useful calculus}
 
@@ -2983,8 +3231,8 @@ On integers, we have a simple value for the gamma-like integral:
     \frac{\Tr(S)}N {\left(\frac
         {2\pi}{N}\right)}^{\frac n 2} \]
 \end{lem}
-\begin{proof} Take spectral decomposition and compute.
-  \TODO{}
+\begin{proof} If we take the spectral decomposition of $S$ and split the
+  coordinate along $S$ eigenvectors, the result comes after some calculus.
 \end{proof}
 
 \section{Morse lemma}
