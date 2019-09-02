@@ -2169,17 +2169,17 @@ and those below.
 \chapter{First Results}
 
 In this chapter I will present the actual experimental protocol we realized and the
-first result that we done before I arrived.
+first result that were done before I arrived.
 Most of the work in this section is still unpublished and is the
 content of the internship of Luis Najera.
 
-\section{Extracting the results and basic errors}\label{sec:basicerr}
+\section{Extracting results and basic errors}\label{sec:basicerr}
 
-Now we can reconstruct $\rho\ml$, the density matrix that maximizes the
-log-likelihood of our measurement. In next section, I'll explain the exact
-experiment we used. But first let's see how to use the result of the
+Thanks to results of the previous chapter, we can now reconstruct $\rho\ml$, the density matrix that maximizes the
+log-likelihood of our measurement. In the next section, I'll explain the exact
+experimental protocol we used. But first let's see how to use the result of the
 reconstruction.~\cite{SPRAL17}~proves that for any observable, as the number of
-measurement grow, the average value of an observable $A$ is $\Tr(\rho_{ML}A) +
+measurements grows, the average value of an observable $A$ is $\Tr(\rho_{ML}A) +
 O(\frac 1 N)$. The standard deviation due to the dispersion of measurements
  around this value tends to be:
 \newcommand{\pr}{_{||}}
@@ -2209,14 +2209,14 @@ due to quantum uncertainty, nor the deviation due to the probabilistic nature of
 $\rho\ml$. This deviation comes from the dispersion of the effect matrices
 $E_i$. If all the $E_i$ are the same, $\rho\ml = \trnorm{E_i}$ and $V_A = 0$ for
 any $A$. Furthermore and it is a known problem of max-likelihood method, $V_A$
-do not measure the deviation due to how few experiment there are. If we have
+does not measure the deviation due to how few experiment there are. If we have
 only one $E_i$, the max-likelihood algorithm will tell that $\rho\ml =
 \trnorm{E_1}$ with 0 deviation. I didn't had time to address that in this
 internship and no one in my team did it before, so we just assume we have
 enough measurement so that the $O(\frac1N)$ is small enough i.e significantly
 smaller than $V_A$.
 
-\begin{rem} The individual coefficient can observed with some specific matrices.
+\begin{rem} The individual coefficient can be observed with some specific matrices.
   % $E_{ij} = \TODO$
   We
   can thus compute the deviation on each population and coherence individually.
@@ -2237,15 +2237,15 @@ cavity.
 The protocol is the following:
 
 \begin{itemize}
-\item The cavity a cleared by sending a bunch a Rydberg atom in groud state
+\item The cavity is cleared by sending a bunch of Rydberg atoms in groud state
   $\ket g$ into it so that they absorb any remaining photons. The temperature of
   the cavity is then $T = \SI{0}{K}$.
-\item A thermal field is build inside the cavity a given initial temperature
+\item A thermal field is built inside the cavity a given initial temperature
   $T_C$. This temperature is different from the cryostat temperature, so it
-  isn't stable (but the relaxing time is high enough).
+  isn't stable (but the relaxing time is long enough).
 \item A single Rydberg atom is sent through the setup.
-\item At the first Ramsey zone it is set to temperature $T_a$.
-\item At the second Ramsey zone is may or may not undergo an action from the Maxwell
+\item At first Ramsey zone it is set to temperature $T_a$.
+\item At the second Ramsey zone it may or may not undergo an action from the Maxwell
   demon system, that make it interact with the fundamental level $\ket f$
 \item The atom interacts with the second cavity at temperature $T_C$, emiting
   and absorbing photons.
@@ -2264,7 +2264,7 @@ reaches a quantum system when interacting with a thermostat
 distribution, the probability to be in state $i$ of energy $E_i$ is:
 \[p_i = \frac {e^{-\beta E_i}} Z\]
 
-where $\beta = \frac 1 k_B T$, and $Z$ is the partition function $Z = \sum
+where $\beta = \frac 1 {k_B T}$, and $Z$ is the partition function $Z = \sum
 e^{-\beta E_i}$. The thermal state is thus the following density matrix:
 \[\zeta_\beta = \sum_i p_i \ket i \bra i\]
 
@@ -2290,7 +2290,7 @@ axis of the rotation is random, and thus the phase $\phi$ is also random. The
 average of those state with random $\phi$ is indeed $\zeta_\beta^S$.
 
 However the goal of the experiment is to make the $\ket e$-$\ket g$ system
-interact with $\ket f$. In order to decompose those interaction. We'll
+interact with $\ket f$ in order to decompose those interaction. We'll
 artificially split our system into two qubits $\mathcal{H}^S$ and $\mathcal{H}^D$, for the
 main system $e$-$g$ and the demon system $g$-$f$ respectively. The atom is thus
 represented by the System $\mathcal{H}^S \otimes \mathcal{H}^D$. The mapping is:
@@ -2301,8 +2301,8 @@ represented by the System $\mathcal{H}^S \otimes \mathcal{H}^D$. The mapping is:
 The system is built in such a way that the first qubit is only about the $e$-$g$
 interaction and the demon qubit is only about the $g$-$f$ interaction. The state
 $\ket 1^S0^D$ is purely fictitious and always has probability zero in all our
-calculation. This decomposition allow to speak about entanglement and other
-concept that need multiple systems on a single atom.
+calculation. This decomposition allows to speak about entanglement and other
+concepts that need multiple systems on a single atom.
 
 The initial atom state is thus:
 \[\zeta_\beta^S \otimes \ket {1^D} \bra {1^D}\]
@@ -2326,7 +2326,7 @@ the first on is 0.
 Inside the cavity the atom undergo an adiabatic passage that forced absorption
 or emission of an atom: If the atom is in state $\ket g$ it will absorb an atom,
 and if it is in state $\ket e$, it will emit. As the passage is done only around
-$\omega_{eg}$, the state $\ket f$ do not interact at all with the cavity:
+$\omega_{eg}$, the state $\ket f$ does not interact at all with the cavity:
 \begin{align*}
   \ket{g,n+1} &\mapsto \ket{e,n}\\
   \ket{g,0} &\mapsto \ket{g,0}\\
@@ -2368,8 +2368,8 @@ litterature, for example in~\cite{QCQI}.
 
 The intern whose internship project motivated the work of my internship had done
 some interesting work on the second law of thermodynamics. In particular he
-related to the notions of quantum information theory. This section was supposed
-to present his work to motivated mine.
+related the second law of thermodynamics to the notions of quantum information
+theory. This section was supposed to present his work to motivate mine.
 
 \section{Experimental results}\label{sec:res1}
 
@@ -2377,13 +2377,13 @@ Here I wanted to put the plots that we had before the my new error-bar work was 
 
 \chapter{Error estimation and validity proofs}
 
-As seen in the previous chapter most of our thermodynamics quantities involves
+As seen in the previous chapter most of our thermodynamics quantities involve
 directly or indirectly entropy or other statistical quantity of the density
 matrix. However the proof of validity in~\cite{SPRAL17} only covers the case of
 observable i.e function such as $f(\rho) = \Tr(\rho A)$ with $A \in
-\mathcal{O}(\mathcal{H})$. In our case the entropy is not a observable, it is not even
+\mathcal{O}(\mathcal{H})$. In our case the entropy is not observable, it is not even
 linear. It depends not on quantum properties but on the statistical part of the
-density matrix. And even worse, it's derivative goes to infinity on the edge of
+density matrix. And even worse, its derivative goes to infinity on the edge of
 $\mathcal{D}$.
 
 The two problems I have to solve are then:
@@ -2395,10 +2395,10 @@ for a generic function $f : \mathcal{D}
   matrix as \cref{eqn:var} does not work?
 \end{itemize}
 
-My first approach to do the second point was a Monte-Carlo simulation
-explained in \cref{sec:MC}. It gave quite good results especially because,
-before that, the team had absolutely no idea of what the error on various
-entropy-related value where. It was thus impossible to evaluate how a point a
+My first approach to solve the second problem was a Monte-Carlo simulation
+explained in \cref{sec:MC}. It gave quite good results especially since,
+before this, the team had absolutely no idea of the error of various
+entropy-related values. It was thus impossible to evaluate how a point a
 bit off the theoretical curve fitted there.
 
 However this first approach was filled with more or less wrong independence
@@ -2408,26 +2408,27 @@ adapt \cref{eqn:var} to our case.
 
 In the end another problem was that, as explained in \cref{ssec:uniq}, if
 $\Span(E_i)$ is not the full space, the solution is not unique. We need a way to
-pick the ``best solution'', As this is not well defined I propose two possible
-definitions, all based on maximizing a score function, in \cref{sec:fixspan}
+pick the ``best solution''. As this is not well defined I propose two possible
+definitions, both based on maximizing a score function, in \cref{sec:fixspan}.
 
 \section{Quick approach: Monte-Carlo estimation}\label{sec:MC}
 
 At the beginning of my internship, I designed a Monte-Carlo algorithm to sample
-the probability space according the distribution deduced from the deviation on
+the probability space according to the distribution deduced from the deviation on
 each coefficient. The goal was to have a quick and dirty method to quickly get
 error-bars that would have been a little but not too much wrongly estimated.
 
 In order to do that, I had to create a probability distribution that matched the
 deviation on each coefficient. But this distribution
-cannot be sampled easily because It is the projection of density low on a
+cannot be sampled easily because it is the projection of density low on a
 subvector-space. Let's look at the problem more formally.
 
-In practice, In Luis' setup, we have only information on the
-population from the reconstruction and we force the coherences to 0. The problem
-is just on probability vectors on the diagonal. So our input is a set of values
-$p_i$ and deviations $\Delta p_i$ such that each $p_i$ marginal law are normal
-laws. In theory the probability distribution on $\R^n$ is:
+In practice, in Luis' setup, we have only information on the
+population from the reconstruction and we force the coherences to be 0.
+The problem is just about probability vectors on the diagonal.
+So our input is a set of values
+$p_i$ and deviations $\Delta p_i$ such that each $p_i$ marginal law is a normal
+law. In theory the probability distribution on $\R^n$ is:
 
 \[\dd p(x_1,\ldots,x_n) = K \exp\left(\sum \frac{(x_i - p_i)^2}{2\Delta p_i^2}
   \right) \dd(x_1,\ldots,x_n)\]
@@ -2443,9 +2444,9 @@ In order to do the sampling, I use an adapted hit and run method to build a
 Markov chain on $\mathcal{P}_n$ whose stationary
 distribution is the wanted distribution. The idea is very simple: I know how to
 truncate a Gaussian law to a segment and sample it on that segment. So an
-iteration of the Markov chain is to start from the previous point $x_{n-1}$ and
+iteration of the Markov chain is to go from the previous point $x_{n-1}$ and
 sample a random direction in the hyperplane of sum 1. This direction and
-$x_{n-1}$ gives us an affine line of that hyperplane.
+$x_{n-1}$ give us an affine line of that hyperplane.
 
 We can then compute the
 intersection of that line and $\mathcal{P}_n$. Then we can project the
@@ -2456,15 +2457,15 @@ corresponding $\Delta p_i$, this is just an orthogonal projection.
 
 Once we have the law on the line and the segment, we sample the truncated law on
 the segment and this gives us $x_n$. The wanted distribution is indeed a
-stationary distribution of this Markov chain, and the chain fully mix the set
-$\mathcal{P}_n$. On discrete probability sets, This is sufficient to say that there
-is only one stationary distribution and that the chain converge toward it. I
-hope that this is still true for continuous chain. I decided that this is an inexact
+stationary distribution of this Markov chain, and the chain fully mixes the set
+$\mathcal{P}_n$. On discrete probability sets, this is sufficient to say that there
+is only one stationary distribution and that the chain converges towards it. I
+hope that this is still true for continuous chains. I decided that this is an inexact
 and informal way to get the deviation on our function and so spending more time
 on it to have strong convergence results
 instead of doing the work of the next section was not a good idea.
 
-If I assume that the chain indeed converge toward the right probability
+If I assume that the chain indeed converges toward the right probability
 distribution, then by sampling this chain long enough, I
 can get the statistic average and standard deviation of any real function of
 $\mathcal{P}_n$. This give good enough error bars for our purposes.
