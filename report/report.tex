@@ -1573,6 +1573,9 @@ partial trace. This approach is explained at the beginning of~\cite{QCQI}.
 
 \section{Likelihood in terms of quantum maps}
 
+Now it is time to use our new tools to give an usable expression for the
+likelihood function. This transformation comes from \cite{SPRQT16}.
+
 The experiment can be represented as a starting average state $\rho$ that we
 want to determine with tomography. This state evolve according to the
 experimental setup and thanks to some measurements made by the experimenter. For
@@ -2339,7 +2342,7 @@ some interesting work on the second law of thermodynamics. In particular he
 related to the notions of quantum information theory. This section was supposed
 to present his work to motivated mine.
 
-\section{Experimental results}
+\section{Experimental results}\label{sec:res1}
 
 Here I wanted to put the plots that we had before the my new error-bar work was applied.
 
@@ -2381,8 +2384,6 @@ definitions, all based on maximizing a score function, in \cref{sec:fixspan}
 
 \section{Quick approach: Monte-Carlo estimation}\label{sec:MC}
 
-\TODO{} Rewrite that.
-
 At the beginning of my internship, I designed a Monte-Carlo algorithm to sample
 the probability space according the distribution deduced from the deviation on
 each coefficient. The goal was to have a quick and dirty method to quickly get
@@ -2391,14 +2392,60 @@ error-bars that would have been a little but not too much wrongly estimated.
 In order to do that, I had to create a probability distribution that matched the
 deviation on each coefficient. But this distribution
 cannot be sampled easily because It is the projection of density low on a
-subvector-space.
+subvector-space. Let's look at the problem more formally.
+
+In practice, In Luis' setup, we have only information on the
+population from the reconstruction and we force the coherences to 0. The problem
+is just on probability vectors on the diagonal. So our input is a set of values
+$p_i$ and deviations $\Delta p_i$ such that each $p_i$ marginal law are normal
+laws. In theory the probability distribution on $\R^n$ is:
+
+\[\dd p(x_1,\ldots,x_n) = K \exp\left(\sum \frac{(x_i - p_i)^2}{2\Delta p_i^2}
+  \right) \dd(x_1,\ldots,x_n)\]
+
+where $K$ is a normalization constant. However, the vector $x =(x_1,\ldots,x_n)$
+must be positive and of sum 1. We'll call $\mathcal{P}_n$ the set of probability
+vectors of dimension $n$. We will define our new law on $\mathcal{P}_n$ by the
+same density function but on top of the Lebesgue measure of dimension $n-1$.
+This distribution is much harder to simulate because it is both projected and
+truncated ($\mathcal{P}_n$ is not the whole hyperplane of sum $n$).
+
 In order to do the sampling, I use an adapted hit and run method to build a
-Markov chain on the density matrix space (but discrete time) whose stationary
-distribution is the wanted distribution. By sampling this chain long enough, I
-can get the statistic average and standard deviation of any real function of the
-density matrix space.
+Markov chain on $\mathcal{P}_n$ whose stationary
+distribution is the wanted distribution. The idea is very simple: I know how to
+truncate a Gaussian law to a segment and sample it on that segment. So an
+iteration of the Markov chain is to start from the previous point $x_{n-1}$ and
+sample a random direction in the hyperplane of sum 1. This direction and
+$x_{n-1}$ gives us an affine line of that hyperplane.
+
+We can then compute the
+intersection of that line and $\mathcal{P}_n$. Then we can project the
+multivariate Gaussian law on the line. As we are working with normal laws, the
+projected law will be normal and we just have to figure out the center and the
+standard deviation. If we scale the whole space on each axis by the
+corresponding $\Delta p_i$, this is just an orthogonal projection.
+
+Once we have the law on the line and the segment, we sample the truncated law on
+the segment and this gives us $x_n$. The wanted distribution is indeed a
+stationary distribution of this Markov chain, and the chain fully mix the set
+$\mathcal{P}_n$. On discrete probability sets, This is sufficient to say that there
+is only one stationary distribution and that the chain converge toward it. I
+hope that this is still true for continuous chain. I decided that this is an inexact
+and informal way to get the deviation on our function and so spending more time
+on it to have strong convergence results
+instead of doing the work of the next section was not a good idea.
+
+If I assume that the chain indeed converge toward the right probability
+distribution, then by sampling this chain long enough, I
+can get the statistic average and standard deviation of any real function of
+$\mathcal{P}_n$. This give good enough error bars for our purposes.
 
 \section{Complete first order error-bars}\label{sec:errbar}
+
+In this section I try to formalize and prove formulas for getting the
+expectation and standard deviation of any function on the set of density
+matrices $\mathcal{D}$ following the probability given by the maximum-likelihood
+reconstruction.
 
 All the theorems in this section are generalizations,
 adaptations, and improvements from~\cite{SPRAL17}. The goal here is to compute
@@ -3139,7 +3186,7 @@ have the same result on asymptotic expectation and variance.
 
 
 
-\section{Fix the non full span problem}\label{sec:fixspan}
+\section{Fixing the non full span problem}\label{sec:fixspan}
 
 \subsection{Centering function}
 
@@ -3302,25 +3349,74 @@ as isn't uniformly continuous. Furthermore, the projected gradient method won't
 work directly with the entropy because when projecting on the edge, the gradient of the
 entropy will be infinite. I think both of this problems have solutions, for
 example when we are on the edge, only output the tangent gradient for the
-entropy. However, The internship is finished, so I won't have the time to check
+entropy. However, the internship is finished, so I won't have the time to check
 it properly.
 
 
 \chapter{Final Results}
 
-\section{Approximations and implementation}
+\section{Approximation and implementation of first order error propagation}
 
-Here I wanted to explain how I made a new error propagation method using and
-propagating covariance matrices. I start from the covariance matrice that is
-$\mathbb H$ and then apply gradient of all the function we use on both side
-until the end. Obviously the fact that the entropy has sometimes an infinite gradient on
-the edge make the whole thing a bit more complex. This section will be present
-in the Monday evening version.
+
+Now I have the operator $\mathbb H$, and I want to compute the standard
+deviation on various functions that are mixture of classical observable
+evaluation and entropy-related functions. For my function $h: \mathcal{D} \to
+\R$, I know from previous chapter that its standard deviation is:
+
+\begin{equation}\label{eqn:stddev}
+  \sqrt{\Tr(\nabla h\pr\mathbb H\inv \nabla h\pr)}
+\end{equation}
+
+The problem is that the function I want to evaluate are complex and span
+multiple files of source code. I would like a method to propagate the error
+estimation through all the layers of the code, following the way function are
+computed. In order to do that, let's look at a more generic way of propagating
+errors.
+
+Suppose we have a random variable $X \in \R^n$ and its covariance matrix $V_X$.
+Suppose we take a function $f : \R^n \to \R^m$ such that $P(X \in \dom f) = 1$.
+We would like to know the covariance matrix of $f(X)$.
+If $X$ has a probability distribution centered on its expectation $X_0$, such as
+a normal law, We can make a first order approximation and assume that $f$ on the
+domain where $X$ varies looks like $f(X_0) + \nabla f \cdot (X-X_0)$. In such a
+situation one can prove that:
+\begin{equation}\label{eqn:propag}
+  V_{f(X)} = \nabla f^t V_X \nabla f = \bra {\nabla f} V_x \ket {\nabla f}
+\end{equation}
+
+
+This really looks like the \cref{eqn:stddev}. In fact if we linearize our
+Hermitian matrices $\nabla h$
+and thus think of $\mathbb H$ as an element of
+$\mathcal{L}(\mathcal{O}(\mathcal{H}))$, we can write:
+
+\[V_h = \bra {\nabla h\pr} \mathbb H^{-1} \ket{\nabla h\pr}\]
+
+Furthermore the projecting operator $\pr$ is linear and thus can be put in a
+matrix form such that
+
+\[V_h = \bra{\nabla h}P^t\mathbb H^{-1}P \ket{\nabla h}\]
+
+In fact we have $P^t \mathbb H\inv P = \mathbb H$ but I don't need it so I
+won't prove it. What is important is that $V_\rho = P^t \mathbb H\inv P$ looks
+like the covariance matrix of $\rho$ around $\rho\ml$ and that I proved in the last chapter
+that the first order error propagation gives the right asymptotic variance of
+any function.
+
+Therefore, in the code, I compute $V_\rho$ from the results of the
+reconstruction and then when a function is applied one variable I compute its
+covariance matrice with \cref{eqn:propag}. In the end when a function has a
+single dimension output, the variance matrix is a simple variance real that I can put
+through a square root to get the standard deviation on that value.
 
 \section{Plots}
 
-Here I just wanted to present some plot from the experiment with all the
-errorbars. They will be present in the Monday night version.
+Here are the plots of \cref{sec:res1} upgraded with the new error bars.
+Unfortunately I didn't have enough time to finish implementing the error
+propagation of last section, so those value come from the Monte-Carlo algorithm.
+
+\TODO{} Put plots here.
+
 
 \chapter*{Conclusion} %and bibliography
 \addcontentsline{toc}{chapter}{Conclusion~--~Thanks}
