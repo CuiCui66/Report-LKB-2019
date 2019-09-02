@@ -512,7 +512,7 @@ and the field. It can tuned by changing the phase of the field that we control.
 
 If use the vector operator $\bs \sigma = (\sigma_X,\sigma_Y,\sigma_Z)$, Our
 Hamiltonian can be written:
-\begin{equation}
+\begin{equation}\label{eqn:rabi}
 H_1 = \hbar \frac{\Omega_r'}2 \bs \sigma \cdot \bs n
 \end{equation}
 where
@@ -587,8 +587,8 @@ represent classical state.
   \[ \ket {\phi(t)} = \ket {\alpha e^{i\omega_c t}} \]
 \end{prop}
 
-\begin{proof}Left to the reader.
-  %\TODO{}
+\begin{proof}
+  In the section \emph{time evolution} of the section 3.1.2 of \cite{Har06}
 \end{proof}
 
 Therefore we define the electric field operator to be
@@ -609,8 +609,9 @@ $\mathcal{E}$ from the field energy operator:
 where $\mathcal{V} = \int \bs |f(\bs r)|^2\dd^3\bs r$ is the effective mode volume
 \end{prop}
 
-\begin{proof} Left to the reader.
-  %\TODO{}
+\begin{proof}
+  Just do $\bra n H \ket n = \bra n \int \varepsilon_0 |{\bs E}|^2 \dd^3 \bs r
+  \ket n$ and expand everything.
 \end{proof}
 
 The value $\mathcal{E}$ is some kind of the average (more like r.m.s) field per
@@ -693,6 +694,7 @@ We can define again $\Omega'_n = \sqrt{\Omega_n^2 + \delta^2}$ to have the energ
 Those energies are represented in \cref{fig:dressedenergy}
 
 
+
 \subsubsection{Effective interaction time}
 \newcommand{\eff}{_{e\!f\!\!f}}
 
@@ -705,19 +707,45 @@ atom at speed $v$, all happens as if it submitted to the Hamiltonian $H_{ac}$
 during:
 \[t\eff = \frac{w\eff}v\]
 
-% \TODO{}
+\subsubsection{Resonant case}
 
-% \subsubsection{Resonant case}
+If $\delta = 0$, the Hamiltonian is of the form $H = \hbar \omega_c(n+1) + H_1$
+where $H_1$ is the Rabi Hamiltonian in \cref{eqn:rabi} and $\bs n =
+\bs u_x$. Therefore each pair of states at level $n$ will oscillate around $\bs
+u_X$ at pulsation $\Omega_n$. In particular if the cavity is empty and the atom
+arrives in state $\ket e$, the atom will absorb and emit a photon at pulsation
+$\Omega_0$ which is thus the \emph{Vacuum Rabi pulsation}.
 
-% \subsubsection{Dispersive case}
+\subsubsection{Dispersive case}
 
-% \subsubsection{Adiabatic passage}
+In the dispersive case i.e far off the resonance point we have a completely
+different behaviour. The energy the atom cannot really change because, the
+energy of the photons do not match the interstate gap. However, if we do a
+pertubative analysis in $\delta \gg \Omega_n$, we get some more usable results.
+For simplicity, we assume that $\delta > 0$.
 
-% \subsection{Protocol}
+In this analysis the new energies are
+\[E_{\pm,n} = \hbar \omega_c(n+1) \pm \frac{\hbar }2 \left(\delta + \frac{\Omega_n^2}{2\delta}\right)\]
 
-% Here I wanted to explain the general protocol of an experiment in this setup. The
-% specific protocol from Luis will come in chapter 5.
+But the in situation we have:
+\[ \ket{+,n} \approx \ket{e,n} \gap \text{and}\gap \ket{-,n} \approx \ket{g,n+1} \]
 
+If $E_{e,n} = \hbar \omega_c(n + \frac12) + \frac\hbar2\omega_a$ is the normal
+energy of state $\ket{g,n}$, the new one will be:
+
+\[E_{+,n} = E_{e,n} + \frac{\Omega_0^2}{4\delta}\left(n + 1\right)\]
+\[E_{-,n} = E_{g,n+1} - \frac{\Omega_0^2}{4\delta}\left(n + 1\right)\]
+
+
+
+If the cavity is in state $\ket n$, The sum of the difference in pulsation of
+$\ket{e,n}$ and $\ket{g,n}$ is thus:
+\[\Delta\omega_a = \frac{\Omega_0^2}{2\delta}\left(n + \frac 12\right)\]
+
+Up to a global shift, all happens as if for an effective interaction time $t\eff$,
+we have a shift of phase $\phi_0 = \frac{\Omega_0^2}{2\delta}t\eff$. In
+particular, the most controllable parameter here is $\delta$ via the stark effect
+on the atom.
 
 
 \section{Experimental details and calibration}
@@ -893,7 +921,8 @@ In particular:
 
 \begin{lem}\label{lem:corscr}
   The covariance of the score and any unbiased estimator is the identity.
-  Formally: $\cov(\hat \theta, s_x(\theta)) = I$
+  Formally:
+  \[\cov(\hat \theta, s_x(\theta)) = I\]
 \end{lem}
 
 \begin{proof}
