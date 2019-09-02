@@ -198,18 +198,16 @@
   \vfill
 
   % Bottom of the page
-  {\Large \today\par}
+  {\Large September 2, 2019\par}
 \end{titlepage}
 
 \newcommand{\fset}{\ensuremath{\mathop{\text{\textquotesingle}}}}
 
 
-% \pagenumbering{gobble} % to avoid counting contents page in report
-\tableofcontents
 
 
 \chapter*{Abstract}
-\addcontentsline{toc}{chapter}{Abstract~--~Notations}
+\addcontentsline{toc}{chapter}{Abstract}
 In this report, I explain the content of my internship with Igor Dotsenko and
 Pierre Rouchon at the Laboratoire Kastler Brossel in the Collège de France. I studied quantum
 electrodynamics in cavities, and in particular an experiment conducted by another
@@ -229,6 +227,8 @@ with a method to solve a problem of insufficient measurement on a quantum system
 \vfill
 
 \paragraph{\Huge Notations}
+
+\addcontentsline{toc}{chapter}{Notations}
 
 \
 
@@ -276,14 +276,14 @@ with a method to solve a problem of insufficient measurement on a quantum system
     $x$ is a vector
 \end{itemize}
 
-
+\tableofcontents
 
 \chapter*{Introduction}
 % \pagenumbering{arabic}
 \addcontentsline{toc}{chapter}{Introduction}
 
 This report details my internship with Pierre Rouchon and Igor Dotsenko on
-Quantum state tomography by maximum-likelihood reconstruction (MaxLike). It was done mainly at
+quantum state tomography by maximum-likelihood reconstruction (MaxLike). It was done mainly at
 the Laboratory Kastler-Brosel (LKB) in the Collège de France.
 
 The goal of quantum state tomography is to find a way to reconstruct the state of
@@ -358,7 +358,8 @@ The final results are given in Chapter 7.
 
 \chapter{Experimental setup and goal}
 
-In this chapter I expect the reader to know the basics of quantum mechanics, Hilbert space and
+In this chapter I expect the reader to know the basics of quantum mechanics,
+Hilbert spaces and
 the Schrödinger equation. I will present the basic quantum electrodynamics
 concepts needed to understand the experiment, and the experiment itself.
 Everywhere in my report I will use the usual bra-ket notation
@@ -381,9 +382,9 @@ interaction can be resonant (the cavity frequency correspond to a gap between
 atomic states) or dispersive (the frequency and the gap do not match).
 
 I will present the formalism for each component and then detail the formalism of
-the whole experiment. The goal of the experiment is to study quantum
+their interaction. The goal of the experiment is to study quantum
 thermodynamics. In particular, with the right manipulation of the quantum state
-of an atom, we can make give heat to the cavity (emit a photon) even if the atom
+of an atom, we can force it to give heat to the cavity (emit a photon) even if the atom
 is colder than the cavity. I will define the notion of temperature of a single
 atom later.
 
@@ -399,14 +400,14 @@ A diagram of the experiment can be found in \cref{fig:exp}.
     mechanism that ensure that only atoms moving at the target speed are selected.
     Then, there is a circularization procedure that put all atoms in the state
     $\ket g$ that will be explained in \cref{ssec:atoms}. On average $0.2$ atoms
-    go through in each batch. Most unselected atom
+    go through in each batch. Most unselected atoms
     will still go trough the experiment but as they are not Rydberg atoms, they
     will not interact with anything including the detector. The three Ramsey
     zones are areas where we manipulate the atomic state through a classical
     micro-wave field. In the cavity C2 (C1 is unused), a certain state of the
     electromagnetic field is trapped with sufficiently few photons to observe
     quantum effects in its interaction with the atom going through.
-    At the exit atom are detected by a projective measurement
+    At the exit, atoms are detected by a projective measurement
     that give the energy level of the atom.}
   \label{fig:exp}
 \end{figure}
@@ -480,11 +481,12 @@ With that field we can now express the Hamiltonian $H_f$ of the
 interaction between the electric dipole of the
 atom and the electric field. It is $H_f = - \bs D \cdot \bs E$ as proven in
 section 3.1.2 of~\cite{Har06}.
-The dipole operator has a simple expression in terms
-of the position operator $\bs R$ of the electron realtive to  which is $\bs D = q \bs R$.
+The dipole operator can written in function
+of the position operator $\bs R$ of the electron relative to the nucleus.
+The exact expression is $\bs D = q \bs R$.
 In our circular states having cylindrical symmetry,
-we have $\bra e R \ket e = 0$ and $\bra g R \ket g = 0$,
-so we only care about the off-diagonal terms. We want to write the dipole
+we have $\bra e \bs R \ket e = 0$ and $\bra g \bs R \ket g = 0$,
+so we only care about the off-diagonal terms. We write the dipole
 operator as
 \begin{equation}\label{eqn:D}
   \bs D = d\mat{\bs 0&\bs u_a^*\\\bs u_a&\bs 0} = d(\bs u_a \sigma_- + \bs u_a^* \sigma_+),
@@ -492,16 +494,13 @@ operator as
 such that $\bs u_a$ has unit length and expresses the direction
 and $d$ is the value of the electric dipole
 moment. They are defined by $ q \bra g \bs R \ket e = d \bs u_a$. The field
-Hamiltonian has now the expression
-
+Hamiltonian has now the expression:
 \[ H_f = -d\mathcal{E} \mat{\bs 0 &
   \bs u_a^* \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} + \bs u_f^*\,
   e^{i\omega_f t + \varphi})\\
 \bs u_a \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} + \bs u_f^*\,
   e^{i\omega_f t + \varphi}) & \bs 0
 }\]
-
-\
 
 The free Hamiltonian of the system being $H_a = \frac{\hbar \omega_a}2 \sigma_Z$,
 we'll need to express the evolution of the system by separating both evolutions.
@@ -545,17 +544,17 @@ where
 
 One can show that $H_1$ represents a precession of the state of the atom on the
 Bloch sphere around $\bs n$ at frequency $\Omega_r'$. This precession is named
-``Rabi oscillation''. The pulsation $\Omega_r$ which is the frequency of
-precession when the the frequencies match is named ``Rabi frequency'' and is
+``Rabi oscillation''. and is
 represented on the Bloch sphere in \cref{fig:rabi}.
-
+The pulsation $\Omega_r$ which is the frequency of
+precession when the the frequencies match is named ``Rabi frequency''
 \begin{figure}
   \includegraphics[width=\textwidth]{Rabi.png}
   \caption{
     Precession of the state $\bs u$ on the Bloch sphere. (a) When
     $\Omega_r$ and $\Delta_r$ are of same magnitude. The angle at which
     $\Omega_r$ is placed is $\varphi$. (b) When $\Delta_r$ is large :
-    off-resonance case. (c) When $\Delta_r =0$: full resonance case ($\varphi
+    dispersive case. (c) When $\Delta_r =0$: full resonance case ($\varphi
     = 0$).
 }
   \label{fig:rabi}
@@ -574,7 +573,6 @@ because they can have huge effects with very small variations.
 A field mode in a cavity of a specific frequency $\omega_c$ can be modeled
 as a usual one-dimensional harmonic oscillator. Its Hilbert space is
 $\mathcal{H}_C = \C^\N$.
-% (\TODO{} topology?).
 The basis of this space is composed of vectors $\{\ket n\}$, called \emph{Fock states}, with $n$ non-negative integer. One of the important operators in this space is the
 number operator $N = \sum_n n\ket n \bra n$. The state $\ket n$ represents a
 state with exactly $n$ photons. There are also the annihilation $a$ and creation $a^\dagger$ operators:
@@ -588,11 +586,12 @@ A general formula for a specific mode of the classical field is
   \alpha^* e^{-\omega_c t}\big),\]
 where $\mathcal{E}$ is a general normalisation factor in units of $\SI{}{V/m}$, that
 we'll compute later. A polarization function  $\bs f$
-describes the spacial disctribution of the electric field inside the cavity which depends on the cavity shape.
+describes the spacial distribution of the electric field inside the cavity which
+depends on the cavity shape.
 We normalize it to $\|\bs f\|_\infty = 1$. Finally, $\alpha$ is the complex amplitude
 of the field.
 
-We know that on classical harmonic oscillatiors, the eigenvectors of $a$ named
+We know that on classical harmonic oscillatiors, the eigenvectors of $a$, named
 \emph{coherent state} represent directly classical states. I remind that for
 each complex number $\alpha \in \C$, there is a unique state (up to phase shift)
 $\ket \alpha$ such that $a \ket \alpha = \alpha \ket \alpha$.
@@ -661,8 +660,7 @@ If we do the same Heisenberg picture as in \cref{sec:ramsey}, we'll see that
 terms associated with pure energy gain ($\sigma_+a^\dagger$) or loss ($\sigma_-a$)
 oscillates very quickly at the order of $2\omega_c$,
 whereas the one corresponding to photon absorbtion ($\sigma_+a$) or emission
-($\sigma_-a^\dagger$) oscillates at the difference frequency $\delta = \omega_a -
-\omega_c$. We can
+($\sigma_-a^\dagger$) oscillates at a more reasonable frequency. We can
 thus do the secular approximation again to obtain:
 \begin{equation}
   H_i = \frac{\hbar \Omega_0}2 (\sigma_+a + \sigma_-a^\dagger),
@@ -672,15 +670,15 @@ where the \emph{vacuum Rabi frequency} reads:
 
 Here again, for the sake of simplification, the cavity field and the atom are
 considered to be in phase, and thus $\braket{\bs u_a}{\bs u_c}$ is real
-negative so that $\Omega_0 > 0$. The full Hamiltonian is then:
+negative so that $\Omega_0 > 0$. The full Hamiltonian is then
 \begin{equation}
 H_{ac} = \frac{\hbar \omega_a}2 \sigma_Z + \hbar \omega_c \big(N +
-  \tfrac12\big) + \frac{\hbar \Omega_0}2 (\sigma_+a + \sigma_-a^\dagger)
+  \tfrac12\big) + \frac{\hbar \Omega_0}2 (\sigma_+a + \sigma_-a^\dagger).
 \end{equation}
 
 With this Hamiltonian, the states $\ket{e,n}$ and $\ket{g,n+1}$ are coupled 2 by
 2, except for $\ket{g,0}$ which is stationary. On the space $\mathcal{S}_n =
-\Span(\ket{e,n},\ket{g,n+1})$, the Hamiltonian is:
+\Span(\ket{e,n},\ket{g,n+1})$, the Hamiltonian is
 \[\twoline H_n = \hbar \mat{\omega_c(n+1) + \frac{\delta}2& \frac{\Omega_n}2\\
     \frac{\Omega_n}2&\omega_c(n+1) - \frac{\delta}2}\]
 with $\Omega_n = \sqrt{n+1} \,\Omega_0$. Its eigenvectors are given by
@@ -694,7 +692,7 @@ with $\Omega_n = \sqrt{n+1} \,\Omega_0$. Its eigenvectors are given by
 
 with $\theta_n \in [0,\pi]$ and $\tan \theta_n = \frac {\Omega_n}{\delta}$.
 These states are called \emph{dressed states}.
-We can define again $\Omega'_n = \sqrt{\Omega_n^2 + \delta^2}$ to have the energies as:
+We can define again $\Omega'_n = \sqrt{\Omega_n^2 + \delta^2}$ to have the energies
 
 \vspace{-0.2cm}
 
@@ -721,7 +719,7 @@ to~\cite{SayPHD11}, it is proven in~\cite{Har06} that, if the atom crosses the
 cavity horizontally, instead of actually caring about the exact form of the
 field, we can assume that everything behave like the atom traversed a full blown
 field with $\|\bs f(\bs r)\| = 1$ that has an effective width $w\eff$. For an
-atom at speed $v$, all happens as if it submitted to the Hamiltonian $H_{ac}$
+atom at speed $v$, all happens as if it is submitted to the Hamiltonian $H_{ac}$
 during
 \[t\eff = \frac{w\eff}v.\]
 
@@ -743,15 +741,14 @@ pertubative analysis in $\delta \gg \Omega_n$, we get some more usable results.
 For simplicity, we assume that $\delta > 0$.
 
 In this analysis the new energies are
-\[E_{\pm,n} = \hbar \omega_c(n+1) \pm \frac{\hbar }2 \left(\delta + \frac{\Omega_n^2}{2\delta}\right)\]
-
-But the in situation we have:
+\[E_{\pm,n} = \hbar \omega_c(n+1) \pm \frac{\hbar }2 \left(\delta + \frac{\Omega_n^2}{2\delta}\right),\]
+but the in this situation we have:
 \[ \ket{+,n} \approx \ket{e,n} \gap \text{and}\gap \ket{-,n} \approx \ket{g,n+1} \]
 
 If $E_{e,n} = \hbar \omega_c(n + \frac12) + \frac\hbar2\omega_a$ is the normal
-energy of state $\ket{g,n}$, the new one will be:
-
-\[E_{+,n} = E_{e,n} + \frac{\Omega_0^2}{4\delta}\left(n + 1\right)\]
+energy of state $\ket{e,n}$, the new one will be
+\[E_{+,n} = E_{e,n} + \frac{\Omega_0^2}{4\delta}\left(n + 1\right).\]
+and similarly for the other case:
 \[E_{-,n} = E_{g,n+1} - \frac{\Omega_0^2}{4\delta}\left(n + 1\right)\]
 
 
@@ -761,14 +758,13 @@ $\ket{e,n}$ and $\ket{g,n}$ is thus:
 \[\Delta\omega_a = \frac{\Omega_0^2}{2\delta}\left(n + \frac 12\right)\]
 
 Up to a global shift, all happens as if for an effective interaction time $t\eff$,
-we have a shift of phase $\phi_0 = \frac{\Omega_0^2}{2\delta}t\eff$. In
-particular, the most controllable parameter here is $\delta$ via the stark effect
+we have a shift of phase $\phi_0 = \frac{\Omega_0^2}{2\delta}t\eff$ per photon.
+It is important to note that the most controllable parameter here is $\delta$ via the stark effect
 on the atom.
 
 
 % \section{Experimental details and calibration}
 
-% %\TODO{}
 
 % This section was supposed to explain some part of the little experimental details that I've seen
 % or interacted with. I'll try to write it by Monday night. Otherwise, most of the
@@ -818,40 +814,31 @@ on the atom.
 
 \section{QND Measurement}
 
-\TODO Merge
-The QND measurement in the current experiment is realized by sending a sequence of individual atoms prepared in a superposition state $\ket{g}+\ket{e}$ through the
-cavity and interacting with it dispersively. One can deduce from~\cref{sec:atomcav} that
-an atom in this case will undergo a phase shift between its states
-proportional to the number of photons stored in the cavity field. By configuring well the
-Ramsey zones, one can build a Ramsey interferometer and measure this phase
-shift. However the only concrete output we get is a long list of state detections in $\ket e$ and
-$\ket g$, so we need a statistical tool to reconstruction a corresponding
-density matrix from this data. This what is presented in the next chapter. I
-hope I can write more details by Monday night.
-
-With:
-
 Quantum Non-Destructive measurement(QND) is a kind of quantum measurement that tries
 to preserve the state of the observed system. By having the observed system
 interacting weakly with other systems, we can sometimes gather enough
 information to reconstruct the state.
 
-Our method of QND measurement works by sending a lots of atoms in a Bell state through the
-cavity at an off-resonance setting. As they are in the dispersive setting(see
-\cref{sssec:disp}, they
-will all undergo a phase shift of $\phi_0$ by photons in the cavity. If
-calibrate our system to have an interesting $\phi_0$, the atomic state will be
-dispersed on the equator of the block sphere depending on the number of photon
+The QND measurement in the current experiment is realized by sending a sequence
+of individual atoms prepared in a superposition state $\ket{g}+\ket{e}$ through
+the
+cavity and interacting with it dispersively. One can see in~\cref{sssec:disp} that
+an atom in this case will undergo a phase shift between its states
+proportional to the number of photons stored in the cavity field. If we
+calibrate our system to have an interesting $\phi_0$, the atomic states will be
+dispersed accordingly on the equator of the Bloch sphere depending on the number
+of photons
 in the cavity. We can then do a $\frac\pi2$ Rabi-pulse at a specific phase to
-rotate the equator to a polar circle on the Bloch sphere. When we measure the
+rotate the equator to a polar circle on the Bloch sphere. Then, when we measure the
 atom, the probabilities of being observed in $\ket e$ or $\ket g$ depends on the
-number of atoms in the cavities. This setup is called a Ramsey interferometer.
+number of photons in the cavity. This setup is called a Ramsey interferometer.
 By varying the phase of the last Rabi pulse we can gather enough statistical
 information to recreate the state of the cavity.
 
-However the only concrete output we get is a long list of $\ket e$ and
-$\ket g$, so we need a statistical tool to build an representation of the
-density matrix from this date.
+However the only concrete output we get is a long list of state detections in
+$\ket e$ and
+$\ket g$, so we need a statistical tool to reconstruct a corresponding
+density matrix from this data.
 
 
 \chapter{Maximum likelihood reconstruction}
@@ -866,7 +853,7 @@ I put some reminders about multivariate covariances in
 The goal of estimation is to estimate some parameters using observations or
 measurements. In the simplest case, we measure a random output $X \in \mathcal{X}$ from an
 unknown input $\theta \in \Theta$. We place ourselves in a model where the law
-of $X$ condition to $\theta$ is known. Formally, we have for each $\theta$ a
+of $X$ conditionally to $\theta$ is known. Formally, we have for each $\theta$ a
 probability measure $P_\theta$ on $\mathcal{X}$. If $P_\theta$ has the right
 form (in particular, if $X$ is a vector of repetition of the same experiment), we
 can extract information on $\theta$ from $X$. For that we can use an estimator.
@@ -885,7 +872,7 @@ can extract information on $\theta$ from $X$. For that we can use an estimator.
 
 \
 
-The most current case of parameter is $\theta \in \R$. In that case we can
+The most frequent case of parameter is $\theta \in \R$. In that case we can
 easily compare the original $\theta$ with its estimator $\hat \theta$ with a
 subtraction:
 
@@ -928,10 +915,9 @@ lower the score (its norm, actually), the better our estimation.
 
 \begin{prop} The expectation of the score is 0.
 \end{prop}
-\begin{proof}
-  Left to the reader.
-  % \TODO{}
-\end{proof}
+% \begin{proof}
+%   Left to the reader.
+% \end{proof}
 
 We can then study the variance of score and its covariances with other things.
 In particular:
@@ -941,10 +927,9 @@ In particular:
   \[\cov(\hat \theta, s_x(\theta)) = I\]
 \end{lem}
 
-\begin{proof}
-  Left to the reader.
-  % \TODO{}
-\end{proof}
+% \begin{proof}
+%   Left to the reader.
+% \end{proof}
 
 In the light of the theorem about bounds of \cref{sec:correl}, we can give special
 interest to the variance of the score and its link with the variance of any estimator.
@@ -988,10 +973,9 @@ it as a hessian:
   \[I(\theta) = -\frac{\partial^2 \ell}{\partial \theta^2}(\theta).\]
 \end{prop}
 
-\begin{proof}
-  Left to the reader.
-  % \TODO{}
-\end{proof}
+% \begin{proof}
+%   Left to the reader.
+% \end{proof}
 
 
 
@@ -1160,11 +1144,6 @@ rank of the density matrix that gives a lot of information.
   (with the convention $\dim A = \dim \Span(A)$).
 \end{prop}
 
-\begin{proof}
-  Left to the reader
-  %\TODO{}
-\end{proof}
-
 \begin{defn}
   If a density matrix $\rho$ has rank one, it only represents one unique state and can be written
   $\rho = \ket \phi \bra \phi$. It is thus called a \emph{pure state}. No
@@ -1176,7 +1155,6 @@ rank of the density matrix that gives a lot of information.
 \end{defn}
 
 \begin{rem}
-  \TODO{} rewrite, unclear
   It is very important to differentiate a quantum superposition for a
   statistical mixture. For example on a qubit,
   $\ket + = \frac1{\sqrt 2} \ket 0 + \frac1{\sqrt2} \ket 1$ is a quantum
@@ -1193,8 +1171,7 @@ rank of the density matrix that gives a lot of information.
 \end{prop}
 
 \begin{proof}
-  Left to the reader.
-  % \TODO{}
+  $\Tr (\rho^2) = \sum p_i^2 < 1$ unless one $p_i$ is one and the others 0.
 \end{proof}
 
 The value $\Tr \rho^2$ has in fact much more interesting properties, and thus
@@ -1211,9 +1188,9 @@ deserves a name.
   we thus have complete information on the quantum state.
 \end{prop}
 
-\begin{proof}
-  Left to the reader.
-  % \TODO{}
+\begin{proof} $\Tr (\rho^2) = \sum p_i^2 \leq 1$.
+  But the projection of $0$ on the hyper plane of sum $1$ is $\frac I d$ which
+  has therefore the lowest norm of that plane which is $\frac I d$.
 \end{proof}
 
 The main interest of purity is that it remains constant during unitary evolution
@@ -1547,11 +1524,6 @@ property.
   \[\trnorm{\mathbb K_i (\mathbb M_o(\rho)))}\]
 \end{prop}
 
-\begin{proof}
-  Left to the reader.
-  % \TODO{}
-\end{proof}
-
 This obviously works for more than two systems and that's why we can compose
 partial operator without renormalizing each time and only care about
 renormalizing at the end. The behavior is exactly the same as if we had a single
@@ -1582,12 +1554,10 @@ M_o^\dagger$. In fact we can prove this form is general and is called
 
 \begin{proof}
   Left to the reader.
-  % \TODO{}
 \end{proof}
 
 \begin{proof}[Proof of the theorem]
   Can be found in~\cite{QCQI}.
-  % \TODO{}
 \end{proof}
 
 Any trace preserving quantum operators can thus be expressed as an unread
@@ -1631,11 +1601,6 @@ $y_1,\ldots,y_n$.
   The adjoint of a quantum operation is completely positive so all the $E_i$ are
   positive hermitian matrices.
 \end{prop}
-
-\begin{proof}
-  Left to the reader.
-  % \TODO{}
-\end{proof}
 
 
 If we have $n$ sequence of measurement, We'll have the effect
@@ -1731,18 +1696,17 @@ is sometimes called \emph{internal dual cone}
   The cone of positive hermitian matrices is self dual.
 \end{prop}
 
-% \TODO{} fix that
-% \begin{proof}
-%   If $H$ is hermitian and $\langle H | A \rangle \geq 0$ for all $A \in
-%   \mathcal{O}_+(\mathcal{H})$, Then if we diagonalize $H$, If there is any
-%   negative eigen value, the matrice which has as diagonal one in front of that
-%   eigenvalue and 0 in front of other will make the Frobenius product negative
-%   which is impossible, thus $H \geq 0$.
+\begin{proof}
+  Suppose $H$ is hermitian and $\langle H | A \rangle \geq 0$ for all $A \in
+  \mathcal{O}_+(\mathcal{H})$. Then if we diagonalize $H$, and if there is any
+  negative eigen value, the matrice which has as diagonal one in front of that
+  eigenvalue and 0 in front of other will make the Frobenius product negative
+  which is impossible, thus $H \geq 0$.
 
-%   For a general matrice $M$, we have the Cartesian decomposition $M = A + iB$
-%   with $A$ and $B$ hermitian. The fact that the Frobenius product is always real positive is
-
-% \end{proof}
+  For a general matrice $M$, we have the Cartesian decomposition $M = A + iB$
+  with $A$ and $B$ hermitian. The fact that the Frobenius product is always real
+  positive is sufficient to conclude that $B = 0$ and $A \geq 0$
+\end{proof}
 
 
 \subsection{Convex problems}
@@ -1848,7 +1812,6 @@ satisfied, we need to minimize on $x$
 
 \begin{proof}
   Left to the reader or can be found in a convex optimization book.
-  % \TODO{}
 \end{proof}
 
 We can now reach our goal to have a lower bound independent of $x$:
@@ -1896,7 +1859,6 @@ One way of proving that a convex problem is strongly dual is:
 
 \begin{proof}
   Left to the reader or can be found in a convex optimization book.
-  % \TODO{}
 \end{proof}
 
 \begin{prop}[Complementary slackness]
@@ -1928,7 +1890,6 @@ One way of proving that a convex problem is strongly dual is:
 
 \begin{proof}
   Left to the reader or can be found in a convex optimization book.
-  % \TODO{}
 \end{proof}
 
 \begin{prop}\label{prop:slaterKKT}
@@ -1938,7 +1899,6 @@ One way of proving that a convex problem is strongly dual is:
 
 \begin{proof}
   Left to the reader or can be found in a convex optimization book.
-  % \TODO{}
 \end{proof}
 
 \section{Solution characterization}
@@ -1973,17 +1933,16 @@ exists $\eta \ge 0$ and $\lambda$ such that
 \end{proof}
 
 
-We can also make the $\eta$ disappear from the condition:
-\begin{prop}\label{prop:carac}
-  $\rho$ is an optimal solution if and only if $[\rho, \nabla \ell] = 0$ and
-  there is a $\lambda$ such as $\lambda P \le \nabla f \le \lambda I$, where $P$
-  is the orthogonal projector on the range of $\rho$.
-\end{prop}
+% We can also make the $\eta$ disappear from the condition:
+% \begin{prop}\label{prop:carac}
+%   $\rho$ is an optimal solution if and only if $[\rho, \nabla \ell] = 0$ and
+%   there is a $\lambda$ such as $\lambda P \le \nabla f \le \lambda I$, where $P$
+%   is the orthogonal projector on the range of $\rho$.
+% \end{prop}
 
-\begin{proof}
-  Left to the reader using \cref{prop:caracKKT}
-  % \TODO{}
-\end{proof}
+% \begin{proof}
+%   Left to the reader using \cref{prop:caracKKT}
+% \end{proof}
 
 \subsection{Uniqueness}\label{ssec:uniq}
 
@@ -2060,7 +2019,6 @@ In practice the last one was chosen.
 
 \begin{proof}
   Left to the reader or can be found in a convex optimization book.
-  % \TODO{}
 \end{proof}
 
 However out problem is not unconstrained. The solution must in the feasible set
@@ -2075,7 +2033,6 @@ doable. We'll see how to it numerically in \cref{ssec:proj}
 
 \begin{proof}
   Left to the reader or can be found in a convex optimization book.
-  % \TODO{}
 \end{proof}
 
 In practice we'll do ``gradient ascent'' as in our problem as we are maximizing a
@@ -2188,7 +2145,7 @@ where:
     (\lambda I - \nabla \ell(\rho\ml))A\rho\ml^+ +
     \rho\ml^+A(\lambda I - \nabla \ell(\rho\ml))\]
   The $\rho^+$ is the moore-penrose pseudo inverse (inversion of non-zero eigen
-  values). The $\lambda$ is the one from \cref{prop:carac}.
+  values). The $\lambda$ is the one from \cref{prop:caracKKT}.
   The $\mathbb H$ is the Fischer information on the submanifold
   $\mathcal{D}_{\rk \rho}$ as proven in \cref{prop:fisherhessian}
 \end{itemize}
@@ -2206,13 +2163,11 @@ enough measurement so that the $O(\frac1N)$ is small enough i.e significantly
 smaller than $V_A$.
 
 \begin{rem} The individual coefficient can be observed with some specific matrices.
-  % $E_{ij} = \TODO$
   We
   can thus compute the deviation on each population and coherence individually.
   Those deviation are \emph{not} independent.
 \end{rem}
 
-% \TODO{} Take an image from a paper of reconstructed matrix.
 
 \section{Maxwell Demon experiment}
 
@@ -2392,35 +2347,46 @@ I arrived to the lab. First we plot in \cref{fig:heat1} the exchange of energy i
 relative temperature $\Delta \beta$ from the point of view of each one of them.
 In theory $Q_C = - Q_Q$. In particular, when the demon is \verb!OFF! the thermal
 equilibrium is at $\Delta \beta = 0$ whereas when it is activated it is shifted to
-the left. We are forcing the heat to move from the atom to the other cavity.
-Then we can plot the mutual information in \TODO{}
+the left. We are forcing the heat to move from the atom to the other cavity. We
+can see that there are error bars on the heat because heat is simple quantum
+observable and thus its error can be evaluated thanks to the results of~\cite{SPRAL17}.
+
+We can now plot the mutual information in \cref{fig:info1}. In this one we see
+that demon acquires a lot of information in the readout phase and then somehow
+``use'' it when arriving in the feedback phase.
+
+We can then plot the weak second law in \cref{fig:weak1}, and the strong second
+law in \cref{fig:strg1}. In particular, we need error bars to determine it the
+point below 0 in \cref{fig:weak1} and all the points off the 0 axis in
+\cref{fig:strg1} are just random variation or actually mean something.
+
+
 
 \begin{figure}
   \centering
   \includegraphics[height=0.45\textheight]{plots/Heat1.png}
-  \caption{Plot of the exchanged heat depending on the Maxwell demon state ($ON$ or $OFF$)}
-  \label{fig:heat1}
+  \caption{Plot of the exchanged heat depending on the Maxwell demon state ($ON$
+    or $OFF$)}\label{fig:heat1}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[height=0.45\textheight]{plots/Info1.png}
-  \caption{Plot of the exchanged if with the Maxwell demon $ON$ and $OFF$}
-  \label{fig:info1}
+  \caption{Plot of the mutual information in the readout phase vs the feedback
+    phase}\label{fig:info1}
+
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[height=0.45\textheight]{plots/Weak1.png}
-  \caption{Plot of the exchanged if with the Maxwell demon $ON$ and $OFF$}
-  \label{fig:weak1}
+  \caption{Plot of the weak second law in \cref{eqn:weaksnd}}\label{fig:weak1}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[height=0.45\textheight]{plots/Strg1.png}
-  \caption{Plot of the exchanged if with the Maxwell demon $ON$ and $OFF$}
-  \label{fig:strg1}
+  \caption{Plot of the strong second law in \cref{eqn:strgsnd}}\label{fig:strg1}
 \end{figure}
 
 \chapter{Error estimation and validity proofs}
@@ -2841,7 +2807,6 @@ null gradient for $f$ but here $\dpar f x$ could be negative.
   $\tilde z = \psi(z)$ where $\psi$ is the Morse lemma decomposition of $h$ will
   give the right result. Doing the actual variable change and computing the
   Jacobian is left to the reader.
-  \TODO{} Do it.
   The regularity analysis is the same as in \cref{thm:asymid}
 \end{proof}
 
@@ -3032,7 +2997,9 @@ We make some technical assumptions such as:
   According to \cref{prop:caracKKT} If $\nabla f \neq \lambda I$, we have $\eta
   \neq 0$ with $\eta \geq 0$ such that $\Tr(\eta D) = 0$ and $\nabla f + \eta =
   \lambda I$, Thus we have:
-  \[\eta = \mat{\nu&0\\0&0}\]
+  \begin{equation}\label{eqn:etanu}
+  \eta = \mat{\nu&0\\0&0}
+  \end{equation}
 
   with $\nu \geq 0$ and $\nu \neq 0$. Therefore:
   \[\dpar f x = - \Tr(\eta\sigma) <0\]
@@ -3130,11 +3097,56 @@ the exponential.
   just have some equalities to show:
 
   \begin{itemize}
-    \item $\dpar h z = \nabla h\pr$: \TODO{}
+  \item $\dpar h z = \nabla h\pr$: If we take an hermitian matrix $A$ written as
+    \[A = \mat{A_0& A_{0,r}\\A_{0,r}^\dagger & A_r}\]
+    one can check that we have
+    \[ A\pr = \mat{0&A_{0,r}\\A_{0,r}^\dagger & A_r - \Tr(A_r)\frac Ir}\]
+
+    which is exactly the tangent space to $\mathcal{D}_{\rk \rho\ml}$ at $\rho\ml$. Furthermore
+    that tangent space is exactly spanned by $z$.
 
     \item $\bra X {\left (\dparn \ell z 2\right)}^{-1}
-      \ket X = \Tr(X\times \mathbb H\inv\!(X))$: \TODO{}
+      \ket X = \Tr(X\times \mathbb H\inv\!(X))$: Computing the link between the
+      original hessian at $\rho\ml$ truncated to the tangent space and $\dparn
+      \ell z 2$ is a bit more complicated because the $z$ variable has a curve. We
+      use again explicitly the change of variable of the previous proof. If
+      we write $\ell(z) = \ell(\Psi(z))$, we have
+      \[ \dparn \ell z 2 = \bra{ \nabla \ell} \nabla^2 \Psi + \nabla \Psi
+        \nabla^2 \ell \nabla \Psi\]
 
+      In this formula, $\nabla^2 \Psi$ is a not a matrix but a 3 dimensional
+      tensor with two input sides and one output side. The $\bra{\nabla \ell}$
+      applies on the output side.
+
+      Since $\nabla \Psi \ket X = \ket {X\pr}$ the second term is simply
+      \[\nabla \Psi^t
+        \nabla^2 \ell \nabla \Psi = \sum_i
+        \frac{\ket{{E_i}\pr}\bra{{E_i}\pr}} {\Tr^2(\rho\ml E_i)} \]
+
+      On the other hand, with some calculus, one
+      can prove that
+      \[ \nabla^2\Psi(\delta z, \delta z) = \mat{2\delta \omega\, \Delta\, \delta
+          \omega & ? \\ ? & ?}.\]
+      We use again the notations of \cref{eqn:etanu} and
+      \cref{prop:caracKKT}. We know that $\bra {\lambda I} \nabla^2 \Psi = 0$
+      because $\mathcal{Y}$ in the set of matrices of trace one. So the only
+      remaining part is:
+      \[\bra {\nabla \ell} \nabla^2\Psi(\delta z, \delta z) = -2\Tr(\nu \delta
+        \omega \Delta \delta \omega). \]
+
+      If we write $\delta \Psi = \nabla \Psi \delta z$, we have:
+      \begin{align*}
+        \Tr(\delta\Psi (\lambda I - \nabla \ell(\rho\ml))\delta\Psi\rho\ml^+ +
+        \delta\Psi \rho\ml^+\delta\Psi(\lambda I - \nabla \ell(\rho\ml)))
+        &= - \Tr(\delta\Psi \eta\delta\Psi\rho\ml^+ +
+          \delta\Psi \rho\ml^+\delta\Psi\eta)\\
+        &= -2\Tr(\nu \delta
+        \omega \Delta \delta \omega)
+      \end{align*}
+
+      In the end,
+      \[\bra X \dparn \ell z 2 \ket X = \bra X \mathbb H(X) = \Tr(X \mathbb H(X))\]
+      so they are just two version of the same operator.
   \end{itemize}
 
 \end{proof}
@@ -3492,12 +3504,42 @@ through a square root to get the standard deviation on that value.
 Here are the plots of \cref{sec:res1} upgraded with the new error bars.
 Unfortunately I didn't have enough time to finish implementing the error
 propagation of last section, so those value come from the Monte-Carlo algorithm.
+We added several new points of data in between. The horizontal error bars are
+due to Luis and are originated from imperfections in the control and measurement of the
+temperatures of both the cavity and the atom.
 
-\TODO{} Put plots here.
+
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.45\textheight]{plots/Heat2.png}
+  \caption{Plot of the exchanged heat depending on the Maxwell demon state ($ON$
+    or $OFF$)}\label{fig:heat2}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.45\textheight]{plots/Info2.png}
+  \caption{Plot of the mutual information in the readout phase vs the feedback
+    phase}\label{fig:info2}
+
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.45\textheight]{plots/Weak2.png}
+  \caption{Plot of the weak second law in \cref{eqn:weaksnd}}\label{fig:weak2}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.45\textheight]{plots/Strg2.png}
+  \caption{Plot of the strong second law in \cref{eqn:strgsnd}}\label{fig:strg2}
+\end{figure}
 
 
 \chapter*{Conclusion} %and bibliography
-\addcontentsline{toc}{chapter}{Conclusion~--~Thanks}
+\addcontentsline{toc}{chapter}{Conclusion}
 
 This internship was really interesting; I had to understand a lot of various
 mathematical and physical theory to understand the huge amount of work that my
@@ -3523,7 +3565,7 @@ of interesting people, some of which I want to thank :
 \vfill
 
 \paragraph{\Huge Thanks}
-% \addcontentsline{toc}{chapter}{Thanks}
+\addcontentsline{toc}{chapter}{Thanks}
 
 \
 
@@ -3598,9 +3640,6 @@ following:
       A t \right\rangle\]
 \end{thm}
 
-% \begin{proof}
-%   \TODO{}
-% \end{proof}
 
 
 \section{Heisenberg picture}
@@ -3743,8 +3782,6 @@ correlation:
 
 
 
-% \section{First order approximation}
-% \TODO{}
 
 \chapter{Some useful calculus}
 
