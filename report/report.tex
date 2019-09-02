@@ -159,14 +159,14 @@
 
 \graphicspath{{../img/}}
 
-\title{Error estimation in maximum-likelihood reconstruction for quantum tomography}
+\title{Error estimation in maximum-likelihood reconstruction for quantum state tomography}
 \author{Thibaut Pérami}
 
 \makeatletter
 \hypersetup{
   pdftitle = {\@title},
   pdfauthor = {\@author},
-  pdfsubject = {Quantum tomography}
+  pdfsubject = {Quantum state tomography}
 }
 \makeatother
 
@@ -178,7 +178,8 @@
   \vspace{0.3cm}
   {\scshape\Large Department of Mathematics and their Applications (DMA) \par}
   \vspace{3cm}
-  {\Huge\bfseries Error estimation in maximum-likelihood reconstruction for quantum tomography \par}
+  {\Huge\bfseries Error estimation in maximum likelihood reconstruction for
+    quantum state tomography \par}
   \vspace{0.5cm}
   {\scshape\Large Internship report\par}
   \vspace{3cm}
@@ -210,17 +211,17 @@
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract~--~Notations}
 In this report, I explain the content of my internship with Igor Dotsenko and
-Pierre Rouchon at the LKB in the Collège de France. I studied quantum
-electro-dynamics in cavities, and in particular an experiment made by another
-intern Luis Najera. He developed a way to send energy from a colder atom to an
-hotter cavity by using some quantum manipulation using Rabi oscillations. In
-order to extract result form this experiment, they used quantum tomography, in
-particular max log-likelihood estimation. In their original state of the art, when I
+Pierre Rouchon at the Laboratoire Kastler Brossel in the Collège de France. I studied quantum
+electrodynamics in cavities, and in particular an experiment conducted by another
+intern, Luis Najera. He developed a way to transfer energy from a colder atom to a
+hotter cavity by using quantum manipulation with resonant Rabi oscillations. In
+order to extract main results from this experiment, we use quantum state tomography, in
+particular maximum log-likelihood estimation. In their original state of the art, when I
 arrived, the results of such estimations were only proven when observing usual
-quantum observable. However Luis was doing quantum thermodynamics ans thus
-needed to use among other the von-Neumann entropy of the quantum state. I thus
+quantum observable. However, Luis was studying quantum thermodynamics and thus
+needed to use among other the von-Neumann entropy of the reconstructed quantum states. I thus
 extended the proofs of such estimation to handle that case. Additionally, I also experimented
-with a method to solve a problem to due insufficient measurement of the quantum system.
+with a method to solve a problem of insufficient measurement on a quantum system.
 
 
 
@@ -263,7 +264,7 @@ with a method to solve a problem to due insufficient measurement of the quantum 
     (orthogonal if $\mathcal{H}$ is a real vector space)
   \item $\mathcal{O}(\mathcal{H})$: The set of observable i.e of Hermitian matrice on $\mathcal{H}$
   \item $\mathcal{S}(\mathcal{H})$: The set of real symmetric matrices.
-  \item $\mathcal{D}(\mathcal{H})$: The set of density matrices (I'll explain later)
+  \item $\mathcal{D}(\mathcal{H})$: The set of density matrices.
   \item $\R_+$, $\mathcal{O}_+(\mathcal{H})$: The set of non-negative real, of
     positive semi-definite hermitian matrices.
   \item $\nabla f$: gradient on mono-result function, but also jacobian matrix
@@ -282,73 +283,74 @@ with a method to solve a problem to due insufficient measurement of the quantum 
 \addcontentsline{toc}{chapter}{Introduction}
 
 This report details my internship with Pierre Rouchon and Igor Dotsenko on
-Quantum tomography by maximum-likelihood reconstruction. It was done mainly at
-the Laboratory Kessler-Brosel (LKB) in the Collège de France.
+Quantum state tomography by maximum-likelihood reconstruction (MaxLike). It was done mainly at
+the Laboratory Kastler-Brosel (LKB) in the Collège de France.
 
-The goal of Quantum tomography is to find ways to reconstruct the state of
-a quantum system from several direct or indirect measurement on it. In some case
-those measurement do not modify the state of the system. Those are called QND
-(Quantum Non-Destructive) measurement.
+The goal of quantum state tomography is to find a way to reconstruct the state of
+a quantum system from several direct or indirect measurements on it. In some cases
+these measurements do not modify the state of the system and are called
+quantum non-destructive (QND) measurement.
 
 The specific physical project on which I worked with Igor Dotsenko is the
-internship project of Luis Najera about thermodynamics in the case of
-atom-cavity interaction in quantum optics. More precisely, we send an circular
-Rydberg atom in a resonant cavity containing photons. The state of the cavity is
+internship project of Luis Najera on quantum thermodynamics in the case of
+atom-cavity interaction in quantum optics. More precisely, we send a circular
+Rydberg atom in a resonant cavity containing several photon field. The state of the cavity is
 thermal i.e it follows the Bose-Einstein distribution. The atom then interacts
-with the cavity. If the atom is in a thermal state between two atomic level that
-are at the same frequency than the cavity then a thermal exchange will occur in
-the expected way. However if we pump one of the state of the atom in a hidden
-state, like a Maxwell demon, we can can apparently break the second law and make
+with the cavity. If the atom is in a thermal state of its two atomic levels, that
+are at the same frequency than the cavity, then a thermal exchange will occur in
+the expected way. However if we pump one of the atom's state in a hidden
+state, like a Maxwell's demon, we can apparently break the second law of thermodynamics and make
 a cold atom give heat to a hotter cavity.
 
 In order to study this experiment, we need to measure the state of the cavity.
-That state cannot be measured directly, so we do it by quantum tomography using
-maximum-likelihood reconstruction. This construction takes into account all the
-measurements made and deduce a density matrix. To find it, one needs to solve a
-convex optimisation problem on the set of density matrix (Hermitian positive
-definite matrix of trace 1). This was done using a gradient descent method with
+That state cannot be measured directly, so we reconstruct it by quantum state tomography using
+maximum-likelihood estimation. This construction takes into account all the
+measurements made and deduces a density matrix. To find it, one needs to solve a
+convex optimisation problem on the set of density matrices (Hermitian positive
+definite matrices of trace 1). This was done using a gradient descent method with
 projection of the gradient on the domain.
 
-The deduced state is usually not a pure state because the reconstruction often
-came from a state that has been prepared several times.
-All the prepared state are slightly different.
-Furthermore, other factors like measurements imperfection and decoherent
+The estimated state is usually not a pure state because the reconstruction
+comes from a state that has been prepared several times.
+All the prepared states are slightly different.
+Furthermore, other factors like measurement imperfections and decoherent
 relaxation decrease the precision of the reconstruction.
 
-With this measurements, we can now get and interpret the results of our Maxwell
+With these measurements, we can now get and interpret the results of our Maxwell's
 demon experiment. However, to be able to interpret measurement, we need to know
 the error on the reconstructed state. The original proofs in~\cite{SPRAL17} on
-tomography only provide the standard deviation of usual quantum operators which
-are linear in the density matrix. However to do our analysis of the second law,
-we need to evaluate the error on the entropy.
+tomography only provide the standard deviation of usual quantum observables which
+are linear in the density matrix. However, to perform our analysis of the second law,
+we need to evaluate the error of the estimated entropy.
 
-In order to do that, I first tried to use a Monte carlo algorithm to use the
-distribution around the estimated value to sample the examined function. I cound
-then deduce an average and a standard deviation. Later, I improved the proofs
-of~\cite{SPRAL17} to prove that evaluating the function on the estimator is
+In order to do that, I first tried a Monte-Carlo algorithm and used the
+distribution around the estimated value to sample the examined function. I could
+then deduce a mean and a standard deviation. Later, I improved the proofs
+of~\cite{SPRAL17} to show that evaluating the function on the estimator is
 indeed asymptotically the average of the function around the estimator. I could
 then also get an analytic value of the standard deviation around any
 function of the density matrix. Additionally I also worked on fixing convergence
 problems when the information given by the experiment is incomplete.
 
-In the end we get error-bars on our plots and we were able to determine which
-points were within the error-bars from the theory and which were not.
+In the end we get error bars on our plots and we are able to determine which
+points were, within their error bars, consistent with the theoretical description
+of our Maxwell's demon experiment and which were not.
 
 \
 
-This report alternate maths and physics. The odd chapters are about the physical
-part of the internship and the even ones about maths. The five first chapter are
+This report alternates maths and physics. The odd chapters are about the physical
+part of the internship and the even ones about maths. The five first chapters are
 about my understanding of prior work that I had to do in order to do what I did.
-The last two are about my personal contributions.
+The last two describe my personal contributions.
 
-In the first chapter I
-present the experiment, its formal modelisation and why we need quantum tomography. In the
-second I explain the basics of maximum likelihood reconstruction then I show in
-the third chapter how to apply this method for our particular case. In the
-fourth chapter I show how to solve the convex optimization problem that appeared. Then I can
-explain the results that were obtained before I arrived in chapter 5. In chapter 6 I
-explain what I did for computing errorbars for non-linear function and some other work and at last
-I explain the final results in chapter 7.
+In Chapter 1, I present the experiment, its formal modelisation and why we need
+the quantum state tomography. In Chapter 2,
+I explain the basics of maximum likelihood reconstruction and then I show in
+Chapter 3 how this method is applied to our particular case. In Chapter 4, I show
+how to solve the convex optimization problem that appeared. Then I present the
+results obtained before I arrived in Chapter 5. In Chapter 6, I
+explain what I did for computing error bars of a non-linear function and some other work.
+The final results are given in Chapter 7.
 
 \vfill
 
@@ -356,35 +358,37 @@ I explain the final results in chapter 7.
 
 \chapter{Experimental setup and goal}
 
-In this chapter I expect a basic knowledge of quantum mechanics, Hilbert space and
-Schrodinger equations. In the whole report I will use the usual bra-ket notation
-and therefore a scalar product linear to the right.
+In this chapter I expect the reader to know the basics of quantum mechanics, Hilbert space and
+the Schrödinger equation. I will present the basic quantum electrodynamics
+concepts needed to understand the experiment, and the experiment itself.
+Everywhere in my report I will use the usual bra-ket notation
+and, therefore, a scalar product linear to the right.
 
-I will first describe the experiment in high-level point of view, then I'll
-quickly dive into experimental details I'll finish by explaining why
+I will first schematically describe the experiment setup and then quickly dive
+into some experimental details. I'll finish by explaining why the state
 reconstruction is needed.
 
 \section{Basic setup description}
 
-In this section I will describe the experiment I worked with at the LKB.\@ This
-experience studies the interaction between Rydberg circular atoms and light in
-supra-conductive cavities.
+In this section I describe the experiment I worked with at the LKB.\@ This
+experiment studies the interaction between Rydberg circular atoms and light in
+superconducting cavities.
 We produce Rydberg atoms in a known circular state, then we send them through a
-cavities with a very small number of resonating photons (usually less than
-eight). The atom then goes through a detector that ideally do projective
-measurement of the state. The cavity can be tuned via stark effect so the
-interaction can be resonant (the cavity frequencies correspond to a gap between
-states) or dispersive (The frequencies and the gap do not match).
+cavity containing a very small number of photons (usually less than
+eight). The atom then goes through a detector that ideally performs projective
+measurement of the state. The atoms can be tuned via Stark effect so the
+interaction can be resonant (the cavity frequency correspond to a gap between
+atomic states) or dispersive (the frequency and the gap do not match).
 
 I will present the formalism for each component and then detail the formalism of
 the whole experiment. The goal of the experiment is to study quantum
 thermodynamics. In particular, with the right manipulation of the quantum state
 of an atom, we can make give heat to the cavity (emit a photon) even if the atom
-is colder than the cavity. I will define the notion of temperature of single
+is colder than the cavity. I will define the notion of temperature of a single
 atom later.
 
 Most of the formulas come from the chapter 3 of~\cite{Har06} and the first part
-of~\cite{SayPHD11}
+of~\cite{SayPHD11}.
 
 A diagram of the experiment can be found in \cref{fig:exp}.
 
@@ -408,43 +412,44 @@ A diagram of the experiment can be found in \cref{fig:exp}.
 \end{figure}
 
 
-\subsection{Rydberg Ciruclar atoms}\label{ssec:atoms}
+\subsection{Circular Rydberg atoms}\label{ssec:atoms}
 
 % From Section 3.3.1 of~\cite{Har06} and I.2.1.a of~\cite{SayPHD11}
 
 The atoms are prepared in a specific circular Rydberg state called ``ground'' state
-$\ket g$. It correspond the energy level $n = 50$. We will also use $\ket e$
+$\ket g$. It corresponds to the energy level $n = 50$. We will also use $\ket e$
 called ``excited'' state which is the circular state at $n = 51$ and $\ket f$, the
-``fundamental'' state which is at $n = 49$. In theory the atom should never get
+``fundamental'' state with $n = 49$. Ideally, the atom should never get
 in any other state during our protocol.
 The gap between $\ket e$ and $\ket g$ is
 approximately $\SI{51}{GHz}$, whereas the gap between $\ket g$ and $\ket f$ is
-around $\SI{54}{GHz}$. Those are microwave frequencies.
+around $\SI{54}{GHz}$. These are microwave frequencies.
 
 In most of our calculation we will manipulate our states by pairs, and not as the
 whole triplet, because the atom will only interact with our setup at, or near,
 a resonance frequency. We'll use the base $(\ket e, \ket g)$ in that order, but
 the same is true for $(\ket g, \ket f)$. In such case, the Hamiltonian we will
-use is:
-\[H = \frac {\hbar \omega}2 \sigma_Z\]
+use is
+\[H = \frac {\hbar \omega}2 \sigma_Z,\]
  where $\omega$ is the gap frequency and $\sigma_Z$ in one of the
- three Pauli matrices used in two-levels systems:
+ three Pauli matrices used to describe a two-level system:
 \[\twoline \sigma_Z = \mat{1&0\\0&-1} \gap \sigma_X = \mat{0&1\\1&0} \gap
   \sigma_Y = \mat{0&-i\\i&0}\]
 
 It is important to note that the $X,Y,Z$ axis here have nothing to do with the
-real world spatial axis but there are just a convention due to the fact that
-this two-level system behaves like a spin-system, where those axis would have had a
-spatial meaning.
+real world spatial axis. This is just a convention due to the fact that
+this two-level system behaves similarly to a spin-1/2 system whose axis do have
+spatial orientation.
 
-From those operators we may also build the raising and lowering operators:
+From these operators we may also build the raising and lowering operators:
 \[\sigma_+ = \frac{\sigma_X + i \sigma_Y}2 = \ket e \bra g = \mat{0&1\\0&0}
   \gap
   \sigma_- = \frac{\sigma_X - i \sigma_Y}2 = \ket g \bra e= \mat{0&0\\1&0}\]
+They are equivalent to the annihilation and creation operators of a usual
+harmonic oscillator (that I will present in \cref{ssec:rescav}). We can even
+express the Hamiltonian in a similar way: $H = \hbar \omega(\sigma_+\sigma_- -
+\frac12)$.
 
-Those operator are the equivalent of annihilation and creation operator in usual
-harmonic oscillator (That I will present in \cref{ssec:rescav}). We can even
-express the Hamiltonian in a similar way: $H = \hbar \omega(\sigma_+\sigma_- - \frac12)$
 
 
 
@@ -456,7 +461,7 @@ express the Hamiltonian in a similar way: $H = \hbar \omega(\sigma_+\sigma_- - \
 In what we call Ramsey zone, the atom will be submitted to a classical oscillating
 field at pulsation $\omega_f$, resonant (or near the resonance) with the atomic
 transition. The field at the position of the atom will
-be denoted by:
+be denoted by
 \[\bs E = 2\mathcal{E}
   \mat{u_x\cos(\omega_f t + \varphi + \varphi_x)\\
     u_y\cos(\omega_f t + \varphi + \varphi_y)\\
@@ -467,7 +472,7 @@ cleanly using $\bs u_f = \big(u_x e^{-i\varphi_x},u_y e^{-i\varphi_y},u_z
 e^{-i\varphi_z}\big)$:
 \begin{equation}\label{eqn:field}
 \bs E = \mathcal{E} (\bs u_f\, e^{-i\omega_f t-\varphi} + \bs u_f^*\,
-  e^{+i\omega_f t + \varphi})
+  e^{+i\omega_f t + \varphi}).
 \end{equation}
 
 
@@ -477,17 +482,17 @@ atom and the electric field. It is $H_f = - \bs D \cdot \bs E$ as proven in
 section 3.1.2 of~\cite{Har06}.
 The dipole operator has a simple expression in terms
 of the position operator $\bs R$ of the electron realtive to  which is $\bs D = q \bs R$.
-In our circular states that have cylindrical symmetry,
+In our circular states having cylindrical symmetry,
 we have $\bra e R \ket e = 0$ and $\bra g R \ket g = 0$,
 so we only care about the off-diagonal terms. We want to write the dipole
-operator as:
+operator as
 \begin{equation}\label{eqn:D}
-  \bs D = d\mat{\bs 0&\bs u_a^*\\\bs u_a&\bs 0} = d(\bs u_a \sigma_- + \bs u_a^* \sigma_+)
+  \bs D = d\mat{\bs 0&\bs u_a^*\\\bs u_a&\bs 0} = d(\bs u_a \sigma_- + \bs u_a^* \sigma_+),
 \end{equation}
-Such that $\bs u_a$ has unit length and expresses the direction
+such that $\bs u_a$ has unit length and expresses the direction
 and $d$ is the value of the electric dipole
 moment. They are defined by $ q \bra g \bs R \ket e = d \bs u_a$. The field
-Hamiltonian has now the expression:
+Hamiltonian has now the expression
 
 \[ H_f = -d\mathcal{E} \mat{\bs 0 &
   \bs u_a^* \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} + \bs u_f^*\,
@@ -500,14 +505,14 @@ Hamiltonian has now the expression:
 
 The free Hamiltonian of the system being $H_a = \frac{\hbar \omega_a}2 \sigma_Z$,
 we'll need to express the evolution of the system by separating both evolutions.
-We will place ourselves in an interaction picture (explanation
-in~\cref{app:pict}). Both the free and interaction Hamiltonian make the state turn
+We will place ourselves in the interaction picture (explanation
+in~\cref{app:pict}). Both the free and interaction Hamiltonians make the state turn
 around, and we want to see the difference between the two of them. Therefore, we
-will remove $H_0 = \frac{\hbar \omega_f}2 \sigma_Z$. We remove the Hamiltonian
+remove $H_0 = \frac{\hbar \omega_f}2 \sigma_Z$. We remove the Hamiltonian
 with the frequency of the field and not of the atom to simplify the field
 frequencies elsewhere. The frequency of the atom in this new frame will be
 $\Delta_r = \omega_a - \omega_f$.
-Our new Hamiltonian $H_1 = e^{i\frac{H_0}\hbar t}(H_f + H_a - H_0)e^{-i\frac{H_0}\hbar t}$ is thus:
+Our new Hamiltonian $H_1 = e^{i\frac{H_0}\hbar t}(H_f + H_a - H_0)e^{-i\frac{H_0}\hbar t}$ is thus
 \[H_1 = \frac{\hbar \Delta_r}2 \sigma_Z -
   d\mathcal{E} \mat{\bs 0 &
     \bs u_a^* \cdot (\bs u_f\, e^{-i\omega_f t-\varphi} + \bs u_f^*\,
@@ -516,34 +521,33 @@ Our new Hamiltonian $H_1 = e^{i\frac{H_0}\hbar t}(H_f + H_a - H_0)e^{-i\frac{H_0
     e^{i\omega_f t + \varphi}) e^{-i\omega_f t} & \bs 0
   }\]
 
-The two term that oscillate at frequency $2\omega_f$ are too fast to have
-lasting effects, we'll neglect them: this is called the secular approximation.
-The new Hamiltonian is thus:
+The two terms oscillating at frequency $2\omega_f$ are too fast to have
+lasting effects, so we can neglect them: this is called the secular approximation.
+The new Hamiltonian is thus
 \begin{equation}\label{eqn:RamseyH}
 H_1 = \frac{\hbar \Delta_r}2 \sigma_Z -\hbar \frac{\Omega_r}2
-  \big(e^{-i\varphi}\sigma_+ + e^{i\varphi}\sigma_-\big)
+  \big(e^{-i\varphi}\sigma_+ + e^{i\varphi}\sigma_-\big),
 \end{equation}
-
 where $\Omega_r=\frac{2d}{\hbar}\mathcal{E}\bs u_a^* \cdot \bs u_f = \frac{2d}{\hbar}\mathcal{E}\braket{\bs u_a}{\bs u_f}$. We can put
 some of $\varphi$ in $\bs u_f$ in \cref{eqn:field} to make $\Omega_r$ real
 positive. Thus, the phase $\varphi$ is specific to the phase difference between the atom
-and the field. It can tuned by changing the phase of the field that we control.
+and the field. It can be tuned by changing the phase of the field that we control.
 
-If use the vector operator $\bs \sigma = (\sigma_X,\sigma_Y,\sigma_Z)$, Our
-Hamiltonian can be written:
+When using the vector operator $\bs \sigma = (\sigma_X,\sigma_Y,\sigma_Z)$, our
+Hamiltonian can be written as
 \begin{equation}\label{eqn:rabi}
-H_1 = \hbar \frac{\Omega_r'}2 \bs \sigma \cdot \bs n
+H_1 = \hbar \frac{\Omega_r'}2 \bs \sigma \cdot \bs n,
 \end{equation}
 where
 \[ \Omega_r' = \sqrt{\Delta_r^2 + \Omega_r^2} \hspace {1cm}
   \text{and}\hspace{1cm} \bs n = \frac 1 {\Omega'_r}(-\Omega_r \cos \varphi,\;
-  -\Omega_r \sin \varphi,\; \Delta_r)\]
+  -\Omega_r \sin \varphi,\; \Delta_r).\]
 
 One can show that $H_1$ represents a precession of the state of the atom on the
 Bloch sphere around $\bs n$ at frequency $\Omega_r'$. This precession is named
-``Rabi oscillation''. The pulsation $\Omega_r$ which is the frequency or
-precession when the the frequencies match is name ``Rabi pulsation''. It is
-represented on the Bloch sphere in \cref{fig:rabi}
+``Rabi oscillation''. The pulsation $\Omega_r$ which is the frequency of
+precession when the the frequencies match is named ``Rabi frequency'' and is
+represented on the Bloch sphere in \cref{fig:rabi}.
 
 \begin{figure}
   \includegraphics[width=\textwidth]{Rabi.png}
@@ -557,49 +561,43 @@ represented on the Bloch sphere in \cref{fig:rabi}
   \label{fig:rabi}
 \end{figure}
 
-By controlling the phase between the electric field and the atom and the
-duration of impulsions (The vector rotate of an angle $\Omega'_r\Delta t$), we
-can make all possible rotation i.e nearly all unitary operation on this two
-state system. In practice both parameters need to be carefully calibrated
-because they have huge effects with very small variation.
+By controlling the relative phase between the field and the atom as well as the
+interaction duration (the vector rotates by an angle $\Omega'_r\Delta t$), we
+can realize all possible rotations i.e nearly all unitary operation on this
+two-level system. In practice, both parameters need to be carefully calibrated
+because they can have huge effects with very small variations.
 
 \subsection{Resonant cavities}\label{ssec:rescav}
 
 % Harmonic oscillator: 3.1.1 of~\cite{Har06} and I.1.2.a of~\cite{SayPHD11}
 
-A field mode in a cavity at a specific pulsation $\omega_c$ can be modeled
-as an usual one-dimensional harmonic oscillator. The Hilbert space will be
+A field mode in a cavity of a specific frequency $\omega_c$ can be modeled
+as a usual one-dimensional harmonic oscillator. Its Hilbert space is
 $\mathcal{H}_C = \C^\N$.
 % (\TODO{} topology?).
-The basis of this space is composed of vectors $\ket n$
-that are called \emph{Fock states}. The main operator of such a space is the
-number operator $N = \sum_n n\ket n \bra n$. The state $\ket n$ represent a
+The basis of this space is composed of vectors $\{\ket n\}$, called \emph{Fock states}, with $n$ non-negative integer. One of the important operators in this space is the
+number operator $N = \sum_n n\ket n \bra n$. The state $\ket n$ represents a
 state with exactly $n$ photons. There are also the annihilation $a$ and creation $a^\dagger$ operators:
-\[a = \sum_n \sqrt{n} \ket {n-1} \bra{n}\]
-
-They are defined such that $N = a^\dagger a$. The energy of the cavity is
-defined by:
-\[H_c = \hbar \omega_c \big(N + \tfrac 12\big)\]
+\[a = \sum_n \sqrt{n} \ket {n-1} \bra{n}.\]
+Therefore, $N = a^\dagger a$ and the energy of the cavity is then
+\[H_c = \hbar \omega_c \big(N + \tfrac 12\big).\]
 
 We need to find how to represent a field oscillating at frequency $\omega_c$.
-A general formula for a specific mode of the classical field is:
+A general formula for a specific mode of the classical field is
 \[\bs e(r) = \mathcal{E}\big(\bs f(\bs r) \alpha e^{i\omega_c t} + \bs f^*(\bs r)
-  \alpha^* e^{-\omega_c t}\big)\]
-
-where $\mathcal{E}$ is a general normalisation factor in $\SI{}{V/m}$, that
-we'll compute later, $\bs f$
-is a polarisation function that give the orientation of the field depending the
-position and that depending on the shape of the cavity and on Maxwells equation.
-We normalize it to $\|\bs f\|_\infty = 1$. And finally, $\alpha$ is the complex amplitude
-of the field. We want to find a quantum state that represent this classical
-field.
+  \alpha^* e^{-\omega_c t}\big),\]
+where $\mathcal{E}$ is a general normalisation factor in units of $\SI{}{V/m}$, that
+we'll compute later. A polarization function  $\bs f$
+describes the spacial disctribution of the electric field inside the cavity which depends on the cavity shape.
+We normalize it to $\|\bs f\|_\infty = 1$. Finally, $\alpha$ is the complex amplitude
+of the field.
 
 We know that on classical harmonic oscillatiors, the eigenvectors of $a$ named
-\emph{coherent state} represent directly classical state. As a remainder, For
+\emph{coherent state} represent directly classical states. I remind that for
 each complex number $\alpha \in \C$, there is a unique state (up to phase shift)
 $\ket \alpha$ such that $a \ket \alpha = \alpha \ket \alpha$.
 Let's prove that in the case of field mode oscillator, the coherent state also
-represent classical state.
+represents a classical state.
 
 \begin{prop}
   A coherent state $\ket{\phi(0)} = \ket \alpha$ evolves as:
@@ -610,16 +608,14 @@ represent classical state.
   In the section \emph{time evolution} of the section 3.1.2 of \cite{Har06}
 \end{proof}
 
-Therefore we define the electric field operator to be
+Therefore, we define the electric field operator to be
 \begin{equation}\label{eqn:Eop}
 \bs E(\bs r) = \mathcal{E}\big(\bs f(\bs r) a + \bs f^*(\bs r)
-  a^\dagger \big)
+  a^\dagger \big).
 \end{equation}
-
 It will behave exactly as a classical field for coherent state and be a
 superposition of classical field for other states. We can determine the value of
 $\mathcal{E}$ from the field energy operator:
-
 \[ H = \int \varepsilon_0 |{\bs E}|^2 \dd^3 \bs r \]
 
 \begin{prop}
@@ -640,9 +636,9 @@ photon in the cavity.
 
 % From 3.4 of~\cite{Har06} and I.3 of~\cite{SayPHD11}
 
-In this section we'll see what happens when we put an two-level atomic system in
-a cavity at or near resonance frequencies. The system are then coupled during
-all interaction time, in particular the state $\ket{g,n+1}$ and $\ket{e,n}$,
+In this section we'll see what happens when we put a two-level atomic system in
+a cavity at or near resonance frequencies. The systems are then coupled during
+all interaction time, in particular the states $\ket{g,n+1}$ and $\ket{e,n}$,
 blend together as if absorbing and emitting photons continuously. The model we
 use is called the James-Cumming model.
 
@@ -651,45 +647,43 @@ use is called the James-Cumming model.
 In the general case, we just reuse the dipolar approximation Hamiltonian for the
 interaction:
 \[H_i = - \bs D \cdot \bs E\]
-By using \cref{eqn:D} and \cref{eqn:Eop}, and assuming the atom is at
+By using \cref{eqn:D} and \cref{eqn:Eop}, and assuming that the atom is at
 position $\bs r$, we get :
 \[H_i = - d(\bs u_a \sigma_- + \bs u_a^* \sigma_+) \cdot \mathcal{E}\big(\bs
   f(\bs r) a - \bs f^*(\bs r)
-  a^\dagger \big)
+  a^\dagger \big).
   \]
 
 
-For sake of simplification, We'll assume the atom is more or less in the middle
-of the cavity, we'll thus assume that $\bs f(r) = \bs u_c$ of unit length.
-If we do the same Heisenberg picture as in \cref{sec:ramsey}, We'll see that
-term associated with pure energy gain ($\sigma_+a^\dagger$) or loss ($\sigma_-a$)
-oscillate very quickly at the order of $2\omega_c$,
-where the one that correspond to absorbing ($\sigma_+a$) or emitting
-($\sigma_-a^\dagger$) photons oscillate at the difference $\delta = \omega_a -
+For sake of simplification, we assume the atom is more or less in the middle
+of the cavity and thus that $\bs f(r) = \bs u_c$ of unit length.
+If we do the same Heisenberg picture as in \cref{sec:ramsey}, we'll see that
+terms associated with pure energy gain ($\sigma_+a^\dagger$) or loss ($\sigma_-a$)
+oscillates very quickly at the order of $2\omega_c$,
+whereas the one corresponding to photon absorbtion ($\sigma_+a$) or emission
+($\sigma_-a^\dagger$) oscillates at the difference frequency $\delta = \omega_a -
 \omega_c$. We can
-thus do the secular approximation again to have:
+thus do the secular approximation again to obtain:
 \begin{equation}
-  H_i = \frac{\hbar \Omega_0}2 (\sigma_+a + \sigma_-a^\dagger)
+  H_i = \frac{\hbar \Omega_0}2 (\sigma_+a + \sigma_-a^\dagger),
 \end{equation}
+where the \emph{vacuum Rabi frequency} reads:
+\[\Omega_0 = -2\frac {\mathcal{E}d \braket{\bs u_a}{\bs u_c}}{\hbar}.\]
 
-where:
-\[\Omega_0 = -2\frac {\mathcal{E}d \braket{\bs u_a}{\bs u_c}}{\hbar}\]
-Here again, for the sake of simplification, we'll assume that the field of the
-cavity and the atom are in phase, and thus $\braket{\bs u_a}{\bs u_c}$ is real
-negative so that $\Omega_0 > 0$. This value in named the \emph{Vacuum Rabi
-  frequency}, we'll see later why. The full Hamiltonian is then:
+Here again, for the sake of simplification, the cavity field and the atom are
+considered to be in phase, and thus $\braket{\bs u_a}{\bs u_c}$ is real
+negative so that $\Omega_0 > 0$. The full Hamiltonian is then:
 \begin{equation}
 H_{ac} = \frac{\hbar \omega_a}2 \sigma_Z + \hbar \omega_c \big(N +
   \tfrac12\big) + \frac{\hbar \Omega_0}2 (\sigma_+a + \sigma_-a^\dagger)
 \end{equation}
 
-With this Hamiltonian, the state $\ket{e,n}$ and $\ket{g,n+1}$ are coupled 2 by
-2 except $\ket{g,0}$ which is stationary. On the space $\mathcal{S}_n =
+With this Hamiltonian, the states $\ket{e,n}$ and $\ket{g,n+1}$ are coupled 2 by
+2, except for $\ket{g,0}$ which is stationary. On the space $\mathcal{S}_n =
 \Span(\ket{e,n},\ket{g,n+1})$, the Hamiltonian is:
 \[\twoline H_n = \hbar \mat{\omega_c(n+1) + \frac{\delta}2& \frac{\Omega_n}2\\
     \frac{\Omega_n}2&\omega_c(n+1) - \frac{\delta}2}\]
-
-Where $\Omega_n = \sqrt{n+1} \,\Omega_0$. The eigenvectors are written:
+with $\Omega_n = \sqrt{n+1} \,\Omega_0$. Its eigenvectors are given by
 \newcommand{\tnt}{\frac{\theta_n}2}
 \begin{align*}
   \ket{+,n} &= \cos \tnt \,\ket{e,n} + \sin \tnt \ket{g,n+1}\\
@@ -698,19 +692,24 @@ Where $\Omega_n = \sqrt{n+1} \,\Omega_0$. The eigenvectors are written:
 
 \vspace{-0.5cm}
 
-Where $\theta_n \in [0,\pi]$ and $\tan \theta_n = \frac {\Omega_n}{\delta}$.
-Those state are called \emph{dressed states}.
+with $\theta_n \in [0,\pi]$ and $\tan \theta_n = \frac {\Omega_n}{\delta}$.
+These states are called \emph{dressed states}.
 We can define again $\Omega'_n = \sqrt{\Omega_n^2 + \delta^2}$ to have the energies as:
-\[E_{\pm,n} = \hbar \omega_c(n+1) \pm \frac{\hbar \Omega_n'}2\]
+
+\vspace{-0.2cm}
+
+\[E_{\pm,n} = \hbar \omega_c(n+1) \pm \frac{\hbar \Omega_n'}2.\]
+
+\vspace{0.2cm}
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.3]{dressed.png}
-  \caption{The Energy of dressed states at level $n$ in function of $\delta/\Omega_n$.}
+  \caption{The energy of dressed states at level $n$ as a function of the atom-cavity detuning $\delta$ (in units of $/\Omega_n$).}
   \label{fig:dressedenergy}
 \end{figure}
 
-Those energies are represented in \cref{fig:dressedenergy}
+Those energies are represented in \cref{fig:dressedenergy}.
 
 
 
@@ -723,8 +722,8 @@ cavity horizontally, instead of actually caring about the exact form of the
 field, we can assume that everything behave like the atom traversed a full blown
 field with $\|\bs f(\bs r)\| = 1$ that has an effective width $w\eff$. For an
 atom at speed $v$, all happens as if it submitted to the Hamiltonian $H_{ac}$
-during:
-\[t\eff = \frac{w\eff}v\]
+during
+\[t\eff = \frac{w\eff}v.\]
 
 \subsubsection{Resonant case}
 
@@ -819,6 +818,19 @@ on the atom.
 
 \section{QND Measurement}
 
+\TODO Merge
+The QND measurement in the current experiment is realized by sending a sequence of individual atoms prepared in a superposition state $\ket{g}+\ket{e}$ through the
+cavity and interacting with it dispersively. One can deduce from~\cref{sec:atomcav} that
+an atom in this case will undergo a phase shift between its states
+proportional to the number of photons stored in the cavity field. By configuring well the
+Ramsey zones, one can build a Ramsey interferometer and measure this phase
+shift. However the only concrete output we get is a long list of state detections in $\ket e$ and
+$\ket g$, so we need a statistical tool to reconstruction a corresponding
+density matrix from this data. This what is presented in the next chapter. I
+hope I can write more details by Monday night.
+
+With:
+
 Quantum Non-Destructive measurement(QND) is a kind of quantum measurement that tries
 to preserve the state of the observed system. By having the observed system
 interacting weakly with other systems, we can sometimes gather enough
@@ -842,28 +854,27 @@ $\ket g$, so we need a statistical tool to build an representation of the
 density matrix from this date.
 
 
-
 \chapter{Maximum likelihood reconstruction}
 
 I put some reminders about multivariate covariances in
 \cref{app:cov}, which could be useful in this chapter.
 
-\section{Reminders about estimation theory}
+\section{Basics of the estimation theory}
 
 \subsection{Estimator}
 
 The goal of estimation is to estimate some parameters using observations or
-measurements. In the simplest case, we measure an random output $X \in \mathcal{X}$ from an
+measurements. In the simplest case, we measure a random output $X \in \mathcal{X}$ from an
 unknown input $\theta \in \Theta$. We place ourselves in a model where the law
-of X condition to $\theta$ is known. Formally, We have for each $\theta$ a
+of $X$ condition to $\theta$ is known. Formally, we have for each $\theta$ a
 probability measure $P_\theta$ on $\mathcal{X}$. If $P_\theta$ has the right
-form (in particular if $X$ is a vector of repetition of the same experiment), we
+form (in particular, if $X$ is a vector of repetition of the same experiment), we
 can extract information on $\theta$ from $X$. For that we can use an estimator.
 
 \begin{defn}
   An \emph{estimator} of parameter $\theta$ from $X$ is just a deterministic
-  function $\hat \theta(X)$ that tries to give the most likely $\theta$ that
-  could have outputted $X$.
+  function $\hat \theta(X)$ that provides the most likely value of $\theta$ that
+  could have resulted in $X$.
 \end{defn}
 
 \begin{rem}
@@ -879,23 +890,23 @@ easily compare the original $\theta$ with its estimator $\hat \theta$ with a
 subtraction:
 
 \begin{defn}
-  For a given $\theta$, the \emph{bias} of the estimator $\hat \theta$ is:
-  \[B(\hat{\theta}) = E_\theta(\hat{\theta}(X) - \theta)\]
+  For a given $\theta$, the \emph{bias} of the estimator $\hat \theta$ is
+  \[B(\hat{\theta}) = E_\theta(\hat{\theta}(X) - \theta),\]
   where the expectation $E_\theta$ is taken on the law $P_\theta$. An estimator
-  is \emph{biased} is the bias is non zero and \emph{unbiased} otherwise.
+  is \emph{biased} if the bias is non zero and it is \emph{unbiased} otherwise.
 \end{defn}
 
 \begin{defn}
-  For a given $\theta$, the \emph{variance} of the estimator $\hat \theta$ is:
-  \[V(\hat{\theta}) = E_\theta\Big({(\hat{\theta}(X) - \theta)}^2\Big)\]
+  For a given $\theta$, the \emph{variance} of the estimator $\hat \theta$ is
+  \[V(\hat{\theta}) = E_\theta\Big({(\hat{\theta}(X) - \theta)}^2\Big).\]
 \end{defn}
 
 \subsection{Likelihood}
 
-In the case where all probability measure $P_\theta$ are absolutely
+In the case where all probability measures $P_\theta$ are absolutely
 continuous against a ``canonincal'' measure $\mu$ on $\mathcal{X}$, we can
 define a function $f(x;\theta)$ such that
-\[P_\theta(A) = \int_A f(x;\theta)\,\dd \mu(x)\]
+\[P_\theta(A) = \int_A f(x;\theta)\,\dd \mu(x).\]
 
 \begin{defn}
   For a given observation $x \in \mathcal{X}$, we define the \emph{likelihood} function
@@ -910,8 +921,7 @@ define a function $f(x;\theta)$ such that
 \subsection{Fischer information and Cramér-Rao bound}
 
 We now assume a set of real parameter $\theta \in \mathcal{D} \subset \R^n$.
-
-A way of knowing if we could improve our estimation at a specific point is the
+A way to know if we could improve our estimation at a specific point is the
 gradient of the log-likelihood function. This is called the
 \emph{score}. We have $s_x(\theta) = \partial_\theta \ell_x(\theta)$. The
 lower the score (its norm, actually), the better our estimation.
@@ -927,8 +937,7 @@ We can then study the variance of score and its covariances with other things.
 In particular:
 
 \begin{lem}\label{lem:corscr}
-  The covariance of the score and any unbiased estimator is the identity.
-  Formally:
+  The covariance of the score and any unbiased estimator is the identity:
   \[\cov(\hat \theta, s_x(\theta)) = I\]
 \end{lem}
 
@@ -937,23 +946,23 @@ In particular:
   % \TODO{}
 \end{proof}
 
-In light of the theorem about bounds of \cref{sec:correl}, we can give special
-interest to the variance of the score and its link with the variance of any estimator
+In the light of the theorem about bounds of \cref{sec:correl}, we can give special
+interest to the variance of the score and its link with the variance of any estimator.
 
-\begin{defn} The \emph{Fischer Information} of the parameter $\theta$ is defined
+\begin{defn} The \emph{Fischer information} of the parameter $\theta$ is defined
   as the variance of the score:
-  \[I(\theta) = V\big(s(\theta)\big)\]
+  \[I(\theta) = V\big(s(\theta)\big).\]
 \end{defn}
 
 If $\theta \in \R$, this is just the expectation of the square of the score, but
 otherwise, $I(\theta)$ is a covariance matrix thus at least positive
 semi-definite.
-This information value is putting a bound on the minimum variance of any
-unbiased estimator which is called the Cramér–Rao bound.
+This information value puts a bound on the minimum variance of any
+unbiased estimator, which is called the Cramér–Rao bound.
 
 \begin{thm}[Cramér–Rao bound]
-  For any un-biased estimator $\hat \theta$, If $I(\theta) > 0$, we have
-  \[V(\hat{\theta}) \ge {I(\theta)}^{-1}\]
+  For any unbiased estimator $\hat \theta$ and if $I(\theta) > 0$, we have
+  \[V(\hat{\theta}) \ge {I(\theta)}^{-1}.\]
 \end{thm}
 
 \begin{rem}
@@ -962,21 +971,21 @@ unbiased estimator which is called the Cramér–Rao bound.
 
 \begin{proof}
   The bound on multivariate correlation is proven in \cref{thm:correln}. The
-  bound is written as:
-  \[\cov(X,Y){V(Y)}^{-1}\cov(Y,X) \leq V(X)\]
+  bound is written as
+  \[\cov(X,Y){V(Y)}^{-1}\cov(Y,X) \leq V(X).\]
 
-  As $I(\theta) = V(s_x(\theta))$, and thank to \cref{lem:corscr}, the bound holds.
+Since $I(\theta) = V(s_x(\theta))$ and from \cref{lem:corscr}, the bound holds.
 \end{proof}
 
-In order to have a better interpretation of Fischer information, if the
+In order to have a better interpretation of the Fischer information, if the
 likelihood is at least $\class 2$ in $\theta$, we can rewrite
 it as a hessian:
 
 \begin{prop}\label{prop:fisherhessian}
   Under sufficient regularity assumption,
   the Fischer information can also be written as the opposite of the Hessian of the
-  log-likelihood function.
-  \[I(\theta) = -\frac{\partial^2 \ell}{\partial \theta^2}(\theta)\]
+  log-likelihood function:
+  \[I(\theta) = -\frac{\partial^2 \ell}{\partial \theta^2}(\theta).\]
 \end{prop}
 
 \begin{proof}
@@ -994,49 +1003,46 @@ it as a hessian:
 
 \subsection{Definition}
 
-Now that we have proven the best variance possible, We still have to build an
-estimator that approach this bound. There are multiple kinds of estimator. The
-mostly used one is the average when $X = (X_1,\ldots,X_n)$ and
-$E_\theta(X_i) = \theta$ and $V_\theta(X_i)$ is small enough. However in more
+Now that we have proven the best variance possible, we still have to build an
+estimator approaching this bound. There are many different kinds of estimator. The
+most used one is the average when $X = (X_1,\ldots,X_n)$ and
+$E_\theta(X_i) = \theta$ and $V_\theta(X_i)$ is small enough. However, in more
 complex cases this won't work. The goal of the estimator is to produce the more
 likely $\theta$, ideally the maximum of a density function $p(\theta | X)$.
-If all measure can be expressed as density functions, thanks to bayes law, we'll have:
+
+If all measures can be expressed as density functions, using Bayes law, we obtain
 \begin{equation}\label{eqn:bayes}
   p(\theta|x) = p_\theta(x) \frac {p(\theta)}{p(x)}
-  = p_\theta(x) \frac {p(\theta)}{\int p_{\theta'}(x)p(\theta')\,\dd \theta'}
+  = p_\theta(x) \frac {p(\theta)}{\int p_{\theta'}(x)p(\theta')\,\dd \theta'}.
 \end{equation}
 
-
-And our goal would be to maximize $p(\theta|x)$. However,in order for that
-formula to make sense, we need a prior law on $\theta$. If the prior
+We aim now to maximize $p(\theta|x)$. However, that
+formula only makes sense if we have a prior law on $\theta$. If the prior
 distribution is more or less uniform, it is the same as maximizing $p_\theta(x)
 = \mathcal{L}_x(\theta)$.
 
-
 \begin{defn}
   The \emph{maximum likelihood estimator} $\theta\ml$ is defined by:
-  \[\theta\ml(x) = \argmax \mathcal{L}_x\]
+  \[\theta\ml(x) = \argmax \mathcal{L}_x.\]
 \end{defn}
 
-The maximum likelihood do not have excessively nice properties in its own, but
-when $X = (X_1,\ldots,X_n)$ where all the $X_i$ come from the same law
-$P_\theta(X_0)$ and are independent and $n \to \infty$,
-we will have nice convergence properties. In particular, it will converge in
+The maximum likelihood have no excessively nice properties in its own. But
+when $X = (X_1,\ldots,X_n)$, where all the $X_i$ come from the same law
+$P_\theta(X_0)$ and are independent, and if $n \to \infty$,
+it has nice convergence properties. In particular, it will converge in
 probability to the right
 $\theta$ and saturate the Cramér-Rao bound as $n \to \infty$.
 \
 
 In practice, as most probability laws are log-concave (in particular the normal
-law), we will use the log-likelihood, $\ell_x$ instead of $\mathcal{L}_x$. Apart
+law), we use the log-likelihood, $\ell_x$ instead of $\mathcal{L}_x$. Apart
 from concavity, this also has the advantage that multiple repetition are
 additive instead of multiplicative:
 \[\mathcal{L}_x(\theta) = \prod_i \mathcal{L}_{x_i}(\theta) \quad \quad \quad
-  \quad \ell_x(\theta) = \sum_i \ell_{x_i}(\theta)\]
-
-In particular, probability goes down to zero quickly and we will be working on
-64 bits machine floating point numbers, so there is a high risk of $\mathcal{L}$ to
-be simply computed to zero on the machine when it is just really small. For
-information the natural logarithm of the minimum positive 64 bits floating point number
+  \quad \ell_x(\theta) = \sum_i \ell_{x_i}(\theta).\]
+In particular, the probability goes down to zero very quickly. Computing it on
+a 64-bit machine floating point numbers, there is a high risk of $\mathcal{L}$ to
+be simply evaluated to zero when it is just really small. Noye yjay natural logarithm of the minimum positive 64-bit floating point number
 is $-740$.
 
 % \subsection{Informal properties}
@@ -1047,60 +1053,57 @@ is $-740$.
 
 % Add the case at the edge of $\mathcal{D}$.
 
-\chapter{Effect matrices computation}
+\chapter{Computation of effect matrices }
 
 In this chapter, we stay in Hilbert spaces of finite dimension. Most of the
-result can be extended to Hilbert spaces of countable dimension, by adding
-some restriction,
-but we won't need then in the rest of the report, so I won't mention infinite
+result can be extended to Hilbert spaces of countable dimension by adding
+some restriction.
+Since we won't need them in the rest of the report, I won't mention infinite
 dimension anymore. The space of operator on
-$\mathcal{H}$ is denoted by $\mathcal{L}(\mathcal{H})$. The set of observable
+$\mathcal{H}$ is denoted by $\mathcal{L}(\mathcal{H})$. The set of observables
 (Hermitian operators) is denoted by $\mathcal{O}(\mathcal{H})$. The set of
-unitary operator on $\mathcal{H}$ is denoted by $\mathcal{U}(\mathcal{H})$.
+unitary operators on $\mathcal{H}$ is denoted by $\mathcal{U}(\mathcal{H})$.
 
 \section{Density matrices}
 
 \subsection{Justification}
 
-In order to make significant observation on an experimental setup that has a lot
-of errors everywhere, we need to make averages and statistics on quantum state.
+In order to make significant observation with an imperfect experimental setup, we need to make averages and statistics on quantum state.
 One way of doing that would be to manipulate probability measure over state
-space which is the unit sphere $S$ of the model Hilbert space $\mathcal{H}$. However if we look at
-it in details, there are a lot of distributions that indistinguishable by any
-measurement. In first approximation, we say that two probability distribution
+space which is the unit sphere $S$ of the model Hilbert space $\mathcal{H}$. However, if we look at
+it in details, there are a lot of distributions that are indistinguishable by any
+measurement. In the first approximation, we say that two probability distribution
 $\lambda$ and $\mu$ on $S$ are indistinguishable,
 if for any observable $A$ (Hermitian matrix) on $\mathcal{H}$, we
-have:
-
+have
 \[\int_S \bra \phi A \ket \phi\,\dd \lambda(\phi) = \int_S \bra \phi A \ket
-  \phi\,\dd \mu(\phi) \]
+  \phi\,\dd \mu(\phi) .\]
 
-However, if we rewrite it, we have:
-
+However, if we rewrite it, we obtain
 \[\int_S \bra \phi A \ket \phi\,\dd \lambda(\phi)
   = \int_S \Tr\big(\ket \phi \bra \phi A\big) \,\dd \lambda(\phi)
-  = \Tr\left(\int_S \ket \phi \bra \phi \,\dd \lambda(\phi) A \right)\]
+  = \Tr\left(\int_S \ket \phi \bra \phi \,\dd \lambda(\phi) A \right).\]
 
 \begin{defn} We define the density matrix of a probability distribution $\lambda$ on
   quantum states:
-  \[ \rho = \int_S \ket \phi \bra \phi \,\dd\lambda(\phi) \]
+  \[ \rho = \int_S \ket \phi \bra \phi \,\dd\lambda(\phi) .\]
 \end{defn}
 \begin{prop}
   The average of an observable $A$ in any probability distribution $\lambda$ is
-  given by $\Tr(\rho A)$
+  given by $\Tr(\rho A)$.
 \end{prop}
 
 \begin{rem} This is sufficient to fully characterise the distribution, because
- any observable $A$ can be written $A = \sum_a aP_a$, where $P_a$ are orthogonal
- projector who are also observable. The average of $P_a$ is $\Tr(\rho P_a)$ and
- thus for all the distribution that have density matrix $\rho$, The probability
- of output $a$ when we measure $A$ is the same.
+ any observable $A$ can be written as $A = \sum_a aP_a$, where $P_a$ are orthogonal
+ projector and are also observables. The average of $P_a$ is $\Tr(\rho P_a)$ and
+ thus for all distributions having density matrix $\rho$, the probability
+ of output $a$ when measuring $A$ is the same.
 \end{rem}
 
-Therefore in the rest of this report, we will use density matrix as the only
-representation of quantum distribution, as two distribution that share the same
-density matrix are completely indistinguishable by any measurement. In practice,
-as quantum physicist, manly manipulate probabilistic quantum state and not that
+Since two distribution that share the same
+density matrix are completely indistinguishable by any measurement, in the rest of this report, we will use density matrix as the only
+representation of quantum distribution. In practice,
+as quantum physicist manly manipulate probabilistic quantum state and not that
 much usual \emph{ket} state, the term quantum state is used for a statistical
 mixture described by a density matrix. A state of the form $\ket \phi$ is thus
 called a \emph{pure} state.
@@ -1108,25 +1111,25 @@ called a \emph{pure} state.
 \subsection{Properties}
 
 We can now study what are density matrices and find necessary and sufficient
-conditions for a matrix to be density matrix.
+conditions for a matrix to be a density matrix.
 
 \begin{prop}\label{prop:dens}
-  A density matrix is Hermitian positive ($\rho > 0$) of trace 1
+  A density matrix is Hermitian positive ($\rho > 0$) of trace 1.
 \end{prop}
 
 \begin{proof}
   $\ket \phi \bra \phi > 0$, so $ \int_S \ket \phi \bra \phi \,\dd\lambda(\phi)
   > 0$.
-  $\Tr(\ket \phi \bra \phi) = 1$, so $\Tr(\rho) = \lambda(S) = 1$
+  $\Tr(\ket \phi \bra \phi) = 1$, so $\Tr(\rho) = \lambda(S) = 1$.
 \end{proof}
 
 If we want to prove that is sufficient we need to look at the spectral
 decomposition.
 In finite dimension $n$, a spectral decomposition of $\rho$ give a
-collection of eigen values $p_1, \ldots, p_n$ whose sum is~1. Those are the
+collection of eigen values $p_1, \ldots, p_n$ which sum up to~1. They are the
 analogous of probabilities in classical probability theory. The density matrix
-can then be written:
-\[\rho = \sum p_i \ket {\phi_i} \bra {\phi_i}\]
+can then be written as
+\[\rho = \sum p_i \ket {\phi_i} \bra {\phi_i}.\]
 
 \begin{thm} The condition~\ref{prop:dens} is necessary and sufficient i.e any Hermitian positive matrix of trace 1 is a density matrix.
 \end{thm}
@@ -1139,7 +1142,7 @@ can then be written:
 
 The set of density matrix will be denoted by $\mathcal{D}(\mathcal{H})$ (or just
 $\mathcal{D}$ when there is no ambiguity). We have the inclusions:
-\[\mathcal{D}(\mathcal{H}) \subset \mathcal{O}(\mathcal{H}) \subset \mathcal{L}(\mathcal{H})\]
+\[\mathcal{D}(\mathcal{H}) \subset \mathcal{O}(\mathcal{H}) \subset \mathcal{L}(\mathcal{H}).\]
 
 As a density matrix is an observable, we can study its behavior as an observable.
 In state $\ket \Psi$, the average $\langle \rho \rangle$ is the probability of
@@ -1169,7 +1172,7 @@ rank of the density matrix that gives a lot of information.
   \phi \bra \phi$ as both are called pure states.
 
   On the other hand if $\rk \rho > 1$, the density matrix represent a
-  \emph{mixed state}: a statistical mixture of state.
+  \emph{mixed state}: a statistical mixture of states.
 \end{defn}
 
 \begin{rem}
@@ -1177,12 +1180,11 @@ rank of the density matrix that gives a lot of information.
   It is very important to differentiate a quantum superposition for a
   statistical mixture. For example on a qubit,
   $\ket + = \frac1{\sqrt 2} \ket 0 + \frac1{\sqrt2} \ket 1$ is a quantum
-  superposition while
-  a statistical mixture would be
+  superposition while a statistical mixture would be
   $50$ \% of $\ket 0$ and $50$\% of $\ket 1$. When the state in measured in base
-  $\ket0,\ket1$, the results will be the same but in an other base they could be
-  different. In particular, in base $\ket +, \ket -$, the first one will be
-  measured as $100$ \% $\ket +$ and $0$ \% $\ket -$ but the second will still be
+  $\ket0,\ket1$, the results will be the same but in an other basis they could be
+  different. In particular, in basis $\{\ket +, \ket -\}$, the first state will be
+  measured as $100$ \% $\ket +$ and $0$ \% $\ket -$, but the second will still be
   50\,--\,50 of $\ket+$ and $\ket -$.
 \end{rem}
 
@@ -1199,13 +1201,13 @@ The value $\Tr \rho^2$ has in fact much more interesting properties, and thus
 deserves a name.
 
 \begin{defn}
-  The \emph{purity} of a quantum state represented by $\rho$ is the value $\gamma = \Tr \rho^2$.
+  The \emph{purity} of a quantum state represented by $\rho$ is defined as $\gamma = \Tr \rho^2$.
 \end{defn}
 
 \begin{prop}
   In dimension $d$, the purity is always between $\frac1d$ and $1$. If $\gamma =
-  \frac1d$, then $\rho = I$ and the mixture represented is uniform, we have
-  absolutely no information on the state. If $\gamma = 1$, The state is pure and
+  \frac1d$, then $\rho = I$, the represented mixture is uniform and we have
+  absolutely no information on the state. If $\gamma = 1$, the state is pure and
   we thus have complete information on the quantum state.
 \end{prop}
 
@@ -1214,35 +1216,34 @@ deserves a name.
   % \TODO{}
 \end{proof}
 
-The main interest of purity is that it remains constant in unitary evolution
+The main interest of purity is that it remains constant during unitary evolution
 ($\Tr (U^\dagger \rho U) = \Tr \rho^2$),
-whereas it will change in any other evolution, relaxation, decoherence,
-measurement, as we lose information or gain information.
+whereas it will change in any other evolution (relaxation, decoherence,
+measurement etc) as we lose or gain information.
 
-\subsection{Coefficients interpretation}
+\subsection{Matrix coefficients}
 
 When we express the density matrix in a specific base, we gain a lot of
-information about the state projected in that base, in particular about how
-projective measurements in that base will happen.
+information on the state projected in that basis, in particular on how
+projective measurements in that basis takes place.
 
 \begin{defn}
-  When $\rho$ is express in the base $\ket 1, \ldots, \ket d$, the diagonal
-  coefficients which are real, are called \emph{populations}, because the
-  coefficient $\bra i \rho \ket i$ is the probability of measuring state $i$,
-  when measuring in that base.
+  When $\rho$ is express in the basis $\ket 1, \ldots, \ket d$, the diagonal
+  coefficients, which are real and non-negative, are called \emph{populations}. The
+  coefficient $\bra i \rho \ket i$ equals the probability to obtain state $i$,
+  when measuring $\rho$ in this basis.
 
-  The non-diagonal coefficient are complex and named \emph{coherence}. The
-  coherence between state $\ket i$ and state $\ket j$ is $\bra i \rho \ket j$
-  and is the conjugate of the coherence between $\ket j$ and $\ket i$.
+  The non-diagonal coefficients are complex and called \emph{coherences}. The
+  coherence between states $\ket i$ and $\ket j$ is $\bra i \rho \ket j$. It is conjugate to the coherence between $\ket j$ and $\ket i$.
 \end{defn}
 
 The point of this distinction is that any projective measurement made in that
-base will have the same statistics whatever the value of coherences. Their
-values, will only matter when measuring value in other bases or when the state
+basis will have the same statistics whatever the value of coherences. Their
+values will only matter when measuring value in other bases or when the state
 is evolving. This also means reciprocally, in the context of tomography,
-that measurements made in that base can bring no information.
+that measurements made in that basis can bring no information.
 
-As we will reconstruct $\rho$, numerically we will use this matrix
+As we will reconstruct $\rho$ numerically and will use this matrix
 representation, we need to study the structure of $\mathcal{D}(\mathcal{H})$ in
 this form. In particular:
 
@@ -1253,32 +1254,29 @@ this form. In particular:
 \begin{proof}
   The (real) dimension of $\mathcal{O}(\mathcal{H})$ is $d^2$ because there are $d$ diagonal
   coefficient and $\frac {d(d-1)} 2$ complex off-diagonal coefficient so $d +
-  d(d-1)$ coefficient in total. The constraint $\Tr \rho = 1$ remove one degree
-  of freedom, so we only have $d^2 -1$ dimension.
+  d(d-1)$ coefficients in total. The constraint $\Tr \rho = 1$ removes one degree
+  of freedom, so we only have $d^2 -1$ dimensions.
 \end{proof}
 
-\subsection{The case of the qubit}
+\subsection{The case of a qubit}
 
 In the case of a qubit, with $\dim \mathcal{H} = 2$ (complex dimension), we know
-that the pure states, up to a phase shift can be represented on the Bloch sphere. We
+that the pure states, up to a phase shift, can be represented on the Bloch sphere. We
 would like to know how to represent mixed states. The dimension of
 $\mathcal{D}(\mathcal{H})$ is 3, so we can hope for a simple representation. Any
-density matrix from $\mathcal{H}$ can be written:
-\[\rho = \frac12I + S\]
-
-where $\Tr S = 0$. A base of the hyperplane of hermitian matrix of trace $0$ can
+density matrix from $\mathcal{H}$ can be written as
+\[\rho = \frac12I + S,\]
+where $\Tr S = 0$. A basis of the hyperplane of zero-trace hermitian matrice can
 be given by Pauli matrices:
 \[\sigma_Z = \mat{1&0\\0&1} \quad \quad \sigma_X = \mat{0&1\\1&0} \quad \quad
-  \sigma_Y = \mat{0&-i\\i&0}\]
+  \sigma_Y = \mat{0&-i\\i&0}.\]
 
-If we write $\bs\sigma = (\sigma_X,\sigma_Y,\sigma_Z)$, we can write
-$\rho$ as:
-\[\rho = \frac12 I + \bs r \cdot \bs \sigma\]
-
-where $\bs r \in \R^3$ is an usual 3D vector. Furthermore, we have:
+If we write $\bs\sigma = (\sigma_X,\sigma_Y,\sigma_Z)$, we obtain
+\[\rho = \frac12 I + \bs r \cdot \bs \sigma,\]
+where $\bs r \in \R^3$ is a usual 3D vector. Furthermore, we have:
 
 \begin{prop}
-  $\rho \geq 0$ if and only if $\|\bs r\| \leq 1$
+  $\rho \geq 0$ if and only if $\|\bs r\| \leq 1$.
 \end{prop}
 
 \begin{proof}
@@ -1295,40 +1293,36 @@ We can then look at the purity $\gamma$ in function of $\bs r$. We have:
   $\rho$ is pure if and only if $\|\bs r\| = 1$
 \end{cor}
 
-Mixed state are thus represented in Bloch ``ball''. The pure states are exactly
-the one that are laying on the boundary i.e.\ on the sphere. One can check this
-representation matches the usual Block sphere representation on pure states. The
-uniform state $\frac I2$ is the center of the ball.
+Mixed states are thus represented by the Bloch ``ball''. The pure states are laying on its surface i.e.\ on the sphere. One can check that this representation matches the usual Block sphere representation of pure states. The
+maximally miwed state $\frac I2$ is in the center of the ball.
 
-\subsection{Composite systems, Partial trace}
+\subsection{Composite systems and partial trace}
 
-When must now ask how to model density matrix on multiple system. On pure state,
+Next, we model a density matrix of a composite system. For a pure separable state,
 this is a simple tensor product $\ket{\Psi\Phi} = \ket \Psi \otimes \ket \Phi =
-\ket \Psi\ket\Phi$. Luckily for us we have:
+\ket \Psi\ket\Phi$. Luckily for us we have
 \[(\ket\Psi\ket\Phi) \otimes (\bra\Psi\bra\Phi) = \ket\Psi\bra\Psi \otimes \ket
-  \Phi \bra \Phi\]
-
-Where the $\otimes$ designate here the tensor product of operators and matrices.
-We still have the same property of entanglement, i.e a state is entangled iff
+  \Phi \bra \Phi,\]
+where $\otimes$ designate the tensor product of operators and matrices.
+We still have the same property of entanglement, i.e. the state is entangled iff
 the density matrix cannot be written as a tensor product.
 
-What is interesting now is to study the statistical result of measurement in a
-single one of the two quantum sub systems $\mathcal{H}_1$ and $\mathcal{H}_2$.
+What is interesting now is to study the statistical result of measurement performed on one of the two quantum subsystems $\mathcal{H}_1$ and $\mathcal{H}_2$.
 If we take an observable $A$ on $\mathcal{H}_1$ and its extension to
 $\mathcal{H} = \mathcal{H}_1 \otimes \mathcal{H}_2$ which is $\tilde A = A
 \otimes I$. If we have a density matrix $\rho = \rho_1 \otimes \rho_2$, then the
 average of $A$ is $\Tr(\rho \tilde A) = \Tr(\rho_1A)\Tr(\rho_2) = \Tr(\rho_1A)$.
-On a tensor product density matrix, the evaluation of $\tilde A$, only depend on
+On a tensor product density matrix, the evaluation of $\tilde A$ only depends on
 the part of $\rho$ in $\mathcal{H}_1$ and we would like to express that on any
 density matrix. In order to do that, we rewrite our computation as
-$\Tr(\rho\tilde A) = \Tr((\rho_1\Tr(\rho_2))A)$, we can then see that
+$\Tr(\rho\tilde A) = \Tr((\rho_1\Tr(\rho_2))A)$ and see that
 $\rho_1\Tr(\rho_2)$ is the part of $\rho$ in $\mathcal{H}_1$.
 
 \begin{defn}
   Given a tensor product $\mathcal{H} = \mathcal{H}_1 \otimes \mathcal{H}_2$,
-  The \emph{partial trace over $\mathcal{H}_2$}, is an linear operator
+  The \emph{partial trace over $\mathcal{H}_2$}, is a linear operator
   $\Tr_{\mathcal{H}_2} : \mathcal{L}(\mathcal{H}) \to
-  \mathcal{L}(\mathcal{H}_1)$ defined on tensor product by:
+  \mathcal{L}(\mathcal{H}_1)$ defined on tensor product by
   \[\Tr_{\mathcal{H}_2}(\rho_1\otimes \rho_2) = \rho_1 \Tr(\rho_2)\]
   and extended by linearity on the full $\mathcal{L}(\mathcal{H})$.
 \end{defn}
@@ -1344,84 +1338,82 @@ $\rho_1\Tr(\rho_2)$ is the part of $\rho$ in $\mathcal{H}_1$.
 \end{proof}
 
 An important remark to be made is that if a pure state in entangled, its partial
-trace will be mixed states. That is because, if we forgot the other space, Our
-space will behave as a statistical mixture and not a quantum superposition
+trace is mixed states. If we ignore the other space, our
+space will behave as a statistical mixture and not as a quantum superposition
 because depending of what the other state becomes, we can have any different phase.
-For example if we have two qubits, and we have an
-bell state $\ket \psi = \frac{\ket{00} + \ket{11}}{\sqrt 2}$, then
-\[\Tr_2\big(\ket \Psi \bra \Psi\big) = \frac 12I\]
+For example if we have two qubits, and we have a
+Bell state $\ket \psi = \frac{\ket{00} + \ket{11}}{\sqrt 2}$, then
+\[\Tr_2\big(\ket \Psi \bra \Psi\big) = \frac 12I.\]
 
 
 \section{Quantum operations}
 
-Even if a closed quantum system has a unitary evolution, in real life, quantum
-system are open, The undergo interaction with their environment whether it is
+Even if a closed quantum system follows a unitary evolution, quantum
+systems are in general open. They undergo interaction with their environment, whether it is
 from external measurement or simply thermal relaxation. The goal of this section
-is to build a representation of acceptable transformation for open systems in a
-similar way that we say that any transformation of a closed system is unitary.
+is to construct a representation of acceptable transformation for open systems similar to those describing unitary evolution of a closed system.
 This section is strongly inspired from~\cite{QCQI}.
 
 \subsection{Classical measurement}
 
-The first and simplest example of external interaction in quantum theory is
-measurement. When a quantum system interact with a macroscopic measurement
-device, it is measured and collapse in a specific state. The usual framework for
+The first and simplest example of external interaction in quantum theory is a
+measurement. When a quantum system interacts with a macroscopic measurement
+device, it is measured and collapsed in a specific state. The usual framework for
 measurement is projective measurement. It is
 made by measuring a observable that fully describes the measurement
 process.
 
 Let $A \in \mathcal{O}(\mathcal{H})$ be an observable on $\mathcal{H}$. The
-spectral decomposition of $A$ tells us that $A = \sum_a a P_a$, where the $a$
-are the eigenvalues of $A$ and the $P_a$ orthogonal projector on the
-corresponding eigenvector spaces. When starting in state $\ket \Psi$, We
-measure $a$ with probability $\bra \Psi P_a \ket \Psi$, and we get we get
-the output state:
-\[ \frac{P_a \ket \Psi}{\sqrt{\bra \Psi P_a \ket \Psi}}\]
+spectral decomposition of $A$ tells us that $A = \sum_a a P_a$, where $a$
+are eigenvalues of $A$ and $P_a$ are orthogonal projectors on the
+corresponding eigenvector spaces. When starting in state $\ket \Psi$, we
+measure $a$ with probability $\bra \Psi P_a \ket \Psi$ and we get
+the output state
+\[ \frac{P_a \ket \Psi}{\sqrt{\bra \Psi P_a \ket \Psi}}.\]
 
-In fact $P_a$ is also a quantum measurement operator which detect if we measure
+In fact, $P_a$ is also a quantum measurement operator which detects if we measure
 $a$ or not, and thus its average value is the probability of measuring $A$. We
-can then express the same thing in the world of density matrices. When starting in
+can then express the same thing in the space of density matrices. When starting in
 $\rho$, we expect $a$ with probability $\Tr(\rho P_a)$ and get as an output
-state:
-\[ \frac{P_a \rho P_a}{\Tr(\rho P_a)}\]
+state
+\[ \frac{P_a \rho P_a}{\Tr(\rho P_a)}.\]
 
-A important question when dealing with probability is whether they always sum to
+An important question when dealing with probability is whether they always sum to
 one, and in this case, this is answered by the closure relation
 \[\sum_a P_a = I\]
-
-and as $\bra \Psi I \ket \Psi = \Tr(\rho I) = 1$, the probabilities are normalized
+and as $\bra \Psi I \ket \Psi = \Tr(\rho I) = 1$, the probabilities are normalized.
 
 \subsection{Generalized measurement}
 
-However in some case, quantum detector can perform other kinds of measurement.
-In particular measurement that completely destroy the object instead of
+In some case quantum detector can perform other kinds of measurement, different from projective ones.
+In particular, a measurement that completely destroys the object instead of
 projecting is in a specific vector space. The main example is a photon counting
-detector. When a cavity is in a fock state $\ket n$, and we insert a photon
+detector. When a cavity is in a Fock state $\ket n$, and we insert a photon
 counting detector, the photons ``crash'' into the detector and are counted to be
-$n$. The remaining state is always $\ket 0$, as there are no photons left. This
+$n$. The remaining state is always $\ket 0$, as there is no photon left. This
 measurement is obviously non projective as $\ket 0$ is orthogonal to any $\ket
-n$. We thus need a framework to handle this kind of measurement.
+n$ with $n>0$. We thus need a framework to handle this kind of measurement.
 
 While a projective measurement of operator $N$, would have left the state in
 state $\ket n$ because we applied $P_n = \ket n \bra n$.
 The operation the detector apply to the system when measuring $n$ is $M_n = \ket
-0 \bra n$. If we apply it to any state $\ket \Psi$, We have to normalize $M_n
+0 \bra n$. If we apply it to any state $\ket \Psi$, we have to normalize $M_n
 \ket \Psi$. The squared norm is $\bra \Psi M_n^\dagger M_n \ket \Psi$ and by
-analogy, this looks like our probability. However any group of $M_n$ cannot
+analogy, this looks like our probability. However, not any group of $M_n$ can
 represent a generalized measurement. We need a normalization condition which is
 quite simple given the probability expression: $\sum M_n^\dagger M_n = I$.
 
 \begin{defn}
   On a quantum Hilbert space $\mathcal{H}$, a \emph{generalized measurement} is a set
-  of outcomes $o$ of the measurement (There can be more outcomes that the
+  of outcomes $o$ of the measurement (there can be more outcomes that the
   dimension of $\mathcal{H}$), and for each of them a measurement
   operator $M_o$. For the measurement to be complete, we require the
   normalization condition:
-  \[\sum_o M_o^\dagger M_o = I\]
+  \[\sum_o M_o^\dagger M_o = I.\]
 
   In that case the probability of outcome $o$ in state $\ket \Psi$ is $\bra \Psi
   M_o^\dagger M_o \ket \Psi$ and the resulting state is:
-\[\frac{M_o \ket \Psi}{\sqrt{\bra \Psi M_o^\dagger M_o \ket \Psi}}\]
+\[\frac{M_o \ket \Psi}{\sqrt{\bra \Psi M_o^\dagger M_o \ket \Psi}}.\]
 \end{defn}
 
 \begin{rem}
@@ -1431,51 +1423,50 @@ quite simple given the probability expression: $\sum M_n^\dagger M_n = I$.
 
 \begin{prop}
   If we have a mixed state $\rho$, the action of this generalized measurement is
-  to measure $o$ with probability, $\Tr(M_o\rho M_o^\dagger)$. The outcome would
-  then be:
-  \[\trnorm{M_o\rho M_o^\dagger}\]
+  to measure $o$ with probability $\Tr(M_o\rho M_o^\dagger)$. The outcome would
+  then be
+  \[\trnorm{M_o\rho M_o^\dagger}.\]
 \end{prop}
 
 The question that is important now, is what happens when we forget the value of
 the measurement. We can have each outcome $o$ with the corresponding
-probability, so the resulting state is:
+probability, so the resulting state is
 \[\rho_f = \sum_o \Tr(M_o\rho M_o^\dagger)\trnorm{M_o\rho M_o^\dagger}
-  =\sum_o M_o\rho M_o^\dagger \]
+  =\sum_o M_o\rho M_o^\dagger.\]
 
 
 
 \subsection{Quantum operations}
 
 The goal of this section is to describe a formalism to express the evolution of
-an open quantum system in term of density operators. Another order of presention
+an open quantum system in terms of density operators. Another order of presention
 with deeper analysis can be found in~\cite{QCQI}.
 
-For sake of generality, The input state
+For the sake of generality, the input state
 $\mathcal{H}_i$ and the output system $\mathcal{H}_o$ will not be the same. In
-most case, they will, but in some case the system we study is causally related to
+most cases, they will, but in some case the system under study is causally related to
 an input system but is not the same.
 What we want is an operator $\mathbb{E} : \mathcal{D}(\mathcal{H}_i) \to
-\mathcal{D}(\mathcal{H}_o)$. That map the input mixed state to the output mixed
-state and represent the evolution.
+\mathcal{D}(\mathcal{H}_o)$. It maps the input mixed state into the output mixed
+state and represents the evolution.
 
 First, we remark that if $\rho$ is mixed state representing $\rho_1$ with
 probability $p_1$ and $\rho_2$ with probability $p_2$, then the output state
 must be $\mathbb E(\rho_1)$ with probability $p_1$ and $\mathbb E(\rho_2)$ with
-probability $p_2$. Therefore in the general case we have :
+probability $p_2$. Therefore, in the general case, we have
 \[\mathbb E(\sum p_i \rho_i) = \sum p_i \mathbb E(\rho_i)\]
-
-$\mathbb E$ thus preserves convex combinations. A better way of representing
-that is to say that $\mathbb E \in
+and $\mathbb E$ thus preserves convex combinations. A better way of representing
+this is to say that $\mathbb E \in
 \mathcal{L}(\mathcal{O}(\mathcal{H}_i),\mathcal{O}(\mathcal{H}_o))$ i.e.
 $\mathcal{E}$ is linear on Hermitian operators. Any operator that preserves
 convex combinations on $\mathcal{D}(\mathcal{H})$ can be extended to a linear
-operator on Hermitian matrices (The proof is easy and not interesting). The
+operator on Hermitian matrices (the proof is easy and not interesting). The
 opposite is true if the operator preserves the positiveness and the value of the
 trace.
 
-However to be sure to keep positiveness in all case, when we have two maps on
+However, in order to keep positivity in all cases when we have two maps on
 different systems, we must have $\mathbb{E}_1
-\otimes \mathbb{E}_2$, to also preserves positiveness. We now have all
+\otimes \mathbb{E}_2$ to also preserve positivity. We now have all
 conditions for a good definition.
 
 \begin{defn}[Trace-preserving quantum operation]\label{def:tpqo}
@@ -1488,13 +1479,13 @@ conditions for a good definition.
   \item It is completely positive i.e, for any other space $\mathcal{H}_0$ with
     identity quantum operation $\mathbb I_0$, The map $\mathbb I_0 \otimes
     \mathbb E : \mathcal{O}(\mathcal{H}_0 \otimes \mathcal{H}_i) \to
-    \mathcal{O}(\mathcal{H}_0 \otimes \mathcal{H}_o)$ preserves the positiveness
+    \mathcal{O}(\mathcal{H}_0 \otimes \mathcal{H}_o)$ preserves the positivity
     of Hermitian operators.
   \end{itemize}
 \end{defn}
 
 This definition is nice and clean, but not very easy to manipulate, so we'll
-need more efficient representation to be able to manipulate them on computers.
+need a more efficient representation to be able to manipulate them on computers.
 We will see that in \cref{ssec:kraus}. Afterwards, in \cref{ssec:interp}, we'll see
 why this formalism can represent all sorts of open quantum evolutions, by giving
 a more precise existence to the environment.
@@ -1503,8 +1494,8 @@ a more precise existence to the environment.
 
 Restraining ourselves to an operator preserving the trace can be a problem for
 some kinds of evolution. For example, if we look at a generalized measurement
-${(M_o)}_o$, The operation of measuring and forgetting is
-\[\mathbb{M}(\rho) = \sum_o M_o \rho M_o^\dagger\]
+${(M_o)}_o$, the operation of measuring and forgetting is
+\[\mathbb{M}(\rho) = \sum_o M_o \rho M_o^\dagger.\]
 
 However, when we remember the outcome $o$, the operation is $\rho \mapsto
 \frac{M_o \rho M_o^\dagger}{\Tr(M_0\rho M_0^\dagger)}$ which is \emph{not}
@@ -1514,12 +1505,12 @@ the trace. In fact $\mathbb{M}_o$ describes a process that is not sure to
 happen. The probability that $\mathbb{M}_o$ happens when we do the measurement
 on $\rho$ is $p_o = \Tr(\mathbb{M}_o(\rho))$ and the resulting density matrix is
 $\mathbb{M}_o(\rho)/p_o$.
-Non-trace preserving quantum operation therefore represent
+Non-trace preserving quantum operation therefore represents
 operations where the observer has learnt some information on the system. Notice
-that here, the notion of observer is a mix of the notion of drawing a value from
+that here, the notion of an observer is a mix of the notion of drawing a value from
 the probability measure that the density matrix represents and the usual observer
-associated to quantum collapsing. Therefore the generic definition for quantum
-operators is:
+associated to quantum collapse. Therefore the generic definition for quantum
+operators is
 \begin{defn}[quantum operation]\label{def:qo}
   Given an input space $\mathcal{H}_i$ and an output space $\mathcal{H}_o$, a
   linear map $\mathbb E : \mathcal{O}(\mathcal{H}_i) \to
@@ -1567,7 +1558,7 @@ renormalizing at the end. The behavior is exactly the same as if we had a single
 system of operator indexed on $(o,i)$ where $\mathbb E_{o,i} = \mathbb K_i \circ
 \mathbb M_o$.
 
-\subsection{Krauss operators, Krauss Maps}\label{ssec:kraus}
+\subsection{Kraus operators, Kraus Maps}\label{ssec:kraus}
 
 Until we have only manipulated abstract definition for quantum operation, let's
 see how to represent them numerically. In fact we already know a numerical
@@ -3582,14 +3573,14 @@ to a unitary $U(t)$.
 % cannot be moved like that because it is not inversible. Therefore such
 % evolutions will always apply to the state.
 
-\section{Schrodinger picture}
+\section{Schrödinger picture}
 
-The Schrodinger picture is the usual representation of quantum mechanics. In
+The Schrödinger picture is the usual representation of quantum mechanics. In
 this context only the state of the system varies and the way to observe it do
 not change. When the system evolves under Hamiltonian $H(t)$,
 the various operators relevant to the system are constant (unless they vary
 because of a external source which is not the system) and the
-state follow the Schrodinger equation:
+state follow the Schrödinger equation:
 \begin{eqn}\label{eqn:schro}
 \[i\hbar \frac{\partial \ket \Psi}{\partial t} (t) = H(t) \ket {\Psi(t)} \]
 \end{eqn}
@@ -3627,16 +3618,16 @@ equation that rules this evolution is
 
 Here the $[\cdot,\cdot]$ is the commutator and the partial derivative is the
 variation of $A$ due to external element out of the system (i.e.~the variation
-of H in Schrodinger picture). This equation is actually the not-averaged version
+of H in Schrödinger picture). This equation is actually the not-averaged version
 of Ehrenfest theorem (\ref{thm:ehren})
 
 \begin{prop}
-  The Schrodinger picture and Heisenberg picture describe the same mechanics. In
+  The Schrödinger picture and Heisenberg picture describe the same mechanics. In
   particular $\bra \Psi A \ket \Psi$ is the same for any operator in both pictures.
 \end{prop}
 
 \begin{proof}
-  The value of the average in Schrodinger picture if given by Ehrenfest theorem.
+  The value of the average in Schrödinger picture if given by Ehrenfest theorem.
   Let's compute the same average in Heisenberg picture. On the right side, the
   averaging give instantly the right hand of Ehrenfest theorem. We only have
   left to prove:
@@ -3644,8 +3635,8 @@ of Ehrenfest theorem (\ref{thm:ehren})
   But this is still true by linearity.
 \end{proof}
 
-In fact, The Schrodinger equation has general which is the unitary evolution
-operator $U(t)$. From there, the evolution of the state in Schrodinger's picture
+In fact, The Schrödinger equation has general which is the unitary evolution
+operator $U(t)$. From there, the evolution of the state in Schrödinger's picture
 in $\ket {\Psi(t)} = U(t) \ket {\Psi(0)}$, whereas the evolution of a operator
 in Heisenberg picture is $A(t) = U^\dagger(t)A_0(t)U(t)$, where $A_0(t)$
 expresses the variation from external elements.
@@ -3668,7 +3659,7 @@ state evolves with $H_1$. The equations are:
 \[A(t) = U_0^\dagger(t)A_0(t)U_0(t)\]
 
 This equivalent to manipulating state in a moving frame that moves according to
-$U_0$. The Schrodinger frame would then be the fixed frame and the Heisenberg frame
+$U_0$. The Schrödinger frame would then be the fixed frame and the Heisenberg frame
 would be the one that move exactly with the state.
 
 \chapter{Covariance}\label{app:cov}
