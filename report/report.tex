@@ -374,7 +374,7 @@ cavities with a very small number of resonating photons (usually less than
 eight). The atom then goes through a detector that ideally do projective
 measurement of the state. The cavity can be tuned via stark effect so the
 interaction can be resonant (the cavity frequencies correspond to a gap between
-states) or diffusive (The frequencies and the gap do not match).
+states) or dispersive (The frequencies and the gap do not match).
 
 I will present the formalism for each component and then detail the formalism of
 the whole experiment. The goal of the experiment is to study quantum
@@ -386,8 +386,29 @@ atom later.
 Most of the formulas come from the chapter 3 of~\cite{Har06} and the first part
 of~\cite{SayPHD11}
 
+A diagram of the experiment can be found in \cref{fig:exp}.
 
-\subsection{Rydberg Ciruclar atoms}
+\begin{figure}[h]
+  \includegraphics[width=\textwidth]{exp.png}
+  \caption{A symbolic representation of the experiment (Credit: Luis Najera).
+    The atoms leave from the oven, then they pass through a velocity selection
+    mechanism that ensure that only atoms moving at the target speed are selected.
+    Then, there is a circularization procedure that put all atoms in the state
+    $\ket g$ that will be explained in \cref{ssec:atoms}. On average $0.2$ atoms
+    go through in each batch. Most unselected atom
+    will still go trough the experiment but as they are not Rydberg atoms, they
+    will not interact with anything including the detector. The three Ramsey
+    zones are areas where we manipulate the atomic state through a classical
+    micro-wave field. In the cavity C2 (C1 is unused), a certain state of the
+    electromagnetic field is trapped with sufficiently few photons to observe
+    quantum effects in its interaction with the atom going through.
+    At the exit atom are detected by a projective measurement
+    that give the energy level of the atom.}
+  \label{fig:exp}
+\end{figure}
+
+
+\subsection{Rydberg Ciruclar atoms}\label{ssec:atoms}
 
 % From Section 3.3.1 of~\cite{Har06} and I.2.1.a of~\cite{SayPHD11}
 
@@ -396,8 +417,6 @@ $\ket g$. It correspond the energy level $n = 50$. We will also use $\ket e$
 called ``excited'' state which is the circular state at $n = 51$ and $\ket f$, the
 ``fundamental'' state which is at $n = 49$. In theory the atom should never get
 in any other state during our protocol.
-%\TODO{}
-% , I'll explain why in \cref{ssec:ststab}.
 The gap between $\ket e$ and $\ket g$ is
 approximately $\SI{51}{GHz}$, whereas the gap between $\ket g$ and $\ket f$ is
 around $\SI{54}{GHz}$. Those are microwave frequencies.
@@ -716,7 +735,7 @@ u_X$ at pulsation $\Omega_n$. In particular if the cavity is empty and the atom
 arrives in state $\ket e$, the atom will absorb and emit a photon at pulsation
 $\Omega_0$ which is thus the \emph{Vacuum Rabi pulsation}.
 
-\subsubsection{Dispersive case}
+\subsubsection{Dispersive case}\label{sssec:disp}
 
 In the dispersive case i.e far off the resonance point we have a completely
 different behaviour. The energy the atom cannot really change because, the
@@ -748,13 +767,13 @@ particular, the most controllable parameter here is $\delta$ via the stark effec
 on the atom.
 
 
-\section{Experimental details and calibration}
+% \section{Experimental details and calibration}
 
-%\TODO{}
+% %\TODO{}
 
-This section was supposed to explain some part of the little experimental details that I've seen
-or interacted with. I'll try to write it by Monday night. Otherwise, most of the
-details can be found in~\cite{SayPHD11}.
+% This section was supposed to explain some part of the little experimental details that I've seen
+% or interacted with. I'll try to write it by Monday night. Otherwise, most of the
+% details can be found in~\cite{SayPHD11}.
 % There is also a bunch of thing I don't know as this
 % experiment is the work of several year of research. It can be skipped for a
 % first reading as the details are not essential to understand the rest of this report.
@@ -798,41 +817,29 @@ details can be found in~\cite{SayPHD11}.
 
 % % Say some stuff about cooling
 
-\section{QND Mesurement}
+\section{QND Measurement}
 
-% \TODO{}
+Quantum Non-Destructive measurement(QND) is a kind of quantum measurement that tries
+to preserve the state of the observed system. By having the observed system
+interacting weakly with other systems, we can sometimes gather enough
+information to reconstruct the state.
 
-QND Measurement works by sending a lots of atoms in a Bell state through the
-cavity at an off-resonance setting. One can deduce from~\cref{sec:atomcav} that
-a atom in a non-resonant regime will undergo a phase shift between the states
-proportional to the number of photon in the cavity. By configuring well the
-Ramsey zones, one can build a Ramsey interferometer and measure this phase
-shift. However the only concrete output we get is a long list of $\ket e$ and
+Our method of QND measurement works by sending a lots of atoms in a Bell state through the
+cavity at an off-resonance setting. As they are in the dispersive setting(see
+\cref{sssec:disp}, they
+will all undergo a phase shift of $\phi_0$ by photons in the cavity. If
+calibrate our system to have an interesting $\phi_0$, the atomic state will be
+dispersed on the equator of the block sphere depending on the number of photon
+in the cavity. We can then do a $\frac\pi2$ Rabi-pulse at a specific phase to
+rotate the equator to a polar circle on the Bloch sphere. When we measure the
+atom, the probabilities of being observed in $\ket e$ or $\ket g$ depends on the
+number of atoms in the cavities. This setup is called a Ramsey interferometer.
+By varying the phase of the last Rabi pulse we can gather enough statistical
+information to recreate the state of the cavity.
+
+However the only concrete output we get is a long list of $\ket e$ and
 $\ket g$, so we need a statistical tool to build an representation of the
-density matrix from this date. This what is presented in the next chapter. I
-hope I can write more details by Monday night.
-
-
-% Still from~\cite{Har06} and~\cite{SayPHD11}
-
-% \subsection{Ramsey interferometer}
-
-% I.2.2 of~\cite{SayPHD11} and 3.3.3 of ~\cite{Har06}
-
-% Say stuff about stark shift for controlling the observing phase of
-% interferometer : I.2.3.c of~\cite{SayPHD11}
-
-% \subsection{Phase shift of QND atoms}
-
-% Pick among I.4~\cite{SayPHD11}
-
-% \subsection{What data we have as an output}
-
-% Explain that get long trace for $e$ and $g$.
-
-% Explain we need a estimator to build an idea of the state from the data we get.
-
-
+density matrix from this date.
 
 
 
@@ -1167,11 +1174,13 @@ rank of the density matrix that gives a lot of information.
 
 \begin{rem}
   \TODO{} rewrite, unclear
-  It is very important to differentiate the quantum superposition, for example
-  on a qubit,
-  $\ket + = \frac1{\sqrt 2} \ket 0 + \frac1{\sqrt2} \ket 1$ and a statistical mixture of
+  It is very important to differentiate a quantum superposition for a
+  statistical mixture. For example on a qubit,
+  $\ket + = \frac1{\sqrt 2} \ket 0 + \frac1{\sqrt2} \ket 1$ is a quantum
+  superposition while
+  a statistical mixture would be
   $50$ \% of $\ket 0$ and $50$\% of $\ket 1$. When the state in measured in base
-  $\ket0,\ket1$, the results will be the same but in other base they could be
+  $\ket0,\ket1$, the results will be the same but in an other base they could be
   different. In particular, in base $\ket +, \ket -$, the first one will be
   measured as $100$ \% $\ket +$ and $0$ \% $\ket -$ but the second will still be
   50\,--\,50 of $\ket+$ and $\ket -$.
@@ -1655,21 +1664,10 @@ then:
 
 \section{Computation of Krauss operators for QND measurement}
 
-Here I wanted to show some examples of how to compute a Krauss operator for a QND
-atoms, and other various technicality about how to get effect matrices. It is
-done in the supplementary information section of~\cite{VM19}.
-
-% Mostly from~\cite{VM19} but with a bit of~\cite{Har06} and of~\cite{SayPHD11}.
-
-% \TODO{}:
-% \begin{itemize}
-%   \item Formalism from~\cite{SayPHD11} I.4
-%   \item Read again the annex of~\cite{VM19}.
-%   \item Say stuff about decoherence and Linbald? Probably nothing else that ``it
-%     exists'' : Do not have time to read chapter 4 of~\cite{Har06}
-%   \item Error correction from detector.
-%   \item Explain data filtering and thus the consequence.
-% \end{itemize}
+The actual computation of the Quantum operations is done in
+the supplementary information section of~\cite{VM19}. They take into account the
+detection errors, the decoherence of the cavity and of course all the theory
+about quantum Rabi oscillations.
 
 \chapter{Convex optimization}
 
@@ -2344,36 +2342,95 @@ where $a$ is the annihilation operator of the cavity.
 
 \section{Quantum information}
 
-This section was supposed to explain the base concepts of quantum information
-theory, in particular the Von-Neuman entropy and the related \emph{Mutual
-  information} and \emph{Relative entropy}. I'll try to fill it for Monday
-night, In the meantime, all the information can found on the internet or in the
-litterature, for example in~\cite{QCQI}.
+The thermodynamical analysis of a quantum system requires certain tools in
+particular Von-Neumann entropy:
 
+\begin{defn}
+  The Von-Neumann entropy is a function $S : \mathcal{D} \to \R$ defined by:
+  \[S(\rho) = - \Tr(\rho \ln \rho)\]
+  Where $\ln$ is the principal logarithm on Hermitian positive definite matrices.
+  It can be prolonged by continuity on semi-definite positive Hermitian matrices.
+\end{defn}
 
-% \subsection{Classical Information theory}
+This quantity is the analog of Shanon entropy for classical systems ($H(p) =
+\sum_i -p_i \log p_i$). From that quantity we can build all the other
+information theory quantity like conditional entropy or mutual information with
+$S$ as a building block. The equivalent of the marginal law in classical theory
+is the partial trace. In particular, the relative entropy is the analogous of
+the Kullback–Leibler divergence.
 
-% % Entropy
-% % Conditional entropy,
-% % Mutual information.
-% % \ldots
-
-
-% \subsection{Quantum information theory}
-
-% % entropy, relative entropy, \ldots
-% % Mutual information.
+For more details I suggest consulting a book like~\cite{QCQI}.
 
 \section{Thermodynamical analysis}
 
 The intern whose internship project motivated the work of my internship had done
 some interesting work on the second law of thermodynamics. In particular he
 related the second law of thermodynamics to the notions of quantum information
-theory. This section was supposed to present his work to motivate mine.
+theory. His main result that we
+wanted to test is a rewrite of the second law of thermodynamics. Usually if two
+systems have temperature $T_1$ and $T_2$, are put into contact and exchange a
+heat $Q$ from 1 to 2, We'll have:
+\[\frac Q{T_2} - \frac Q{T_1} \geq 0\]
+If speak about the inverse temperature $\beta$, we'll write:
+\[\Delta\beta Q \geq 0\]
+
+But this inequality does not hold when the Maxwell demon is activated, because
+the fact that the demon learn information about the system change reduce the
+entropy in some way. The new inequality named \emph{Weak second law} is then:
+\begin{equation}\label{eqn:weaksnd}
+\Delta\beta Q - \Delta I_{QC:D} \geq 0
+\end{equation}
+
+Where $I_{SC:D}$ is the mutual information between, on one side the main atomic
+qubit $Q$
+and the cavity $C$, and on the other side the demon $D$. In fact
+Luis managed to find the exact value of this quantity to get what we call
+\emph{strong second law}:
+\begin{equation}\label{eqn:strgsnd}
+  \Delta\beta Q - \Delta I_{QC:D} = D_{QC}
+\end{equation}
+
+Where $D_{QC}$ is the relative entropy of the system $QC$ compared to its
+original thermal state $\zeta^Q_{\beta_Q} \otimes \zeta^C_{\beta_C}$.
 
 \section{Experimental results}\label{sec:res1}
 
-Here I wanted to put the plots that we had before the my new error-bar work was applied.
+The goal of the experimental was thus to check Luis' results, In particular the
+strong second law. The plots I will give here are the one that were made before
+I arrived to the lab. First we plot in \cref{fig:heat1} the exchange of energy in function of the
+relative temperature $\Delta \beta$ from the point of view of each one of them.
+In theory $Q_C = - Q_Q$. In particular, when the demon is \verb!OFF! the thermal
+equilibrium is at $\Delta \beta = 0$ whereas when it is activated it is shifted to
+the left. We are forcing the heat to move from the atom to the other cavity.
+Then we can plot the mutual information in \TODO{}
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.45\textheight]{plots/Heat1.png}
+  \caption{Plot of the exchanged heat depending on the Maxwell demon state ($ON$ or $OFF$)}
+  \label{fig:heat1}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.45\textheight]{plots/Info1.png}
+  \caption{Plot of the exchanged if with the Maxwell demon $ON$ and $OFF$}
+  \label{fig:info1}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.45\textheight]{plots/Weak1.png}
+  \caption{Plot of the exchanged if with the Maxwell demon $ON$ and $OFF$}
+  \label{fig:weak1}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.45\textheight]{plots/Strg1.png}
+  \caption{Plot of the exchanged if with the Maxwell demon $ON$ and $OFF$}
+  \label{fig:strg1}
+\end{figure}
 
 \chapter{Error estimation and validity proofs}
 
