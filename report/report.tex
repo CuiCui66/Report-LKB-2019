@@ -2364,10 +2364,10 @@ point below 0 in \cref{fig:weak1} and all the points off the 0 axis in
 
 \chapter{Error estimation and validity proofs}
 
-As seen in the previous chapter most of our thermodynamics quantities involve
+As seen in the previous chapter, most of our thermodynamics quantities involve
 directly or indirectly entropy or other statistical quantity of the density
 matrix. However the proof of validity in~\cite{SPRAL17} only covers the case of
-observable i.e function such as $f(\rho) = \Tr(\rho A)$ with $A \in
+observables, i.e. functions such as $f(\rho) = \Tr(\rho A)$ with $A \in
 \mathcal{O}(\mathcal{H})$. In our case the entropy is not observable, it is not even
 linear. It depends not on quantum properties but on the statistical part of the
 density matrix. And even worse, its derivative goes to infinity on the edge of
@@ -2421,7 +2421,7 @@ law. In theory the probability distribution on $\R^n$ is:
   \right) \dd(x_1,\ldots,x_n)\]
 
 where $K$ is a normalization constant. However, the vector $x =(x_1,\ldots,x_n)$
-must be positive and of sum 1. We'll call $\mathcal{P}_n$ the set of probability
+must be positive and sum to 1. We'll call $\mathcal{P}_n$ the set of probability
 vectors of dimension $n$. We will define our new law on $\mathcal{P}_n$ by the
 same density function but on top of the Lebesgue measure of dimension $n-1$.
 This distribution is much harder to simulate because it is both projected and
@@ -2459,12 +2459,12 @@ $\mathcal{P}_n$. This give good enough error bars for our purposes.
 
 \section{Complete first order error-bars}\label{sec:errbar}
 
-In this section I try to formalize and prove formulas for getting the
+In this section, I try to formalize and prove formulas for getting the
 expectation and standard deviation of any function on the set of density
 matrices $\mathcal{D}$ following the probability given by the maximum-likelihood
 reconstruction.
 
-All the theorems in this section are generalizations,
+All of the theorems in this section are generalizations,
 adaptations, and improvements from~\cite{SPRAL17}. The goal here is to compute
 the expected value and the variance of a generic function $h : \mathcal{D} \to
 \R$ on a variable $\rho$ following a prior distribution $P_0$
@@ -2475,7 +2475,7 @@ expectation is
 \[E(h(\rho)) = h(\rho\ml) + O(N\inv)\]
 
 and the variance is:
-\[V(h(\rho)) = \Tr(\nabla h\pr \mathbb H\inv(\nabla h\pr)) +O(\frac 1 {N^2})\]
+\[V(h(\rho)) = \Tr(\nabla h\pr \mathbb H\inv(\nabla h\pr)) +O\Big(\frac 1 {N^2}\Big)\]
 
 Where $\nabla h$ is the gradient of $h$ on the set of Hermitian
 matrices of null-trace, and $A\pr$ and $\mathbb H$ are the same as below
@@ -2489,13 +2489,13 @@ One can check that if we set
 $h(\rho) = \Tr(A\rho)$, we'll find back the result of \cref{sec:basicerr}.
 
 Obviously some
-regularity condition that will be given later are needed on $h$ for those result
+regularity conditionis that will be given later are needed on $h$ for those result
 to work.
 I tried and achieved to have quite low regularity conditions so that people could
 use those result with low-regularity functions. However those conditions are not
 sufficient to deal with the entropy on the edge of $\mathcal{D}$. In
 \cref{sec:regentropy}, I explain how one can achieve similar results with the
-entropy, but with other terms less bound: $E(h(\rho)) = h(\rho\ml) +
+entropy, but with other terms less bounded: $E(h(\rho)) = h(\rho\ml) +
 O(N^{-\varepsilon})$ for $\varepsilon < 1$.
 
 \
