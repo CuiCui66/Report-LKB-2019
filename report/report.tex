@@ -257,7 +257,7 @@ with a method to solve a problem of insufficient measurement on a quantum system
   \item $A > B$: $A - B$ is Hermitian positive definite. (semidefinite for $A
     \geq B$)
   \item $\mathcal{H}$: A Hilbert space
-  \item $\mathcal{L}(\mathcal{H})$: The set of operator a $\mathcal{H}$
+  \item $\mathcal{L}(\mathcal{H})$: The set of operator on $\mathcal{H}$
   \item $\mathcal{L}(\mathcal{H}, \mathcal{H}')$: The set of operator from
     $\mathcal{H}$ to $\mathcal{H}'$.
   \item $\mathcal{U}(\mathcal{H})$: The set of unitary matrice on $\mathcal{H}$
@@ -910,7 +910,7 @@ define a function $f(x;\theta)$ such that
 We now assume a set of real parameter $\theta \in \mathcal{D} \subset \R^n$.
 A way to know if we could improve our estimation at a specific point is the
 gradient of the log-likelihood function. This is called the
-\emph{score}. We have $s_x(\theta) = \partial_\theta \ell_x(\theta)$. The
+\emph{score}, $s_x(\theta) = \partial_\theta \ell_x(\theta)$. The
 lower the score (its norm, actually), the better our estimation.
 
 \begin{prop} The expectation of the score is 0.
@@ -989,7 +989,7 @@ it as a hessian:
 
 Now that we have proven the best variance possible, we still have to build an
 estimator approaching this bound. There are many different kinds of estimator. The
-most used one is the average when $X = (X_1,\ldots,X_n)$ and
+most used one is the average when $X = (X_1,\ldots,X_n)$,
 $E_\theta(X_i) = \theta$ and $V_\theta(X_i)$ is small enough. However, in more
 complex cases this won't work. The goal of the estimator is to produce the more
 likely $\theta$, ideally the maximum of a density function $p(\theta | X)$.
@@ -1012,10 +1012,10 @@ distribution is more or less uniform, it is the same as maximizing $p_\theta(x)
 
 The maximum likelihood have no excessively nice properties in its own. But
 when $X = (X_1,\ldots,X_n)$, where all the $X_i$ come from the same law
-$P_\theta(X_0)$ and are independent, and if $n \to \infty$,
+$P_\theta(X_0)$ and are independent, and $n \to \infty$,
 it has nice convergence properties. In particular, it will converge in
 probability to the right
-$\theta$ and saturate the Cramér-Rao bound as $n \to \infty$.
+$\theta$ and saturate the Cramér-Rao bound.
 \
 
 In practice, as most probability laws are log-concave (in particular the normal
@@ -1024,10 +1024,10 @@ from concavity, this also has the advantage that multiple repetition are
 additive instead of multiplicative:
 \[\mathcal{L}_x(\theta) = \prod_i \mathcal{L}_{x_i}(\theta) \quad \quad \quad
   \quad \ell_x(\theta) = \sum_i \ell_{x_i}(\theta).\]
-In particular, the probability goes down to zero very quickly. Computing it on
+In particular, the probability goes down to zero very quickly. When computing on
 a 64-bit machine floating point numbers, there is a high risk of $\mathcal{L}$ to
-be simply evaluated to zero when it is just really small. Noye yjay natural logarithm of the minimum positive 64-bit floating point number
-is $-740$.
+be simply evaluated to zero when it is just really small. Note that the natural
+logarithm of the minimum positive 64-bit floating point number is $-740$.
 
 % \subsection{Informal properties}
 
@@ -1040,10 +1040,10 @@ is $-740$.
 \chapter{Computation of effect matrices }
 
 In this chapter, we stay in Hilbert spaces of finite dimension. Most of the
-result can be extended to Hilbert spaces of countable dimension by adding
-some restriction.
+results can be extended to Hilbert spaces of countable dimension by adding
+some restrictions.
 Since we won't need them in the rest of the report, I won't mention infinite
-dimension anymore. The space of operator on
+dimension anymore. The space of operators on
 $\mathcal{H}$ is denoted by $\mathcal{L}(\mathcal{H})$. The set of observables
 (Hermitian operators) is denoted by $\mathcal{O}(\mathcal{H})$. The set of
 unitary operators on $\mathcal{H}$ is denoted by $\mathcal{U}(\mathcal{H})$.
@@ -1053,17 +1053,17 @@ unitary operators on $\mathcal{H}$ is denoted by $\mathcal{U}(\mathcal{H})$.
 \subsection{Justification}
 
 In order to make significant observation with an imperfect experimental setup, we need to make averages and statistics on quantum state.
-One way of doing that would be to manipulate probability measure over state
-space which is the unit sphere $S$ of the model Hilbert space $\mathcal{H}$. However, if we look at
-it in details, there are a lot of distributions that are indistinguishable by any
-measurement. In the first approximation, we say that two probability distribution
+One way of doing that would be to manipulate probability measure over the state
+space which is the unit sphere $S$ of the model Hilbert space $\mathcal{H}$.
+However, There are a lot of distributions that are indistinguishable by any
+measurement. In first approximation, we say that two probability distribution
 $\lambda$ and $\mu$ on $S$ are indistinguishable,
-if for any observable $A$ (Hermitian matrix) on $\mathcal{H}$, we
+if for any observable $A$ on $\mathcal{H}$, we
 have
 \[\int_S \bra \phi A \ket \phi\,\dd \lambda(\phi) = \int_S \bra \phi A \ket
   \phi\,\dd \mu(\phi) .\]
 
-However, if we rewrite it, we obtain
+We can rewrite it in
 \[\int_S \bra \phi A \ket \phi\,\dd \lambda(\phi)
   = \int_S \Tr\big(\ket \phi \bra \phi A\big) \,\dd \lambda(\phi)
   = \Tr\left(\int_S \ket \phi \bra \phi \,\dd \lambda(\phi) A \right).\]
@@ -1080,15 +1080,17 @@ However, if we rewrite it, we obtain
 \begin{rem} This is sufficient to fully characterise the distribution, because
  any observable $A$ can be written as $A = \sum_a aP_a$, where $P_a$ are orthogonal
  projector and are also observables. The average of $P_a$ is $\Tr(\rho P_a)$ and
- thus for all distributions having density matrix $\rho$, the probability
- of output $a$ when measuring $A$ is the same.
+ is the probability
+ of getting output $a$ when measuring $A$. Therefore this probability is the same for
+ all distributions having density matrix $\rho$.
 \end{rem}
 
 Since two distribution that share the same
-density matrix are completely indistinguishable by any measurement, in the rest of this report, we will use density matrix as the only
-representation of quantum distribution. In practice,
-as quantum physicist manly manipulate probabilistic quantum state and not that
-much usual \emph{ket} state, the term quantum state is used for a statistical
+density matrix are completely indistinguishable by any measurement, in the rest
+of this report, we will use density matrix as the only
+representation of quantum probability distribution. In practice,
+Quantum physicist mainly manipulate probabilistic quantum state and not that
+much usual \emph{ket} state, so the term quantum state is used for a statistical
 mixture described by a density matrix. A state of the form $\ket \phi$ is thus
 called a \emph{pure} state.
 
@@ -1107,7 +1109,7 @@ conditions for a matrix to be a density matrix.
   $\Tr(\ket \phi \bra \phi) = 1$, so $\Tr(\rho) = \lambda(S) = 1$.
 \end{proof}
 
-If we want to prove that is sufficient we need to look at the spectral
+If we want to prove that this is sufficient we need to look at the spectral
 decomposition.
 In finite dimension $n$, a spectral decomposition of $\rho$ give a
 collection of eigen values $p_1, \ldots, p_n$ which sum up to~1. They are the
@@ -1115,7 +1117,8 @@ analogous of probabilities in classical probability theory. The density matrix
 can then be written as
 \[\rho = \sum p_i \ket {\phi_i} \bra {\phi_i}.\]
 
-\begin{thm} The condition~\ref{prop:dens} is necessary and sufficient i.e any Hermitian positive matrix of trace 1 is a density matrix.
+\begin{thm} The condition~\ref{prop:dens} is necessary and sufficient i.e any
+  Hermitian positive matrix of trace 1 is a density matrix.
 \end{thm}
 
 \begin{proof}
@@ -1128,7 +1131,7 @@ The set of density matrix will be denoted by $\mathcal{D}(\mathcal{H})$ (or just
 $\mathcal{D}$ when there is no ambiguity). We have the inclusions:
 \[\mathcal{D}(\mathcal{H}) \subset \mathcal{O}(\mathcal{H}) \subset \mathcal{L}(\mathcal{H}).\]
 
-As a density matrix is an observable, we can study its behavior as an observable.
+As a density matrix is an observable, we can thus study its behavior as an observable.
 In state $\ket \Psi$, the average $\langle \rho \rangle$ is the probability of
 state $\ket \Psi$ if we did a projective measurement in an orthonormal base that
 contains $\ket \Psi$. $\rho$ is thus like an observable of classical probability.
@@ -1183,14 +1186,14 @@ deserves a name.
 
 \begin{prop}
   In dimension $d$, the purity is always between $\frac1d$ and $1$. If $\gamma =
-  \frac1d$, then $\rho = I$, the represented mixture is uniform and we have
+  \frac1d$, then $\rho = \frac I d$, the represented mixture is uniform and we have
   absolutely no information on the state. If $\gamma = 1$, the state is pure and
   we thus have complete information on the quantum state.
 \end{prop}
 
 \begin{proof} $\Tr (\rho^2) = \sum p_i^2 \leq 1$.
-  But the projection of $0$ on the hyper plane of sum $1$ is $\frac I d$ which
-  has therefore the lowest norm of that plane which is $\frac I d$.
+  But the projection of $0$ on the hyperplane of sum $1$ is $\frac I d$ which
+  has therefore the lowest norm of that plane which is $\frac 1 d$.
 \end{proof}
 
 The main interest of purity is that it remains constant during unitary evolution
@@ -1217,8 +1220,8 @@ projective measurements in that basis takes place.
 The point of this distinction is that any projective measurement made in that
 basis will have the same statistics whatever the value of coherences. Their
 values will only matter when measuring value in other bases or when the state
-is evolving. This also means reciprocally, in the context of tomography,
-that measurements made in that basis can bring no information.
+is evolving. This also means that, reciprocally, in the context of tomography,
+Any measurements made in that basis can bring no information on the coherence.
 
 As we will reconstruct $\rho$ numerically and will use this matrix
 representation, we need to study the structure of $\mathcal{D}(\mathcal{H})$ in
@@ -1271,7 +1274,7 @@ We can then look at the purity $\gamma$ in function of $\bs r$. We have:
 \end{cor}
 
 Mixed states are thus represented by the Bloch ``ball''. The pure states are laying on its surface i.e.\ on the sphere. One can check that this representation matches the usual Block sphere representation of pure states. The
-maximally miwed state $\frac I2$ is in the center of the ball.
+maximally mixed state $\frac I2$ is in the center of the ball.
 
 \subsection{Composite systems and partial trace}
 
@@ -1280,12 +1283,15 @@ this is a simple tensor product $\ket{\Psi\Phi} = \ket \Psi \otimes \ket \Phi =
 \ket \Psi\ket\Phi$. Luckily for us we have
 \[(\ket\Psi\ket\Phi) \otimes (\bra\Psi\bra\Phi) = \ket\Psi\bra\Psi \otimes \ket
   \Phi \bra \Phi,\]
-where $\otimes$ designate the tensor product of operators and matrices.
-We still have the same property of entanglement, i.e. the state is entangled iff
+where $\otimes$ designate the tensor product of operators and matrices. Therefore
+the density matrix of the composite system is the tensor product of the density
+matrices of each system.
+We still have the same property of entanglement, i.e. the state is entangled if
+and only if
 the density matrix cannot be written as a tensor product.
 
 What is interesting now is to study the statistical result of measurement performed on one of the two quantum subsystems $\mathcal{H}_1$ and $\mathcal{H}_2$.
-If we take an observable $A$ on $\mathcal{H}_1$ and its extension to
+Let's take an observable $A$ on $\mathcal{H}_1$ and its extension to
 $\mathcal{H} = \mathcal{H}_1 \otimes \mathcal{H}_2$ which is $\tilde A = A
 \otimes I$. If we have a density matrix $\rho = \rho_1 \otimes \rho_2$, then the
 average of $A$ is $\Tr(\rho \tilde A) = \Tr(\rho_1A)\Tr(\rho_2) = \Tr(\rho_1A)$.
@@ -1315,11 +1321,8 @@ $\rho_1\Tr(\rho_2)$ is the part of $\rho$ in $\mathcal{H}_1$.
 \end{proof}
 
 An important remark to be made is that if a pure state in entangled, its partial
-trace is mixed states. If we ignore the other space, our
-space will behave as a statistical mixture and not as a quantum superposition
-because depending of what the other state becomes, we can have any different phase.
-For example if we have two qubits, and we have a
-Bell state $\ket \psi = \frac{\ket{00} + \ket{11}}{\sqrt 2}$, then
+trace may be a mixed state. For example if we have two qubits, and we have a
+Bell state $\ket \Psi = \frac{\ket{00} + \ket{11}}{\sqrt 2}$, then
 \[\Tr_2\big(\ket \Psi \bra \Psi\big) = \frac 12I.\]
 
 
@@ -1328,10 +1331,11 @@ Bell state $\ket \psi = \frac{\ket{00} + \ket{11}}{\sqrt 2}$, then
 Even if a closed quantum system follows a unitary evolution, quantum
 systems are in general open. They undergo interaction with their environment, whether it is
 from external measurement or simply thermal relaxation. The goal of this section
-is to construct a representation of acceptable transformation for open systems similar to those describing unitary evolution of a closed system.
+is to construct a representation of acceptable transformations for open systems
+similar to those describing unitary evolution of a closed system.
 This section is strongly inspired from~\cite{QCQI}.
 
-\subsection{Classical measurement}
+\subsection{Projective measurement}
 
 The first and simplest example of external interaction in quantum theory is a
 measurement. When a quantum system interacts with a macroscopic measurement
@@ -1349,7 +1353,7 @@ the output state
 \[ \frac{P_a \ket \Psi}{\sqrt{\bra \Psi P_a \ket \Psi}}.\]
 
 In fact, $P_a$ is also a quantum measurement operator which detects if we measure
-$a$ or not, and thus its average value is the probability of measuring $A$. We
+$a$ or not, and thus its average value is the probability of measuring $a$. We
 can then express the same thing in the space of density matrices. When starting in
 $\rho$, we expect $a$ with probability $\Tr(\rho P_a)$ and get as an output
 state
@@ -1362,9 +1366,9 @@ and as $\bra \Psi I \ket \Psi = \Tr(\rho I) = 1$, the probabilities are normaliz
 
 \subsection{Generalized measurement}
 
-In some case quantum detector can perform other kinds of measurement, different from projective ones.
-In particular, a measurement that completely destroys the object instead of
-projecting is in a specific vector space. The main example is a photon counting
+In some case quantum detectors can perform other kinds of measurement, not projective.
+For example, a measurement that completely destroys the object instead of
+projecting it in a specific vector space. The main example is a photon counting
 detector. When a cavity is in a Fock state $\ket n$, and we insert a photon
 counting detector, the photons ``crash'' into the detector and are counted to be
 $n$. The remaining state is always $\ket 0$, as there is no photon left. This
@@ -1382,34 +1386,34 @@ quite simple given the probability expression: $\sum M_n^\dagger M_n = I$.
 
 \begin{defn}
   On a quantum Hilbert space $\mathcal{H}$, a \emph{generalized measurement} is a set
-  of outcomes $o$ of the measurement (there can be more outcomes that the
+  of outcomes $\mu$ of the measurement (there can be more outcomes that the
   dimension of $\mathcal{H}$), and for each of them a measurement
-  operator $M_o$. For the measurement to be complete, we require the
+  operator $M_\mu$. For the measurement to be complete, we require the
   normalization condition:
-  \[\sum_o M_o^\dagger M_o = I.\]
+  \[\sum_\mu M_\mu^\dagger M_\mu = I.\]
 
-  In that case the probability of outcome $o$ in state $\ket \Psi$ is $\bra \Psi
-  M_o^\dagger M_o \ket \Psi$ and the resulting state is:
-\[\frac{M_o \ket \Psi}{\sqrt{\bra \Psi M_o^\dagger M_o \ket \Psi}}.\]
+  In that case the probability of outcome $\mu$ in state $\ket \Psi$ is $\bra \Psi
+  M_\mu^\dagger M_\mu \ket \Psi$ and the resulting state is:
+\[\frac{M_\mu \ket \Psi}{\sqrt{\bra \Psi M_\mu^\dagger M_\mu \ket \Psi}}.\]
 \end{defn}
 
 \begin{rem}
   A projective measurement is just a special case of generalized measurement
-  with $M_o=P_o$ as $P_o^\dagger P_o = P_o$.
+  with $M_\mu=P_\mu$ as $P_\mu^\dagger P_\mu = P_\mu$.
 \end{rem}
 
 \begin{prop}
   If we have a mixed state $\rho$, the action of this generalized measurement is
-  to measure $o$ with probability $\Tr(M_o\rho M_o^\dagger)$. The outcome would
+  to measure $\mu$ with probability $\Tr(M_\mu\rho M_\mu^\dagger)$. The outcome would
   then be
-  \[\trnorm{M_o\rho M_o^\dagger}.\]
+  \[\trnorm{M_\mu\rho M_\mu^\dagger}.\]
 \end{prop}
 
 The question that is important now, is what happens when we forget the value of
-the measurement. We can have each outcome $o$ with the corresponding
+the measurement. We can have each outcome $\mu$ with the corresponding
 probability, so the resulting state is
-\[\rho_f = \sum_o \Tr(M_o\rho M_o^\dagger)\trnorm{M_o\rho M_o^\dagger}
-  =\sum_o M_o\rho M_o^\dagger.\]
+\[\rho_f = \sum_\mu \Tr(M_\mu\rho M_\mu^\dagger)\trnorm{M_\mu\rho M_\mu^\dagger}
+  =\sum_\mu M_\mu\rho M_\mu^\dagger.\]
 
 
 
@@ -1435,7 +1439,7 @@ probability $p_2$. Therefore, in the general case, we have
 and $\mathbb E$ thus preserves convex combinations. A better way of representing
 this is to say that $\mathbb E \in
 \mathcal{L}(\mathcal{O}(\mathcal{H}_i),\mathcal{O}(\mathcal{H}_o))$ i.e.
-$\mathcal{E}$ is linear on Hermitian operators. Any operator that preserves
+$\mathbb{E}$ is linear on Hermitian operators. Any operator that preserves
 convex combinations on $\mathcal{D}(\mathcal{H})$ can be extended to a linear
 operator on Hermitian matrices (the proof is easy and not interesting). The
 opposite is true if the operator preserves the positiveness and the value of the
@@ -1471,22 +1475,22 @@ a more precise existence to the environment.
 
 Restraining ourselves to an operator preserving the trace can be a problem for
 some kinds of evolution. For example, if we look at a generalized measurement
-${(M_o)}_o$, the operation of measuring and forgetting is
-\[\mathbb{M}(\rho) = \sum_o M_o \rho M_o^\dagger.\]
+${(M_\mu)}_\mu$, the operation of measuring and forgetting is
+\[\mathbb{M}(\rho) = \sum_\mu M_\mu \rho M_\mu^\dagger.\]
 
-However, when we remember the outcome $o$, the operation is $\rho \mapsto
-\frac{M_o \rho M_o^\dagger}{\Tr(M_0\rho M_0^\dagger)}$ which is \emph{not}
-linear. The associated linear operation is $\mathbb{M}_o(\rho) = M_o\rho
-M_0^\dagger$ which satisfies all properties of \cref{def:tpqo} except preserving
-the trace. In fact $\mathbb{M}_o$ describes a process that is not sure to
-happen. The probability that $\mathbb{M}_o$ happens when we do the measurement
-on $\rho$ is $p_o = \Tr(\mathbb{M}_o(\rho))$ and the resulting density matrix is
-$\mathbb{M}_o(\rho)/p_o$.
+However, when we remember the outcome $\mu$, the operation is $\rho \mapsto
+\frac{M_\mu \rho M_\mu^\dagger}{\Tr(M_0\rho M_0^\dagger)}$ which is \emph{not}
+linear. The associated linear operation is $\mathbb{M}_\mu(\rho) = M_\mu\rho
+M_\mu^\dagger$ which satisfies all properties of \cref{def:tpqo} except preserving
+the trace. In fact $\mathbb{M}_\mu$ describes a process that is not sure to
+happen. The probability that $\mathbb{M}_\mu$ happens when we do the measurement
+on $\rho$ is $p_\mu = \Tr(\mathbb{M}_\mu(\rho))$ and the resulting density matrix is
+$\mathbb{M}_\mu(\rho)/p_\mu$.
 Non-trace preserving quantum operation therefore represents
 operations where the observer has learnt some information on the system. Notice
 that here, the notion of an observer is a mix of the notion of drawing a value from
 the probability measure that the density matrix represents and the usual observer
-associated to quantum collapse. Therefore the generic definition for quantum
+associated to quantum collapses. Therefore the generic definition for quantum
 operators is
 \begin{defn}[quantum operation]\label{def:qo}
   Given an input space $\mathcal{H}_i$ and an output space $\mathcal{H}_o$, a
@@ -1504,65 +1508,62 @@ operators is
 \end{defn}
 
 Trace preserving operation represent deterministic processes
-that do not leak any information the observer whereas non trace preserving operations describe
+that do not leak any information the observer while non trace preserving operations describe
 processes that may happen with some probability (the trace of the output) and for which the
 observer has learnt some classical information on the system. A \emph{complete system of
-  quantum operation} (or \emph{measurement model}) ${(\mathbb{M}_o)}_o$ is a set of quantum
-operation such that $\sum_o \mathbb M_o$ is trace preserving. We can evaluate
-this system like a generalized measurement, The probability of the outcome $o$
-is $\Tr(\mathbb M_o(\rho))$ and the output state is:
+  quantum operation} (or \emph{measurement model}) ${(\mathbb{M}_\mu)}_\mu$ is a set of quantum
+operation such that $\sum_\mu \mathbb M_\mu$ is trace preserving. We can evaluate
+this system like a generalized measurement, The probability of the outcome $\mu$
+is $\Tr(\mathbb M_\mu(\rho))$ and the output state is
 
-\[\trnorm{\mathbb M_o(\rho)}\]
+\[\trnorm{\mathbb M_\mu(\rho)}\]
 
 We can now look at two complete system in sequence to get the following
 property.
 
 \begin{prop}\label{prop:qocomp}
-  Given $(\mathbb M_o)$ and $(\mathbb K)_i$ two measurement models, The
-  probability or measuring $o$ then $i$ in state $\rho$
-  is $\Tr(\mathbb K_i (\mathbb M_o(\rho)))$ and the output state is:
-  \[\trnorm{\mathbb K_i (\mathbb M_o(\rho)))}\]
+  Given $(\mathbb M_\mu)$ and $(\mathbb K)_i$ two measurement models, The
+  probability or measuring $\mu$ then $i$ in state $\rho$
+  is $\Tr(\mathbb K_i (\mathbb M_\mu(\rho)))$ and the output state is
+  \[\trnorm{\mathbb K_i (\mathbb M_\mu(\rho)))}\]
 \end{prop}
 
 This obviously works for more than two systems and that's why we can compose
 partial operator without renormalizing each time and only care about
 renormalizing at the end. The behavior is exactly the same as if we had a single
-system of operator indexed on $(o,i)$ where $\mathbb E_{o,i} = \mathbb K_i \circ
-\mathbb M_o$.
+system of operator indexed on $(\mu,i)$ where $\mathbb E_{\mu,i} = \mathbb K_i \circ
+\mathbb M_\mu$.
 
 \subsection{Kraus operators, Kraus Maps}\label{ssec:kraus}
 
-Until we have only manipulated abstract definition for quantum operation, let's
+Until now, we have only manipulated abstract definition for quantum operations, let's
 see how to represent them numerically. In fact we already know a numerical
-formula for a certain kind of operation: unread generalized measurement. The
-form we know is $\mathbb{M}(\rho) = \sum \mathbb M_o(\rho) = \sum M_o\rho
-M_o^\dagger$. In fact we can prove this form is general and is called
-\emph{Krauss decomposition} or \emph{Krass map}.
+formula for a certain kind of operation: unread generalized measurements. The
+form we know is $\mathbb{M}(\rho) = \sum \mathbb M_\mu(\rho) = \sum M_\mu\rho
+M_\mu^\dagger$. In fact we can prove this form is general and is called
+\emph{Krauss decomposition} or \emph{Krauss map}.
 
 \begin{thm}[Krauss]
-  Given a application $\mathbb E : \mathcal{O}(\mathcal{H}_i) \to
+  An application $\mathbb E : \mathcal{O}(\mathcal{H}_i) \to
   \mathcal{O}(\mathcal{H}_o)$ is a quantum operation if and only if there exist
   a set of operators $E_i \in \mathcal{L}(\mathcal{H}_i, \mathcal{H}_o)$ such
-  that $\sum E_i E_i^\dagger \le I$ and:
-  \[\mathbb E(\rho) = \sum_i E_i\rho E_i^\dagger\]
+  that $\sum E_i E_i^\dagger \le I$ and
+  \[\mathbb E(\rho) = \sum_i E_i\rho E_i^\dagger.\]
 \end{thm}
 
-\begin{prop}
-  The operation is trace preserving if and only if
-\[\sum_i E_i E_i^\dagger = I\]
-\end{prop}
-
 \begin{proof}
-  Left to the reader.
-\end{proof}
-
-\begin{proof}[Proof of the theorem]
   Can be found in~\cite{QCQI}.
 \end{proof}
 
+\begin{prop}
+  The operation is trace preserving if and only if
+$\; \displaystyle \sum_i E_i E_i^\dagger = I.$
+\end{prop}
+
+
 Any trace preserving quantum operators can thus be expressed as an unread
 quantum measurement. It is like if all the decoherence processes were due to unread
-measurements from the environment. We'll see that in details in next section
+measurements from the environment.
 
 \subsection{Interpretation with environment}\label{ssec:interp}
 
@@ -1575,8 +1576,8 @@ partial trace. This approach is explained at the beginning of~\cite{QCQI}.
 Now it is time to use our new tools to give an usable expression for the
 likelihood function. This transformation comes from \cite{SPRQT16}.
 
-The experiment can be represented as a starting average state $\rho$ that we
-want to determine with tomography. This state evolve according to the
+The experiment can be represented as a starting state $\rho$ that we
+want to determine with tomography. This state evolves according to the
 experimental setup and thanks to some measurements made by the experimenter. For
 a given run of the experiment, the result are $y_1,\ldots,y_m$.
 The state $\rho_i$ will be the state just after the measurement $i$. The
@@ -1584,16 +1585,13 @@ evolution from $\rho_{i-1}$ to $\rho_i$ is given by a quantum operation that
 depends on the result of the measurement:
 
 \[\rho_i = \trnorm{\mathbb K_{i,y_i}(\rho_{i-1})}\]
-
 The system of $\mathbb K_{i,y_i}$ is complete for a given $i$. According to
 \cref{prop:qocomp}, The probability of getting the results $y_1, \ldots, y_n$ is
-\[P(y_,,\ldots, y_n) = \Tr(\mathbb K_{m,y_m} \circ \ldots \circ \mathbb K_{1,y_1}(\rho))\]
-
-We can then use the adjoint maps for the Frobenius product (defined by $\Tr(A\mathbb K(B)) = \Tr(\mathbb
-K^*(A)B))$ and get
+\[P(y_,,\ldots, y_n) = \Tr(\mathbb K_{m,y_m} \circ \ldots \circ \mathbb K_{1,y_1}(\rho)).\]
+We can use the adjoint maps for the Frobenius product (defined by $\Tr(A\mathbb K(B)) = \Tr(\mathbb
+K^*(A)B))$ to get
 \[P(y_,,\ldots, y_n) = \Tr(\rho \mathbb K_{1,y_1}^* \circ \ldots \circ \mathbb
-  K_{m,y_m}^*(I)) = \Tr(\rho E_{y_1,\ldots, y_n})\]
-
+  K_{m,y_m}^*(I)) = \Tr(\rho E_{y_1,\ldots, y_n}).\]
 The matrix $E$ is called the \emph{effect matrix} of the measurement
 $y_1,\ldots,y_n$.
 
@@ -1603,24 +1601,24 @@ $y_1,\ldots,y_n$.
 \end{prop}
 
 
-If we have $n$ sequence of measurement, We'll have the effect
-matrices $E_1, \ldots, E_n$, that represent each measurement. The log-likelihood
+If we have $n$ sequence of measurement, we obtain $n$ effect
+matrices $E_1, \ldots, E_n$ that represent each measurement. The log-likelihood
 function is thus
 
 \begin{equation}\label{eqn:ll}
-  \ell(\rho) = \sum_i \log (\Tr(\rho E_i))
+  \ell(\rho) = \sum_i \log (\Tr(\rho E_i)).
 \end{equation}
 
-We just need to be able to compute the $\mathbb K_{i,y_i}$, and we'll do that in
-the next section. To compute the adjoint, we simply use the representation as
-Krauss operators Indeed if $\mathbb K(\rho) = \sum\limits_o M_o\rho M_o^\delta$
-then:
+We just need to be able to compute the $\mathbb K_{i,y_i}$.
+To compute the adjoint, we simply use the representation as
+Krauss operators, indeed if $\mathbb K(\rho) = \sum\limits_\mu M_\mu\rho M_\mu^\dagger$
+then
 
-\[\mathbb K^*(\rho) = \sum_o M_o^\dagger \rho M_o\]
+\[\mathbb K^*(\rho) = \sum_\mu M_\mu^\dagger \rho M_\mu.\]
 
 \section{Computation of Krauss operators for QND measurement}
 
-The actual computation of the Quantum operations is done in
+The actual computation of the Krauss operators is done in
 the supplementary information section of~\cite{VM19}. They take into account the
 detection errors, the decoherence of the cavity and of course all the theory
 about quantum Rabi oscillations.
@@ -1647,7 +1645,7 @@ lecture notes from Alexandre d'Aspremont, in particular~\cite{ConvAspr}
   The $\lambda$ can be 0 in this definition i.e we must have $0 \in K$.
 \end{defn}
 
-A convex cone is simple a cone that is convex. We are particularly interested in
+A convex cone is simply a cone that is convex. We are particularly interested in
 proper cones:
 
 \begin{defn}
@@ -1660,11 +1658,12 @@ proper cones:
 \end{defn}
 
 In particular the set of vector with non negative coordinate (the positive orthant) or the set of
-positive hermitian matrices ($\mathcal{O}_+(\mathcal{H})$) are proper cones. With those cone we can define a
+positive hermitian matrices ($\mathcal{O}_+(\mathcal{H})$) are proper cones.
+With this notion of proper cone we can define a
 generalized inequality:
 
 \begin{defn}
-  Two vector $a$ and $b$ are said to be \emph{inferior according to $K$} which is denoted by $a
+  Two vectors $a$ and $b$ are said to be \emph{inferior according to $K$} which is denoted by $a
   \leq_K b$ if $b - a \in K$. We say that $a <_K b$ if $b - a \in \mathring K$
 \end{defn}
 
@@ -1675,7 +1674,8 @@ inequality of $\mathcal{O}_+(\mathcal{H})$.
 The last concept we need is the one of duals cones:
 
 \begin{defn}
-  The \emph{dual cone} $K^*$ of a cone $K \subset$ where $E$ is euclidean or hermitian is the set
+  The \emph{dual cone} $K^*$ of a cone $K \subset E$ where $E$ is euclidean or
+  hermitian is the set
   \[ K^* = \{y \in \R^n,\; \forall x \in K,\, \braket y x \geq 0\}\]
 
   In the hermitian case, the $\geq 0$ mean real and non negative.
@@ -1699,8 +1699,8 @@ is sometimes called \emph{internal dual cone}
 \begin{proof}
   Suppose $H$ is hermitian and $\langle H | A \rangle \geq 0$ for all $A \in
   \mathcal{O}_+(\mathcal{H})$. Then if we diagonalize $H$, and if there is any
-  negative eigen value, the matrice which has as diagonal one in front of that
-  eigenvalue and 0 in front of other will make the Frobenius product negative
+  negative eigenvalue, the matrice which has as diagonal one in front of that
+  eigenvalue and 0 in front of all the others will make the Frobenius product negative
   which is impossible, thus $H \geq 0$.
 
   For a general matrice $M$, we have the Cartesian decomposition $M = A + iB$
@@ -1711,51 +1711,49 @@ is sometimes called \emph{internal dual cone}
 
 \subsection{Convex problems}
 
-I suppose that the reader knows the usual definition of a convex function,
-however, this can be generalized to proper cone equality:
+I suppose that the reader knows the usual definition of a convex function.
+This definition can be generalized, in the multivariate case, to proper cone equality:
 
 \begin{defn}
   A function $f : \dom f \subset E \to F$ where $E$ and $F$ are real vector
   space is said to be $K$-convex for $K$ a proper cone of $F$ if $\dom f$ is
   convex and
   \[\forall \lambda \in [0,1],\, \forall x,y \in \dom f, \lambda f(x) + (1 -
-    \lambda)f(y) \geq_K f(\lambda x + (1-\lambda)y)\]
+    \lambda)f(y) \geq_K f(\lambda x + (1-\lambda)y).\]
 \end{defn}
-
 If $K = \R_+$, this is the usual convexity. A convex problem is then a problem
 of the form
 \begin{equation}\label{eqn:stdprb}
-\minima{f_0(x)}{x \in \R^n}{f_i(x) &\leq_{K_i} \\ \!\!h_j(x) &= 0}
+\minima{f_0(x)}{x \in \R^n}{f_i(x) &\leq_{K_i}0 \\ \!\!h_j(x) &= 0}
 \end{equation}
 where $f_0$ is convex, each $f_i : \R^n \to E_i$ is $K_i$-convex for $i = 1,\ldots,m$ and each
 $h_j : \R^n \to \R$ are affine for $j = 1,\ldots,p$. Obviously, the domain isn't really $\R^n$
-but $\bigcap_i \dom f_i$. However as all convex
-functions can be extended setting their values to $\infty$ outside their domain,
+but $\bigcap_i \dom f_i$. However all convex
+functions can be extended by setting their values to $\infty$ outside their domain,
 so the distinction isn't really relevant (affine functions are always defined
 everywhere).
 
 \begin{defn}
-  A point $x$ is said to be \emph{feasible} if it satisfies all the constraint
+  A point $x$ is said to be \emph{feasible} if it satisfies all the constraints
   in the ``subject to''.
 \end{defn}
-
-The various convexity constraints ensure that
 
 \begin{prop}
   The set of feasible points is convex.
 \end{prop}
 
-The \emph{optimum} value of the problem is the minimal value reached or approached by $f_0$ it
+The \emph{optimum} value of the problem is the minimal value reached or
+approached by $f_0$. It
 is noted $f_{opt}$ in the rest of this section. In the approached case, it is the
-infimum of all the value taken by $f_0$ on the set of feasible points.
+infimum of all the values taken by $f_0$ on the set of feasible points.
 Any $x$ that reaches $f_{opt}$ is called a \emph{solution point}.
 
 \begin{prop}
-  The set of solution point is always convex (but may be empty).
+  The set of solution points is always convex (but may be empty).
 \end{prop}
 
-We can also express maximization problems : the concave case of the problem is
-our case of problem in the log-likelihood estimation.
+We can also express maximization concave problems as is the case of the
+log-likelihood estimation:
 \[\maxima{f_0(x)}{x \in \R^n}{f_i(x) &\geq_{K_i}\\\!h_j(x)&=0}\]
 
 Where $f_0$ is concave, each $f_i$ is $K_i$-concave and each $h_j$ is affine.
@@ -1763,15 +1761,14 @@ Where $f_0$ is concave, each $f_i$ is $K_i$-concave and each $h_j$ is affine.
 \subsection{Strong convexity}
 
 \begin{defn}
-  A function, $f : \R^n \to \R$ is strongly convex on a set $A$, if is $\class
+  A function, $f : \R^n \to \R$ is strongly convex on a set $A$, if it is of class $\class
   2$ on $A$ and if there is a constant $\mu$ such that
   for any point of $A$, we have
-  \[\dparn f x 2 \geq \mu.I\]
-  where $\dparn f x 2$ is the hessian matrix of $f$.
+  \[\nabla^2 f \geq \mu.I\]
 \end{defn}
 
-A problem is strongly convex if $f_0$ is strongly convex on the feasible set
-which is closed (This happens if all constraints function are continuous for example).
+A problem is strongly convex if $f_0$ is strongly convex on the feasible set and
+this set is closed. This happens if all constraint functions are continuous for example.
 
 \begin{prop}
   A strongly convex problem has exactly one solution that is reached in a single point
@@ -1788,7 +1785,7 @@ need to define the Lagrangian of the problem (which has nothing to do with the
 Lagrangian of classical mechanics).
 
 \begin{defn}
-  Given a problem in form~\ref{eqn:stdprb}, We define its \emph{lagrangian} by
+  Given a problem in form~\ref{eqn:stdprb}, We define its \emph{Lagrangian} by
   the function
   \[ L:\begin{aligned}[t] \R^n \times \prod E_i \times \R^p \;&\to\; \R\\
       (x,\eta_1,\ldots,\eta_m,\lambda_1,\ldots,\lambda_p) \;&\mapsto\; f_0(x) +
@@ -1798,12 +1795,12 @@ Lagrangian of classical mechanics).
 \end{defn}
 
 
-In order for it to be under the minimum of the primal independently of $x$ when the constraints are
-satisfied, we need to minimize on $x$
+If we want it to be under the minimum of the primal independently of $x$ when the constraints are
+satisfied, we need to minimize on $x$.
 
 \begin{defn}
-  The \emph{Lagrange dual function} or simply \emph{dual function} is defined by:
-  \[g(\eta,\lambda) = \inf_{x \in \R^n} L(x,\eta,\lambda)\]
+  The \emph{Lagrange dual function} or simply \emph{dual function} is defined by
+  \[g(\eta,\lambda) = \inf_{x \in \R^n} L(x,\eta,\lambda).\]
 \end{defn}
 
 \begin{prop}
@@ -1842,7 +1839,7 @@ problem to solve which is called the \emph{dual problem}
 
 Here we study the link between the dual and the primal problem and try to find
 conditions for solutions and various other properties. Suppose we have a problem in
-standard form~\ref{eqn:stdprb} with its optimum $\tilde f$ and it's canonical
+standard form~\ref{eqn:stdprb} with its optimum $\tilde f$ and its canonical
 dual~\ref{eqn:dual} with its optimum $\tilde g$. What we have proven in the
 previous section is that
 \[\tilde g \leq \tilde f\]
@@ -1852,14 +1849,10 @@ This is called \emph{weak duality}. In some specific cases, we have $\tilde g =
 strongly dual is very important for it's study and impact various properties.
 One way of proving that a convex problem is strongly dual is:
 \begin{prop}[Slaters' constraint qualification]\label{prop:slater}
-  If the primal convex problem has an internal feasible point, i.e a point that is in
-  the interior of the set of feasible points, that is a point $x$ that satisfies
+  If the primal convex problem has a point that is in
+  the interior of the set of feasible points i.e.\ a point $x$ that satisfies
   $f_i(x) <_{K_i} 0$ and $h_j(x) = 0$, then the problem is strongly dual.
 \end{prop}
-
-\begin{proof}
-  Left to the reader or can be found in a convex optimization book.
-\end{proof}
 
 \begin{prop}[Complementary slackness]
   If strong duality holds and $\tilde x$ is optimal for the primal and
@@ -1881,31 +1874,23 @@ One way of proving that a convex problem is strongly dual is:
   \item For all $i$, $\braket {\eta_i}{f_i({x})} = 0$
   \item The gradient of the Lagrangian $\dpar L x$ is 0:
     \[ \nabla f_0(x) + \sum_{i = 1}^m \nabla\braket{\eta_i}{f_i(x)} +
-      \sum_{j=1}^p \lambda_j \nabla h_j(x) = 0\]
+      \sum_{j=1}^p \lambda_j \nabla h_j(x) = 0.\]
   \end{itemize}
-  for a strongly dual convex problem, There are equivalent to the optimality of
+  For a strongly dual convex problem, they are equivalent to the optimality of
   $x$ for the primal and the optimality of $\eta,\lambda$ for the dual.
 
 \end{thm}
-
-\begin{proof}
-  Left to the reader or can be found in a convex optimization book.
-\end{proof}
 
 \begin{prop}\label{prop:slaterKKT}
   If we have Slater's condition (\ref{prop:slater}), $x$ is optimal if and only if there exists a
   $\eta,\lambda$ satisfying the KKT conditions.
 \end{prop}
 
-\begin{proof}
-  Left to the reader or can be found in a convex optimization book.
-\end{proof}
-
 \section{Solution characterization}
 
 \subsection{Characterization}
 
-We now want to study the optimal solutions of the maximum likelihood problem:
+Now we can move on to the optimal solutions of the maximum likelihood problem:
 \[\maximf{\ell(\rho)}{\rho \in \mathcal{D}(\mathcal{H})} \]
 
 which literally means, ``maximize the log-likelihood on density matrices''. In
@@ -1919,13 +1904,13 @@ The optimization is on the vector space $\mathcal{O}(\mathcal{H})$. This problem
 satisfies Slater's condition (\ref{prop:slater}) as the identity matrix is alway
 in the interior of $\mathcal{D}$. Therefore all results for previous section are
 available, in particular we can characterize the solution using the KKT
-conditions (\ref{thm:KKT}). In particular:
+conditions (\ref{thm:KKT}).
 
 \begin{prop}\label{prop:caracKKT}
   $\rho\ml$ is an optimal solution if and only if there
-exists $\eta \ge 0$ and $\lambda$ such that
-\[\braket \eta {\rho\ml} = 0 \quad \text{and} \quad \nabla \ell + \eta +
-  \lambda I = 0\]
+exists $\eta \geq 0$ and $\lambda$ such that
+\[\braket \eta {\rho\ml} = 0 \quad \text{and} \quad \nabla \ell + \eta =
+  \lambda I\]
 \end{prop}
 
 \begin{proof}
@@ -1946,8 +1931,8 @@ exists $\eta \ge 0$ and $\lambda$ such that
 
 \subsection{Uniqueness}\label{ssec:uniq}
 
-The simplest case for the solution to exist and be unique is for the problem do
-be strongly convex:
+The simplest case to ensure the solution exists and is unique, is to check if
+the problem is strongly convex:
 
 \begin{prop}
   If $\Span_i(E_i) = \mathcal{O}(\mathcal{H})$, then the problem is strongly convex.
@@ -1970,7 +1955,7 @@ However if $\Span(E_i)$ is not full, we still have some properties: exact
 solutions will exist and fill an affine sub-space of $\mathcal{D}$ orthogonal to
 $\Span(E_i)$. Actually it will be exactly the orthogonal of $\Span(E_i)$
 projected on $\mathcal{D}$. Which solution to choose among those was one of the problem that
-was still unsolved when I arrived, I solve it up to personal taste in \cref{sec:fixspan}.
+was still unsolved when I arrived, I propose some potential solutions in \cref{sec:fixspan}.
 
 
 
@@ -1987,8 +1972,8 @@ numerical errors.
 
 \subsection{Algorithm}
 
-On unconstrained convex problem, the simplest way to find the optimum is to a
-``gradient descent''. It means that when we go downward (toward lower $f_0$)
+On unconstrained convex problems, the simplest way to find the optimum is to do a
+``gradient descent''. It means that we go downward (toward lower $f_0$)
 following the gradient. The algorithm start from $x = x_0$ and is:
 
 \begin{itemize}
@@ -2003,7 +1988,7 @@ following the gradient. The algorithm start from $x = x_0$ and is:
 Some examples are:
 \begin{itemize}
 \item Choose always the same value
-\item Choose slowly decreasing value independent of the rest.
+\item Choose a slowly decreasing value independent of the rest.
 \item Choose the best value that minimize $t \mapsto f_0(x + t\nabla f_0(x))$.
 \item Choose the best value that minimize the second order approximation
   \[t \mapsto f_0(x) + t\|\nabla f_c(x)\|^2 + \frac {t^2} 2 \nabla f_0^t \cdot
@@ -2017,24 +2002,15 @@ In practice the last one was chosen.
   toward a solution for any unconstrained problem
 \end{prop}
 
-\begin{proof}
-  Left to the reader or can be found in a convex optimization book.
-\end{proof}
-
 However out problem is not unconstrained. The solution must in the feasible set
 $\mathcal{D}$. One way of dealing with that is to project the new point $x + h$
 back to $\mathcal{D}$. Projecting a point on a compact convex set is always
-doable. We'll see how to it numerically in \cref{ssec:proj}
+doable. We'll see how to do it numerically in \cref{ssec:proj}
 
 \begin{prop}
   For a constrained strongly convex problem, the projected gradient descent
   method with second order approximation converges
 \end{prop}
-
-\begin{proof}
-  Left to the reader or can be found in a convex optimization book.
-\end{proof}
-
 In practice we'll do ``gradient ascent'' as in our problem as we are maximizing a
 concave function. The full algorithm is thus:
 
@@ -2052,21 +2028,21 @@ concave function. The full algorithm is thus:
 This algorithm is an adaptation of work done by Pierre Six in~\cite{SPHD16},
 made by Pierre Rouchon in the actual codebase.
 
-For a given point $x \in \mathcal{O}(\mathcal{H})$, its projection on
-$\mathcal{D}$ is the point of $\mathcal{D}$ that is the nearest from $x$. We
+For a given point $A \in \mathcal{O}(\mathcal{H})$, its projection on
+$\mathcal{D}$ is the point of $\mathcal{D}$ that is the nearest from $A$. We
 want to:
-\[\minim{\|x - \rho\|}{\rho}{\rho \in \mathcal{D}}\]
+\[\minim{\|A - \rho\|}{\rho}{\rho \in \mathcal{D}}\]
 
-Let first diagonalize $x \in \mathcal{O}(\mathcal{H})$ into $x = UDU^\dagger$.\\
-We have $\|x - \rho\| = \|D - U^\dagger \rho U\|$ but we have
+Let first diagonalize $A \in \mathcal{O}(\mathcal{H})$ into $A = UDU^\dagger$.\\
+We have $\|A - \rho\| = \|D - U^\dagger \rho U\|$ but we have
 $U^\dagger \rho U \in \mathcal{D}\iff
 \rho \in \mathcal{D}$, thus our problem is equivalent to:
 \[\minim{\|D - \rho\|}{\rho}{\rho \in \mathcal{D}}\]
 
 But any outdiagonal coefficient of $\rho$ would only increase the distance, as
-we can remove all of them and stay in $\mathcal{D}$ (Removing only part of them
-would guaranty to stay in $\mathcal{D}$). Our problem is thus equivalent to
-(given that $D = diag(d)$):
+we can remove all of them and stay in $\mathcal{D}$ (Warning: removing only part of them
+would not guaranty to stay in $\mathcal{D}$). Our problem is thus equivalent to
+(given that $D = \mathrm{diag}(d)$):
 \[\minima{\|d - x\|}{x \in\R^n}{ x&>0\\ \|x\|_1 &= 1}\]
 
 This is therefore just projecting a point on a simplex of dimension $n-1$ in
@@ -2083,11 +2059,11 @@ solution with the KKT conditions:
 \end{itemize}
 
 There are two cases: either $x_i > 0$ and $n_i = 0$ and thus $x_i = d_i - c$, or
-$x_i = 0$ and $d_i \leq c$. The $c$ thus cut the set of axis in two parts: those above
+$x_i = 0$ and $d_i \leq c$. The $c$ value cut the set of axis in two parts: those above
 and those below.
 
 \begin{thm}
-  The following algorithm computes the right $S$ and $c$ for the projection:
+  The following algorithm computes the right projection:
 \begin{itemize}
 \item Sort $x$ into $d_{p(1)} \geq \cdots \geq d_{p(n)}$.
 \item Find $i_0$, the first index such that $c_{i_0} > d_{p(i_0+1)}$ with
@@ -2136,6 +2112,7 @@ V_A = \Tr(A\pr \mathbb H\inv(A\pr)) +O(\frac 1 {N^2})
 where:
 \begin{itemize}
 \item $\mathcal{D}_r$ is the submanifold of $\mathcal{D}$ of matrices with rank $r$
+\item $P\ml$ is the orthogonal projector on the range of $\rho$.
 \item $A\pr$ is
   the orthogonal projection on the tangent space to $\mathcal{D}_{\rk \rho}$ in
   $\rho$:
@@ -2150,22 +2127,21 @@ where:
   $\mathcal{D}_{\rk \rho}$ as proven in \cref{prop:fisherhessian}
 \end{itemize}
 
-Please take care that is not the standard deviation of the quantum measurement
+Please take care that this is not the standard deviation on quantum measurement
 due to quantum uncertainty, nor the deviation due to the probabilistic nature of
 $\rho\ml$. This deviation comes from the dispersion of the effect matrices
 $E_i$. If all the $E_i$ are the same, $\rho\ml = \trnorm{E_i}$ and $V_A = 0$ for
-any $A$. Furthermore and it is a known problem of max-likelihood method, $V_A$
+any $A$. Furthermore it is a known problem of max-likelihood method that $V_A$
 does not measure the deviation due to how few experiment there are. If we have
 only one $E_i$, the max-likelihood algorithm will tell that $\rho\ml =
 \trnorm{E_1}$ with 0 deviation. I didn't had time to address that in this
 internship and no one in my team did it before, so we just assume we have
-enough measurement so that the $O(\frac1N)$ is small enough i.e significantly
+enough measurements so that the $O(\frac1N)$ is small enough i.e significantly
 smaller than $V_A$.
 
-\begin{rem} The individual coefficient can be observed with some specific matrices.
-  We
-  can thus compute the deviation on each population and coherence individually.
-  Those deviation are \emph{not} independent.
+\begin{rem} The individual coefficients can be observed with some specific matrices.
+  We can thus compute the deviation on each population and coherence individually.
+  Those deviations are \emph{not} independent.
 \end{rem}
 
 
@@ -2174,7 +2150,7 @@ smaller than $V_A$.
 \subsection{Overview}
 
 The goal of this experiment is to study heat exchange and thermodynamics at a
-individual quantum level. In particular, with some quantum manipulation, we
+individual quantum level. In particular, with some quantum manipulations, we
 create a Maxwell Demon context where a colder atom can give heat to a hotter
 cavity.
 
@@ -2184,18 +2160,18 @@ The protocol is the following:
 \item The cavity is cleared by sending a bunch of Rydberg atoms in groud state
   $\ket g$ into it so that they absorb any remaining photons. The temperature of
   the cavity is then $T = \SI{0}{K}$.
-\item A thermal field is built inside the cavity a given initial temperature
+\item A thermal field is built inside the cavity at a given initial temperature
   $T_C$. This temperature is different from the cryostat temperature, so it
   isn't stable (but the relaxing time is long enough).
 \item A single Rydberg atom is sent through the setup.
-\item At first Ramsey zone it is set to temperature $T_a$.
-\item At the second Ramsey zone it may or may not undergo an action from the Maxwell
-  demon system, that make it interact with the fundamental level $\ket f$
+\item In the first Ramsey zone, it is set to temperature $T_a$.
+\item In the second Ramsey zone, it may or may not undergo an action from the Maxwell
+  demon system that make it interact with the fundamental level $\ket f$.
 \item The atom interacts with the second cavity at temperature $T_C$, emiting
   and absorbing photons.
 \item The atom is observed to be in either $\ket e$, $\ket g$ or $\ket f$.
 \item A bunch of non-resonant QND atoms are sent to observe the state of the cavity.
-\item We reconstruct the state of the cavity by max-like estimation thanks to
+\item We reconstruct the state of the cavity by maxlike estimation thanks to
   the QND measurements.
 \end{itemize}
 
@@ -2203,16 +2179,16 @@ The protocol is the following:
 
 We first need to define what is a thermal state at temperature $T$. Ideally it
 is the statistical state that
-reaches a quantum system when interacting with a thermostat
+a quantum system reaches when interacting with a thermostat
 (a macroscopic system) at temperature $T$. According the Maxwell-Bolzman
 distribution, the probability to be in state $i$ of energy $E_i$ is:
 \[p_i = \frac {e^{-\beta E_i}} Z\]
 
 where $\beta = \frac 1 {k_B T}$, and $Z$ is the partition function $Z = \sum
-e^{-\beta E_i}$. The thermal state is thus the following density matrix:
+e^{-\beta E_i}$. The thermal state is thus
 \[\zeta_\beta = \sum_i p_i \ket i \bra i\]
 
-This can be expressed more compactly with:
+This can be expressed more compactly with
 \begin{equation}
   \zeta_\beta = \trnorm{e^{\beta H}}
 \end{equation}
@@ -2224,32 +2200,32 @@ In the case of a thermal qubit with energy gap $E_g$, we let $p_\beta(E_g) =\fra
 \subsection{Atom state}
 
 The Rydberg atom is prepared in state $\zeta_\beta^S$. This state is a thermal
-mix of $\ket e$ and $\ket g$. In practice atoms are in pure state. The Ramsey
-zone, just to a rotation with the right angle to bring $\ket g$ to:
+mix of $\ket e$ and $\ket g$. However, in practice atoms are in pure states. The Ramsey
+zone is calibrated to do just a rotation with the right angle to bring $\ket g$ to:
 
 \[(1-p_\beta(\hbar \omega_{eg}))\ket g +
 e^{i\phi}p_\beta(\hbar \omega_{eg}) \ket e\]
 The angle and thus the temperature is chosen by the experimenter. However the
 axis of the rotation is random, and thus the phase $\phi$ is also random. The
-average of those state with random $\phi$ is indeed $\zeta_\beta^S$.
+average of those states is thus $\zeta_\beta^S$.
 
 However the goal of the experiment is to make the $\ket e$-$\ket g$ system
 interact with $\ket f$ in order to decompose those interaction. We'll
-artificially split our system into two qubits $\mathcal{H}^S$ and $\mathcal{H}^D$, for the
-main system $e$-$g$ and the demon system $g$-$f$ respectively. The atom is thus
-represented by the System $\mathcal{H}^S \otimes \mathcal{H}^D$. The mapping is:
+artificially split our system into two qubits $\mathcal{H}^Q$ and $\mathcal{H}^D$, for the
+main system $e$--$g$ and the demon system $g$-$f$ respectively. The atom is thus
+represented by the System $\mathcal{H}^Q \otimes \mathcal{H}^D$. The mapping is:
 
-\[\ket e = \ket {1^S1^D} \hspace{2cm} \ket g = \ket{0^S1^D} \hspace{2cm} \ket f
-  = \ket{0^S0^D}\]
+\[\ket e = \ket {1^Q 1^D} \hspace{2cm} \ket g = \ket{0^Q 1^D} \hspace{2cm} \ket f
+  = \ket{0^Q 0^D}\]
 
 The system is built in such a way that the first qubit is only about the $e$-$g$
 interaction and the demon qubit is only about the $g$-$f$ interaction. The state
-$\ket 1^S0^D$ is purely fictitious and always has probability zero in all our
-calculation. This decomposition allows to speak about entanglement and other
+$\ket {1^Q 0^D}$ is purely fictitious and always has probability zero in all our
+calculations. This decomposition allows to speak about entanglement and other
 concepts that need multiple systems on a single atom.
 
 The initial atom state is thus:
-\[\zeta_\beta^S \otimes \ket {1^D} \bra {1^D}\]
+\[\zeta_\beta^Q \otimes \ket {1^D} \bra {1^D}\]
 
 \subsection{Maxwell demon: readout}
 
@@ -2267,9 +2243,8 @@ the first on is 0.
 
 \subsection{Cavity interaction: Feadback}
 
-Inside the cavity the atom undergo an adiabatic passage that forced absorption
-or emission of an atom: If the atom is in state $\ket g$ it will absorb an atom,
-and if it is in state $\ket e$, it will emit. As the passage is done only around
+Inside the cavity the atom undergo an adiabatic passage that forces the absorption
+or the emission of an atom. As the passage is done only around
 $\omega_{eg}$, the state $\ket f$ does not interact at all with the cavity:
 \begin{align*}
   \ket{g,n+1} &\mapsto \ket{e,n}\\
@@ -2278,7 +2253,7 @@ $\omega_{eg}$, the state $\ket f$ does not interact at all with the cavity:
   \ket{f,n} &\mapsto \ket{f,n}\\
 \end{align*}
 
-If the demon qubit is set to one, the unitary operation applied to the $SC$
+If the demon qubit is set to one, the unitary operation applied to the $QC$
 system is:
 \[U = \ket{00}\bra{00} + \ket 1 \bra 0 \otimes a + \ket 0 \bra 1 \otimes a^\dagger\]
 
@@ -2309,45 +2284,43 @@ For more details I suggest consulting a book like~\cite{QCQI}.
 
 \section{Thermodynamical analysis}
 
-The intern whose internship project motivated the work of my internship had done
+Luis Bajera, whose internship project motivated the work of my internship, had done
 some interesting work on the second law of thermodynamics. In particular he
 related the second law of thermodynamics to the notions of quantum information
-theory. His main result that we
-wanted to test is a rewrite of the second law of thermodynamics. Usually if two
-systems have temperature $T_1$ and $T_2$, are put into contact and exchange a
-heat $Q$ from 1 to 2, We'll have:
-\[\frac Q{T_2} - \frac Q{T_1} \geq 0\]
-If speak about the inverse temperature $\beta$, we'll write:
-\[\Delta\beta Q \geq 0\]
+theory. His main result, that we
+wanted to test, is a rewrite of the second law of thermodynamics. Usually if two
+systems have temperature $T_1$ and $T_2$, are put into contact and exchange some
+heat $Q$ from 1 to 2, we'll have:
+\[\frac Q{T_2} - \frac Q{T_1} \geq 0.\]
+If we speak about the inverse temperature $\beta$, we'll write:
+\[\Delta\beta Q \geq 0.\]
 
 But this inequality does not hold when the Maxwell demon is activated, because
-the fact that the demon learn information about the system change reduce the
-entropy in some way. The new inequality named \emph{Weak second law} is then:
+the fact that the demon learns information about the system somehow reduces the
+entropy in some way. The new inequality named \emph{Weak second law} is then
 \begin{equation}\label{eqn:weaksnd}
 \Delta\beta Q - \Delta I_{QC:D} \geq 0
 \end{equation}
-
-Where $I_{SC:D}$ is the mutual information between, on one side the main atomic
+where $I_{QC:D}$ is the mutual information between, on one side the main atomic
 qubit $Q$
 and the cavity $C$, and on the other side the demon $D$. In fact
 Luis managed to find the exact value of this quantity to get what we call
-\emph{strong second law}:
+\emph{strong second law}
 \begin{equation}\label{eqn:strgsnd}
   \Delta\beta Q - \Delta I_{QC:D} = D_{QC}
 \end{equation}
-
-Where $D_{QC}$ is the relative entropy of the system $QC$ compared to its
+where $D_{QC}$ is the relative entropy of the system $QC$ compared to its
 original thermal state $\zeta^Q_{\beta_Q} \otimes \zeta^C_{\beta_C}$.
 
 \section{Experimental results}\label{sec:res1}
 
-The goal of the experimental was thus to check Luis' results, In particular the
+The goal of the experiment was thus to check Luis' results, in particular the
 strong second law. The plots I will give here are the one that were made before
 I arrived to the lab. First we plot in \cref{fig:heat1} the exchange of energy in function of the
-relative temperature $\Delta \beta$ from the point of view of each one of them.
+relative temperature $\Delta \beta$ from the point of view both systems.
 In theory $Q_C = - Q_Q$. In particular, when the demon is \verb!OFF! the thermal
 equilibrium is at $\Delta \beta = 0$ whereas when it is activated it is shifted to
-the left. We are forcing the heat to move from the atom to the other cavity. We
+the left. In that case, we are forcing the heat to move from the atom to the cavity. We
 can see that there are error bars on the heat because heat is simple quantum
 observable and thus its error can be evaluated thanks to the results of~\cite{SPRAL17}.
 
@@ -2358,7 +2331,7 @@ that demon acquires a lot of information in the readout phase and then somehow
 We can then plot the weak second law in \cref{fig:weak1}, and the strong second
 law in \cref{fig:strg1}. In particular, we need error bars to determine it the
 point below 0 in \cref{fig:weak1} and all the points off the 0 axis in
-\cref{fig:strg1} are just random variation or actually mean something.
+\cref{fig:strg1} are just random variations or actually mean something.
 
 
 
