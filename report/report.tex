@@ -1688,9 +1688,9 @@ is sometimes called \emph{internal dual cone}
   The dual of a proper cone is a proper cone
 \end{prop}
 
-\begin{proof}
-  Left to the reader.
-\end{proof}
+% \begin{proof}
+%   Left to the reader.
+% \end{proof}
 
 \begin{prop}
   The cone of positive hermitian matrices is self dual.
@@ -2365,10 +2365,10 @@ point below 0 in \cref{fig:weak1} and all the points off the 0 axis in
 \chapter{Error estimation and validity proofs}
 
 As seen in the previous chapter, most of our thermodynamics quantities involve
-directly or indirectly entropy or other statistical quantity of the density
+directly or indirectly entropy or other statistical quantities of the density
 matrix. However the proof of validity in~\cite{SPRAL17} only covers the case of
-observables, i.e. functions such as $f(\rho) = \Tr(\rho A)$ with $A \in
-\mathcal{O}(\mathcal{H})$. In our case the entropy is not observable, it is not even
+observables, i.e.\ functions such as $f(\rho) = \Tr(\rho A)$ with $A \in
+\mathcal{O}(\mathcal{H})$. In our case the entropy is not an observable, it is not even
 linear. It depends not on quantum properties but on the statistical part of the
 density matrix. And even worse, its derivative goes to infinity on the edge of
 $\mathcal{D}$.
@@ -2378,7 +2378,7 @@ for a generic function $f : \mathcal{D}
 \to \R$,
 \begin{itemize}
 \item Is the average value of $f(\rho)$ indeed $f(\rho\ml)$?
-\item How to compute the error of value of such general $f$ on the reconstructed
+\item How to compute the error on the value of such general $f$ on the reconstructed
   matrix as \cref{eqn:var} does not work?
 \end{itemize}
 
@@ -2391,7 +2391,7 @@ bit off the theoretical curve fitted there.
 However this first approach was filled with more or less wrong independence
 hypothesis (I was forced to assume independence nearly everywhere). So I dived
 into~\cite{SPRAL17} and proved the first point to be true and found a way to
-adapt \cref{eqn:var} to our case.
+adapt \cref{eqn:var} to fulfill the second point.
 
 In the end another problem was that, as explained in \cref{ssec:uniq}, if
 $\Span(E_i)$ is not the full space, the solution is not unique. We need a way to
@@ -2403,16 +2403,16 @@ definitions, both based on maximizing a score function, in \cref{sec:fixspan}.
 At the beginning of my internship, I designed a Monte-Carlo algorithm to sample
 the probability space according to the distribution deduced from the deviation on
 each coefficient. The goal was to have a quick and dirty method to quickly get
-error-bars that would have been a little but not too much wrongly estimated.
+error bars that would have been a little but not too much wrongly estimated.
 
 In order to do that, I had to create a probability distribution that matched the
 deviation on each coefficient. But this distribution
-cannot be sampled easily because it is the projection of density low on a
+cannot be sampled easily because it is the projection of an other probability law on a
 subvector-space. Let's look at the problem more formally.
 
-In practice, in Luis' setup, we have only information on the
+In Luis' setup, we have only information on the
 population from the reconstruction and we force the coherences to be 0.
-The problem is just about probability vectors on the diagonal.
+The problem is thus just about probability vectors on the diagonal.
 So our input is a set of values
 $p_i$ and deviations $\Delta p_i$ such that each $p_i$ marginal law is a normal
 law. In theory the probability distribution on $\R^n$ is:
@@ -2425,11 +2425,11 @@ must be positive and sum to 1. We'll call $\mathcal{P}_n$ the set of probability
 vectors of dimension $n$. We will define our new law on $\mathcal{P}_n$ by the
 same density function but on top of the Lebesgue measure of dimension $n-1$.
 This distribution is much harder to simulate because it is both projected and
-truncated ($\mathcal{P}_n$ is not the whole hyperplane of sum $n$).
+truncated ($\mathcal{P}_n$ is not the whole hyperplane of sum 1).
 
 In order to do the sampling, I use an adapted hit and run method to build a
 Markov chain on $\mathcal{P}_n$ whose stationary
-distribution is the wanted distribution. The idea is very simple: I know how to
+distribution is the wanted distribution. The base idea is very simple: I know how to
 truncate a Gaussian law to a segment and sample it on that segment. So an
 iteration of the Markov chain is to go from the previous point $x_{n-1}$ and
 sample a random direction in the hyperplane of sum 1. This direction and
@@ -2448,7 +2448,7 @@ stationary distribution of this Markov chain, and the chain fully mixes the set
 $\mathcal{P}_n$. On discrete probability sets, this is sufficient to say that there
 is only one stationary distribution and that the chain converges towards it. I
 hope that this is still true for continuous chains. I decided that this is an inexact
-and informal way to get the deviation on our function and so spending more time
+and informal way to get the deviation on our functions and thus spending more time
 on it to have strong convergence results
 instead of doing the work of the next section was not a good idea.
 
@@ -2470,18 +2470,16 @@ the expected value and the variance of a generic function $h : \mathcal{D} \to
 \R$ on a variable $\rho$ following a prior distribution $P_0$
 knowing all the measurement
 we did. If $\Span E_i$ is the full space,
-we will prove that when the number $N$ of measurement go to infinity, the
+we will prove that when the number $N$ of measurement goes to infinity, the
 expectation is
 \[E(h(\rho)) = h(\rho\ml) + O(N\inv)\]
-
-and the variance is:
+and the variance is
 \[V(h(\rho)) = \Tr(\nabla h\pr \mathbb H\inv(\nabla h\pr)) +O\Big(\frac 1 {N^2}\Big)\]
-
-Where $\nabla h$ is the gradient of $h$ on the set of Hermitian
+where $\nabla h$ is the gradient of $h$ on the set of Hermitian
 matrices of null-trace, and $A\pr$ and $\mathbb H$ are the same as below
 \cref{eqn:var}. Both asymptotic value are independent of $P_0$. It is important
-to note that the term $O(\frac 1 N^2)$ in the variance formula
-is still an order of magnitude below
+to note that the term $O(\frac 1 {N^2})$ in the variance formula
+is still only one order of magnitude below
 the main term because the variance will decrease in $\frac 1 N$ when the number
 of experiments increase.
 
@@ -2489,13 +2487,13 @@ One can check that if we set
 $h(\rho) = \Tr(A\rho)$, we'll find back the result of \cref{sec:basicerr}.
 
 Obviously some
-regularity conditionis that will be given later are needed on $h$ for those result
+regularity conditions, that will be given later, are needed on $h$ for these results
 to work.
-I tried and achieved to have quite low regularity conditions so that people could
-use those result with low-regularity functions. However those conditions are not
+I tried and achieved to have quite low regularity conditions, so that people could
+use these results with low-regularity functions. However these conditions are not
 sufficient to deal with the entropy on the edge of $\mathcal{D}$. In
 \cref{sec:regentropy}, I explain how one can achieve similar results with the
-entropy, but with other terms less bounded: $E(h(\rho)) = h(\rho\ml) +
+entropy, but with other terms less bounded e.g.\ $E(h(\rho)) = h(\rho\ml) +
 O(N^{-\varepsilon})$ for $\varepsilon < 1$.
 
 \
@@ -2508,46 +2506,43 @@ $\mathcal{L}(\rho) = e^{\ell(\rho)}$ is the density of probability of having
 the measurements we had, given the density matrix $\rho$. Therefore, according to
 Bayes law (see \cref{eqn:bayes}), we have
 \[E(h(\rho)) = \frac{I_h}{I_1}\]
-where:
-\[I_h = \int h(\rho) e^{\ell(\rho)} P_0(\rho) \dd \rho \]
+where
+\[I_h = \int h(\rho) e^{\ell(\rho)} P_0(\rho) \dd \rho.\]
 
-However to do asymptotic we need to grow a single variable. Thus, we'll write our
-asymptotic development as if we repeat the experiment and get again the same
+However to do asymptotic expansions we need to grow a single variable. Thus, we'll write our
+asymptotic development as if we repeated the experiment and got again the same
 results. The log-likelihood function will then be $N\ell$. We'll assume that this
 give the same asymptotic behavior as if we grew the number of measurements inside
 $\ell$. The number of repetition that'll grow to infinity will thus be $N$, so we
-will write:
+will study what happens when $N \to \infty$ on
 \[E_h(N) = \frac{I_h(N)}{I_1(N)}\]
-where:
-\[I_h(N) = \int h(\rho) e^{N\ell(\rho)} P_0(\rho) \dd \rho \]
-
-ans study $E_h(N)$ as $N \to \infty$. To compute variances, we only need to get
+where
+\[I_h(N) = \int h(\rho) e^{N\ell(\rho)} P_0(\rho) \dd \rho .\]
+Then, to compute variances, we only need to get
 the expectation of:
-\[h_V = \left(h - \lim_{N \to \infty} E_h(N)\right)^2\]
+\[h_V = {\left(h - \lim_{N \to \infty} E_h(N)\right)}^2\]
 
 
 
 \subsection{Full rank}
 
 We'll start by studying what happens when $\rk \rho\ml = n$ i.e when $\rho\ml$
-is in the interior of $\mathcal{D}$. In order to that, we new a few technical theorems.
+is in the interior of $\mathcal{D}$. To do that, we first need a few technical theorems.
 
 \begin{thm}\label{thm:asy1}
   Let $g : U \to \R$ be a function of class $\class 1$ on $U$ a neighborhood of 0. If $g(0)
-  \neq 0$, we have at $N \to \infty$:
+  \neq 0$, we have, as $N \to \infty$:
   \[\int_{z \in U} g(z)e^{-\frac N2\|z\|^2} \dd z = g(0){\left(\frac
       {2\pi}{N}\right)}^{\frac n 2} +
     O\left({N^{-\frac n 2 -1}}\right)\]
 \end{thm}
 
 \begin{proof}
-
   We can decompose $g$ in $g(z) = g(0) + h(z)$ with $h(z) = O(\|z\|)$ as $g$ is
   $\class{1}$ in 0, thus:
 \[\int_{z \in U} g(z)e^{-\frac N2\|z\|^2} \dd z = g(0)\int_{z \in U} e^{-\frac
-    N2\|z\|^2} \dd z + \int_{z \in U} h(z)e^{-\frac N2\|z\|^2} \dd z\]
-
-But:
+    N2\|z\|^2} \dd z + \int_{z \in U} h(z)e^{-\frac N2\|z\|^2} \dd z.\]
+Furthermore,
 \begin{align*}
   \left |\int_{z \in U} h(z)e^{-\frac N2\|z\|^2} \dd z\right|
   &\leq C \int_{z \in U} \|z\|e^{-\frac N2\|z\|^2} \dd z\\
@@ -2557,12 +2552,10 @@ But:
   &\leq O\left({N^{-\frac n 2 -1}}\right)
 \end{align*}
 
-Where $C$ is the constant such that $|h(z)| \leq C \|z\|$, $A_n$ is the surface
+where $C$ is the constant such that $|h(z)| \leq C \|z\|$, $A_n$ is the surface
 of the hypersphere of $\R^n$ and the last line comes from \cref{eqn:gausspown}.
-
 Up to exponentially small terms ($O(e^{N\delta})$ for a given $\delta$), we have
 (using \cref{eqn:gaussdimn}):
-
 \[g(0)\int_{z \in U} e^{-\frac
     N2\|z\|^2} \dd z \approx g(0)\int_{z \in \R^n} e^{-\frac
     N2\|z\|^2} \dd z = g(0) {\left(\frac
@@ -2582,10 +2575,10 @@ cases that require that theorem.
 
 \begin{thm}\label{thm:asy2}
  Let $g : U \to \R$ be a function of class $\class 3$ on $U$ a neighborhood of 0. If $g(0) = 0$
- and $\nabla g(0) = 0$, We have at $N \to \infty$:
+ and $\nabla g(0) = 0$, we have, as $N \to \infty$:
   \[\int_{z \in U} g(z)e^{-\frac N2\|z\|^2} \dd z = \frac{\Tr(\nabla^2 g(0))}{2N} {\left(\frac
         {2\pi}{N}\right)}^{\frac n 2} +
-    O\left({N^{-\frac n 2 -2}}\right)\]
+    O\left({N^{-\frac n 2 -2}}\right).\]
 \end{thm}
 
 \begin{proof}
@@ -2626,10 +2619,10 @@ theorem then:
 \begin{proof}
 First we assume $f(0) = 0$ without loss of generality (it suffice to divide
 everything by $e^{Nf(0)}$). The Morse lemma (\ref{lem:morse}) tells us that
-there is a $V \in \mathcal{N}(0)$ and
+there is a  neighborhood $V$ of 0 and
 a diffeomorphism $\psi : V \to V'$ with $\psi(0) = 0$ such that
 \[f(z) = - \frac12 \|\psi(z)\|^2 \gap \text{and}\gap \nabla \psi(0) =
-  \sqrt{-\nabla^2 f}\]
+  \sqrt{-\nabla^2 f}.\]
 
 Because the hessian of $f$ is negative definite in 0 and the maximum is unique,
 all values of $f$ outside of $V$ are below a
@@ -2667,7 +2660,6 @@ g(\psi^{-1}(z))J(z)$, and look at the two cases:
          \frac {1}{\sqrt{\left|\det \nabla^2 f\right|}}
     \end{align*}
     If we put that to the trace, we get the result we wanted.
-
 \end{itemize}
 
 \end{proof}
@@ -2689,8 +2681,8 @@ Lebesgue measure of the point is 1 and all the proofs work.
 \begin{thm}\label{thm:asyp1}
   Let U be an open set of $\R_+ \times \R^n$ where $(0,0) \in U$. The $\R_+$
   coordinate will be $x$ and the $\R^n$ coordinate will be $z$. Let $g : U \to
-  \R$ by a $\class 1$ function. The derivative against the edge i.e on $x$ are
-  taken as one-sided derivative. We have as $N \to \infty$:
+  \R$ be a $\class 1$ function. The derivatives against the edge i.e on $x$ are
+  taken as one-sided derivatives. We have as $N \to \infty$:
 
   \[\int_{(x,z) \in U} x^m g(x,z)e^{-N(x + \frac 12 \|z\|^2)} \,\dd x\, \dd z =
     g(0,0)\,m! {(2\pi)}^{\frac n 2} N^{-\frac n 2 - m - 1} + O(N^{-\frac n 2 - m - 2})\]
@@ -2707,8 +2699,7 @@ Lebesgue measure of the point is 1 and all the proofs work.
   \|g_1\|_\infty\int_{(x,z) \in U'} x^{m+1}e^{-N(x + \frac 12 \|z\|^2)} \,\dd x\, \dd z\\
     &=O(N^{-\frac n 2 - m - 2})
 \end{align*}
-
-This is because we can split the integral and use \cref{eqn:gaussdimn} and \cref{eqn:gamma}\\
+This is because we can split the integral and use \cref{eqn:gaussdimn} and \cref{eqn:gamma}.\\
 On the other hand, thanks to \cref{eqn:gaussdimn} and \cref{thm:asy1}, we have:
 \begin{align*}
   \int_{(x,z) \in U'} x^{m}h(z)e^{-N(x + \frac 12 \|z\|^2)} \,\dd x\, \dd z
@@ -2787,16 +2778,17 @@ null gradient for $f$ but here $\dpar f x$ could be negative.
 
 \subsection{Application}
 
-Here we can finally apply all those asymptotic theorem to our case. I first recall the
-notations. For $h : \mathcal{D} \to \R$, we note:
+Here we can finally apply all those asymptotic theorems to our case. I first recall the
+notations. For $h : \mathcal{D} \to \R$, we define
 \begin{equation}
 I_h(N) = \int_{\rho\in\mathcal{D}} h(\rho) e^{N\ell(\rho)} P_0(\rho) \dd \rho
 \end{equation}
-Where $P_0$ is the prior probability distribution on density matrices.
-So that we have its expectation:
+where $P_0$ is the prior probability distribution on density matrices.
+So that we have its expectation
 \begin{equation}
-E_h(N) = \frac{I_h(N)}{I_1(N)}
+E_h(N) = \frac{I_h(N)}{I_1(N)}.
 \end{equation}
+
 Its variance is the expectation of:
 \begin{equation}
 h_V = {\left(h - \lim_{N \to \infty} E_h(N)\right)}^2
@@ -2898,8 +2890,8 @@ We make some technical assumptions such as:
     \mat{\delta\xi& \delta\omega\,\Delta\\ \Delta\, \delta\omega & \delta\zeta -
       \Tr(\delta\xi)\frac Ir}
   \end{equation}
-  This is bijective ($\Delta$ is invertible), so by local inversion theorem
-  $\Psi : U \to V$ is a diffeomorphism on $V$ a neighborhood of $D$. By the
+  This is bijective in 0 ($\Delta$ is invertible), so by local inversion theorem
+  $\Psi : U \to V$ is a diffeomorphism on $U$ a neighborhood of $D$. By the
   same argument as usual, we can focus our study of the various integral to only
   $U' = U \cap \mathcal{D}$ and even to $U'' = \mathring U'$ because $U'
   \setminus U''$ is of null measure. We can thus apply the change of variable
@@ -2959,8 +2951,8 @@ We make some technical assumptions such as:
   parenthesis. Let's check all the hypothesis. $U = \overline{W''''_x \times
     V'''_z}$ is a neighborhood of $(0,0)$ in $\R_+ \times \R^n$.
   $\ell, \Psi, \Phi$ are smooth so
-  $f(x,z) = \ell(\ppvars)$ will be $\class 4$. Be a non-critical global maximum
-  is conserved when pare-composing with any differentiable function so $(0,0)$ is global maximum
+  $f(x,z) = \ell(\ppvars)$ will be $\class 4$. Being a non-critical global maximum
+  is conserved when pre-composing with any differentiable function so $(0,0)$ is global maximum
   of $f$ on $U$.
 
   We now only need to prove about $f$ that $\dpar f x < 0$:
@@ -2975,7 +2967,7 @@ We make some technical assumptions such as:
   \end{equation}
 
   with $\nu \geq 0$ and $\nu \neq 0$. Therefore:
-  \[\dpar f x = - \Tr(\eta\sigma) <0\]
+  \[\dpar f x = - \Tr(\eta\sigma) <0.\]
   Additionally, $h$ and $P_0$ are $\class 1$, and $J$ is smooth so $g(x,z) =
   h_0(\ppvars)J\pvvars$ is of class $\class 1$. We can then
   apply~\cref{thm:asypmid}, and when $h(\rho\ml) \neq 0$ we have:
@@ -3023,12 +3015,14 @@ the exponential.
   \[E_h(N) = h(\rho\ml) + O\left(\frac 1N\right)\]
   Additionally, if it is of class $\class 3$ in the inside and along the edges
   and $\class 2$ otherwise with $\dparn h x 2 =
-  o(\frac 1 x)$ when leaving the edge (where $x$ is a scalar variable coming from the
+  o(\frac 1 x)$ when leaving the edge (where $x$ is a scalar variable not
+  tangent to the
   edge), we'll have the variance:
   \[V_h(N) = E_{h_V}(N) = \frac{\Tr(\nabla h\pr \mathbb H\inv(\nabla h\pr))}N +O(\frac 1 {N^2})\]
   where:
 \begin{itemize}
 \item $\mathcal{D}_r$ is the submanifold of $\mathcal{D}$ of matrices with rank $r$
+\item $P\ml$ is the orthogonal projector on the range of $\rho$.
 \item $A\pr$ is
   the orthogonal projection on the tangent space to $\mathcal{D}_{\rk \rho}$ in
   $\rho$:
@@ -3043,9 +3037,9 @@ the exponential.
 \end{thm}
 
 \begin{proof}
-  The expectation proof is just direct application of \cref{lem:asymain}. For
+  The expectation proof is just a direct application of \cref{lem:asymain}. For
   the variance, it's a bit more tricky. First, let's check the regularity
-  conditions. We want to apply \cref{lem:asymain} on $h_v = {\big(h - h(\rho\ml)\big)}^2$.
+  conditions. We want to apply \cref{lem:asymain} on $h_V = {\big(h - h(\rho\ml)\big)}^2$.
   On the inside $h$ is of class $\class 3$, so we have
 
   \begin{equation}\label{eqn:hvder}
@@ -3132,7 +3126,7 @@ the beginning of the~\cref{sec:errbar}
 \subsection{Regularity of Entropy}\label{sec:regentropy}
 
 If look at the previous regularity constraints, the entropy does not satisfy
-them: it is not $\class 1$ on the edge, and it's variance is not $\class 2$ on
+them: it is not $\class 1$ on the edge, and its variance is not $\class 2$ on
 the edge. However, if I define intermediate regularity classes as:
 
 \begin{defn}
@@ -3147,8 +3141,8 @@ the edge. However, if I define intermediate regularity classes as:
 \end{rem}
 
 \begin{rem}
-This definition extends trivially to multivariate function, So I'll use the
-notation for those function
+This definition extends trivially to multivariate functions, So I'll use the
+notation for those functions
 \end{rem}
 
 \begin{prop}
@@ -3203,7 +3197,7 @@ notation for those function
   tangent to the edge, we'll have $\dpar {h_v} x = 2
   o(x^\varepsilon)o(\frac1x^{\delta}) = o(x^{\varepsilon - \delta})$. From
   $\varepsilon > \delta$, we deduce that
-  $\dpar {h_v} x(\rho\ml)$ exists and is $0$, so $h_v$ can be prolonged in a
+  $\dpar {h_V} x(\rho\ml)$ exists and is $0$, so $h_V$ can be prolonged in a
   $\class 1$ function on the edge. In fact is prolonged in a $\class {1 +
     \varepsilon - \delta}$ function.
 
@@ -3217,7 +3211,6 @@ notation for those function
 \begin{prop}
 The con-Newman entropy is of class $\class \varepsilon$ for any
 $\varepsilon < 1$ on the edge of $\mathcal{D}$, and smooth on the interior.
-I'll say the entropy is of class $\class{1-}$
 \end{prop}
 
 \begin{proof}
@@ -3245,7 +3238,7 @@ of the $O$ will explode.
 
 I haven't tried them all, but I think all the other entropy-related values like
 mutual-information will also have similar regularity characteristics and thus will
-have the same result on asymptotic expectation and variance.
+have the same result on the asymptotic expectation and variance.
 
 
 
@@ -3264,7 +3257,7 @@ some properties to make sense
   A function $c : \mathcal{D}(\mathcal{H}) \to \R$ is a \emph{centering function} if:
 
   \begin{enumerate}
-  \item It must be concave, so that being between other matrices is always better.
+  \item It is concave, so that being between other matrices is always better.
   \item $\displaystyle \argmax_{\rho \in \mathcal{D}} c = \frac I{\dim
       \mathcal{H}}$.
   \item $c$ must be unitary invariant: $c(U\rho U^\dagger) = c(\rho)$ for $U \in \mathcal{U}(\mathcal{H})$
@@ -3275,14 +3268,14 @@ some properties to make sense
   \end{enumerate}
 \end{defn}
 
-All those constraint are qualitative constraints that ensure that $c$ makes sense
-as a centering function. If a function does not satisfy those condition, It is
+All these constraints are qualitative constraints that ensure that $c$ makes sense
+as a centering function. If a function does not satisfy those conditions, it is
 not a good centering function. But satisfying them does not guaranty that the function
 make sense from the physical point of view. The logarithm of the determinant and
 the von-Neuman entropy are good candidates. I plot heatmaps of them on random
 planes to see how good they are in \cref{fig:heat}. However, I don't think
 there is a perfect centering function waiting to be found, but I obviously can't
-prove it.
+prove that.
 
 I didn't use any of its results directly in the report, but~\cite{Bhatia07} was
 very useful for analysing the structure of the density matrix space in my quest
@@ -3297,12 +3290,10 @@ the exact center (It the determinant is quadratic on a slice of $\mathcal{D}$,
 that slice will be an ellipsoid which has an exact center). The reasons to use
 the log determinant instead of the determinant are twofold: It is strictly
 concave on $\mathcal{D}$, and it will more likely fit on a machine floating
-point number on the edges on of $\mathcal{D}$.
+point number on the edges of $\mathcal{D}$.
 
 I haven't time to prove formally that the log-determinant satisfy all centering
-function properties, but none of those should be hard to do. I'll try to do that
-by Monday night.
-
+function properties, but none of those should be hard to do.
 \subsubsection{Von Neumann Entropy}
 
 The Von-Neumann entropy is also a good choice of centering function from a probabilistic
@@ -3348,20 +3339,20 @@ entropy is below. The colorless area is outside of $\mathcal{D}$}
 \subsubsection{In practice}
 
 That part of my work wasn't directly useful for Luis project, because his effect
-matrices only span the population in Fock base and thus the centering simply
+matrices only span the populations of Fock base and thus the centering simply
 consists in putting $0$ in each correlation, which I think achieve perfect centering
 whatever the centering function is.
 
 \subsection{Two objective optimisation}
 
-In odder to use the centering function, what we want to do is that, after
+In order to use the centering function, what we want to do is that, after
 optimizing $\ell$ and landing on $M = \argmax_{\rho \in \mathcal{D}} \ell(\rho)$, we
 can optimize the centering function on $M$ and get the most centered matrix that
 maximize $\ell$.
 
 One way of doing it is to do exactly what I just said: Find a $\rho_{int}$ in
-$M$ with a first optimization (projected gradient ascent will find one, even I
-haven't proved it in \cref{sec:projgrad}). Then we could optimize $c$ on $M$.
+$M$ with a first optimization (projected gradient ascent will find one).
+Then we could optimize $c$ on $M$.
 However I have no idea how to project a vector on $M$: The projection method
 described in \cref{ssec:proj} only works on the whole $\mathcal{D}$ because
 $\mathcal{D}$ is unitary invariant which is generally not the case of $M$.
@@ -3381,8 +3372,8 @@ $\rho\ml = \argmax_{\rho \in M} c$.
 
 \begin{proof}
   Let's define $\ell\ml = \ell(\rho\ml)$.
-  $\ell$ is strictly concave on all the dimension of which there is an $E_i$
-  i.e all the dimension orthogonal to the $M$. That means that if
+  $\ell$ is strictly concave on all the dimension on which there is an $E_i$
+  i.e all the dimension orthogonal to $M$. That means that if
   $\ell(\rho_\varepsilon) \to \ell\ml$, then $d(\rho_\varepsilon,M) \to 0$.
 
   Then lets prove that $\ell(\rho_\varepsilon) \to \ell\ml$. We now that
@@ -3398,7 +3389,7 @@ $\rho\ml = \argmax_{\rho \in M} c$.
   As $\rho_{p\varepsilon} \in M$, we have $g(\rho_{p\varepsilon}) < c(\rho\ml)$.
 
   By uniform continuity, $d(g(\rho_{p\varepsilon}),c(\rho_\varepsilon)) \to 0$
-  and $g(\rho\ml)$ is between them so. $c(\rho_{p\varepsilon}) \to c(\rho\ml)$.
+  and $g(\rho\ml)$ is between them so $c(\rho_{p\varepsilon}) \to c(\rho\ml)$.
   But as $c$ is strictly concave, this must mean that $\rho_{p\varepsilon} \to
   \rho\ml$.
 
@@ -3408,7 +3399,7 @@ $\rho\ml = \argmax_{\rho \in M} c$.
 \end{proof}
 
 This proof works perfectly with the entropy but not with the $\log \circ \det$
-as isn't uniformly continuous. Furthermore, the projected gradient method won't
+as it isn't uniformly continuous. Furthermore, the projected gradient method won't
 work directly with the entropy because when projecting on the edge, the gradient of the
 entropy will be infinite. I think both of this problems have solutions, for
 example when we are on the edge, only output the tangent gradient for the
@@ -3423,16 +3414,16 @@ it properly.
 
 Now I have the operator $\mathbb H$, and I want to compute the standard
 deviation on various functions that are mixture of classical observable
-evaluation and entropy-related functions. For my function $h: \mathcal{D} \to
+evaluations and entropy-related functions. For my function $h: \mathcal{D} \to
 \R$, I know from previous chapter that its standard deviation is:
 
 \begin{equation}\label{eqn:stddev}
   \sqrt{\Tr(\nabla h\pr\mathbb H\inv \nabla h\pr)}
 \end{equation}
 
-The problem is that the function I want to evaluate are complex and span
+The problem is that the functions I want to evaluate are complex and span
 multiple files of source code. I would like a method to propagate the error
-estimation through all the layers of the code, following the way function are
+estimation through all the layers of the code, following the way functions are
 computed. In order to do that, let's look at a more generic way of propagating
 errors.
 
@@ -3440,11 +3431,11 @@ Suppose we have a random variable $X \in \R^n$ and its covariance matrix $V_X$.
 Suppose we take a function $f : \R^n \to \R^m$ such that $P(X \in \dom f) = 1$.
 We would like to know the covariance matrix of $f(X)$.
 If $X$ has a probability distribution centered on its expectation $X_0$, such as
-a normal law, We can make a first order approximation and assume that $f$ on the
+a normal law, we can make a first order approximation and assume that $f$ on the
 domain where $X$ varies looks like $f(X_0) + \nabla f \cdot (X-X_0)$. In such a
 situation one can prove that:
 \begin{equation}\label{eqn:propag}
-  V_{f(X)} = \nabla f^t V_X \nabla f = \bra {\nabla f} V_x \ket {\nabla f}
+  V_{f(X)} = \nabla f^t V_X \nabla f = \bra {\nabla f} V_x \ket {\nabla f}.
 \end{equation}
 
 
@@ -3452,23 +3443,19 @@ This really looks like the \cref{eqn:stddev}. In fact if we linearize our
 Hermitian matrices $\nabla h$
 and thus think of $\mathbb H$ as an element of
 $\mathcal{L}(\mathcal{O}(\mathcal{H}))$, we can write:
-
 \[V_h = \bra {\nabla h\pr} \mathbb H^{-1} \ket{\nabla h\pr}\]
-
 Furthermore the projecting operator $\pr$ is linear and thus can be put in a
 matrix form such that
-
-\[V_h = \bra{\nabla h}P^t\mathbb H^{-1}P \ket{\nabla h}\]
-
+\[V_h = \bra{\nabla h}P^t\mathbb H^{-1}P \ket{\nabla h}.\]
 In fact we have $P^t \mathbb H\inv P = \mathbb H$ but I don't need it so I
 won't prove it. What is important is that $V_\rho = P^t \mathbb H\inv P$ looks
-like the covariance matrix of $\rho$ around $\rho\ml$ and that I proved in the last chapter
+like the covariance matrix of $\rho$ around $\rho\ml$ and thus I proved in the last chapter
 that the first order error propagation gives the right asymptotic variance of
 any function.
 
 Therefore, in the code, I compute $V_\rho$ from the results of the
-reconstruction and then when a function is applied one variable I compute its
-covariance matrice with \cref{eqn:propag}. In the end when a function has a
+reconstruction and then when a function is applied on a variable, I compute its
+covariance matrix with \cref{eqn:propag}. In the end when a function has a
 single dimension output, the variance matrix is a simple variance real that I can put
 through a square root to get the standard deviation on that value.
 
@@ -3476,7 +3463,7 @@ through a square root to get the standard deviation on that value.
 
 Here are the plots of \cref{sec:res1} upgraded with the new error bars.
 Unfortunately I didn't have enough time to finish implementing the error
-propagation of last section, so those value come from the Monte-Carlo algorithm.
+propagation of last section, so those values come from the Monte-Carlo algorithm.
 We added several new points of data in between. The horizontal error bars are
 due to Luis and are originated from imperfections in the control and measurement of the
 temperatures of both the cavity and the atom.
@@ -3516,9 +3503,9 @@ temperatures of both the cavity and the atom.
 
 This internship was really interesting; I had to understand a lot of various
 mathematical and physical theory to understand the huge amount of work that my
-predecessor did. Once I did that I could have the pleasure to make a small but
+predecessor did. Once I did that, I could have the pleasure to make a small but
 nevertheless important
-contribution to the field of quantum tomography.
+contribution to the field of quantum state tomography.
 
 It was really interesting to see the inner working of such a physics lab, and
 to see the amazing experimental setup they have at the LKB. In particular to see
@@ -3579,8 +3566,8 @@ of interesting people, some of which I want to thank :
 \chapter{Quantum mechanics pictures}\label{app:pict}
 
 Pictures are different way to perceive and express quantum mechanics. They vary
-in how the system state and the various operator change over time. All those
-representation yield the same mechanics and are equivalent up to certain change
+in how the system state and the various operators change over time. All these
+representations yield the same mechanics and are equivalent up to certain change
 of Hilbert space basis dependent on time. Going from one to the other is just up
 to a unitary $U(t)$.
 
@@ -3591,7 +3578,7 @@ to a unitary $U(t)$.
 \section{Schrödinger picture}
 
 The Schrödinger picture is the usual representation of quantum mechanics. In
-this context only the state of the system varies and the way to observe it do
+this context, only the state of the system varies and the way to observe it do
 not change. When the system evolves under Hamiltonian $H(t)$,
 the various operators relevant to the system are constant (unless they vary
 because of a external source which is not the system) and the
@@ -3605,7 +3592,7 @@ state follow the Schrödinger equation:
   \[ \ket {\Psi(t)} = e^{-i\frac H\hbar t}\ket{\Psi(0)}\]
 \end{prop}
 
-On very important theorem that makes a link the Heisenberg picture is the
+On very important theorem that makes a link with the Heisenberg picture is the
 following:
 
 \begin{thm}[Ehrenfest]\label{thm:ehren}
@@ -3617,20 +3604,18 @@ following:
 
 \section{Heisenberg picture}
 
-In the Heisenberg picture however, the state in $\mathcal{H}$, only correspond
+In the Heisenberg picture however, the state in $\mathcal{H}$ only corresponds
 to the initial state and represent the whole trajectory. However to measure an
-observable a time $t$, you its expression $A(t)$ at this point in time. The
+observable at time $t$, you use its expression $A(t)$ at this point in time. The
 equation that rules this evolution is
-
-
 
 \begin{eqn}
   \[\der At   = \frac i {\hbar}[H,A] + {\left(\dpar At \right)}_{\!\!H}\]
 \end{eqn}
 
 Here the $[\cdot,\cdot]$ is the commutator and the partial derivative is the
-variation of $A$ due to external element out of the system (i.e.~the variation
-of H in Schrödinger picture). This equation is actually the not-averaged version
+variation of $A$ due to external elements out of the system (i.e.~the variation
+of $A$ in Schrödinger picture). This equation is actually the not-averaged version
 of Ehrenfest theorem (\ref{thm:ehren})
 
 \begin{prop}
@@ -3639,7 +3624,7 @@ of Ehrenfest theorem (\ref{thm:ehren})
 \end{prop}
 
 \begin{proof}
-  The value of the average in Schrödinger picture if given by Ehrenfest theorem.
+  The value of the average in Schrödinger picture is given by Ehrenfest theorem.
   Let's compute the same average in Heisenberg picture. On the right side, the
   averaging give instantly the right hand of Ehrenfest theorem. We only have
   left to prove:
@@ -3647,7 +3632,7 @@ of Ehrenfest theorem (\ref{thm:ehren})
   But this is still true by linearity.
 \end{proof}
 
-In fact, The Schrödinger equation has general which is the unitary evolution
+In fact, The Schrödinger equation has a general solution which is the unitary evolution
 operator $U(t)$. From there, the evolution of the state in Schrödinger's picture
 in $\ket {\Psi(t)} = U(t) \ket {\Psi(0)}$, whereas the evolution of a operator
 in Heisenberg picture is $A(t) = U^\dagger(t)A_0(t)U(t)$, where $A_0(t)$
@@ -3663,9 +3648,9 @@ system to the interaction with another system, this is why this is called the
 interaction picture. Will split our Hamiltonian in two parts:
 \[H = H_0 + H_1\]
 In most case we'll try to keep $H_0$ time independent and simple, whereas $H_1$
-will contain all the complexity of the system. That way, $U_0(t)$, will still be
-$e^{-i\frac {H_0}\hbar t}$. We'll then make operator evolve with $H_0$, when
-state evolves with $H_1$. The equations are:
+will contains all the complexity of the system. That way, $U_0(t)$, will still be
+$e^{-i\frac {H_0}\hbar t}$. We'll then make operators evolve with $H_0$, when
+the state evolves with $H_1$. The equations are:
 
 \[i\hbar \frac{\partial \ket \Psi}{\partial t} (t) = H_1(t) \ket {\Psi(t)} \]
 \[A(t) = U_0^\dagger(t)A_0(t)U_0(t)\]
@@ -3692,7 +3677,7 @@ b = \cov(a \cdot x, b \cdot y)$
 \end{prop}
 
 \begin{defn}
-  Given a random vector $X \in \R^n$, We define its variance by
+  Given a random vector $X \in \R^n$, we define its variance by
   \[V(X) = \cov(X,X)\]
 \end{defn}
 
@@ -3702,7 +3687,7 @@ b = \cov(a \cdot x, b \cdot y)$
 \section{Correlation}\label{sec:correl}
 
 \begin{defn}
-  If $X$ and $Y$ are two real valued variable that are not fixed (non-zero
+  If $X$ and $Y$ are two real valued variables that are not fixed (non-zero
   variance), we have:
   \[\rho = \left|\frac {\cov(X,Y)}{\sigma(X),\sigma(Y)}\right|\]
   where $\sigma(X) = \sqrt{V(X)}$
@@ -3733,7 +3718,7 @@ correlation:
   By using~\cref{prop:correl1}, we get:
   \[ \frac{ \bra a \cov(X,Y) \ket b}{\sqrt{\bra a V(X) \ket a}\sqrt{\bra b V(Y)
         \ket b}} \leq 1\]
-  To saturate the inequality, we can maximize the numerator on $b$, but keep the
+  To saturate the inequality, we can maximize the numerator on $b$, while keeping the
   denominator constant. If we use the Lagrange multiplier method, we want to
   find a critical point of:
   \[\mathcal{L}(b,\lambda) = \bra a \cov(X,Y) \ket b + \lambda \bra b V(Y) \ket
@@ -3789,7 +3774,7 @@ On integers, we have a simple value for the gamma-like integral:
 \section{Morse lemma}
 
 \begin{lem}\label{lem:dec}
-  Let $f : U \subset \R^n \to \R^m$, be $\class{n}$ with $U \in \mathcal{N}(0)$.
+  Let $f : U \subset \R^n \to \R^m$, be $\class{n}$ with $U$ a neighborhood of 0.
   Suppose that $f(0) = 0$. Then we have $g : U \to \mathcal{L}(\R^n,\R^m)$ of
   class $\class {n-1}$ such
   that:
@@ -3802,9 +3787,9 @@ On integers, we have a simple value for the gamma-like integral:
 \end{proof}
 
 \begin{lem}\label{lem:dec2}
-  Let $f : U \subset \R^n \to \R$, be $\class{n}$ with $U \in \mathcal{N}(0)$.
+  Let $f : U \subset \R^n \to \R$, be $\class{n}$ with $U$ a neighborhood of 0.
   Suppose that $f(0) = 0$ and $\nabla f(0) = 0$.
-  Then we have $h : U \to \mathcal{S}(\R^n)$ (Symmetric matrices) of class
+  Then we have $h : U \to \mathcal{S}(\R^n)$ of class
   $\class {n-2}$ such
   that $h(0) = \nabla^2 f(0)$ and:
   \[f(x) = \bra x h(x) \ket x\]
@@ -3820,7 +3805,7 @@ On integers, we have a simple value for the gamma-like integral:
 
 
 \begin{lem}[Morse lemma]\label{lem:morse}
-  Let $f : U \subset \R^n \to \R$, be $\class{n}$ with $U \in \mathcal{N}(0)$.
+  Let $f : U \subset \R^n \to \R$, be $\class{n}$ with $U $ a neighborhood of 0.
   Suppose that $f(0) = 0$, $\nabla f(0) = 0$ and $\nabla^2 f > 0$.
   Then we have a neighborhood $V$ of 0 and $\psi : V \to \R^n$ of class
   $\class{n-2}$, a such that on $V$:
