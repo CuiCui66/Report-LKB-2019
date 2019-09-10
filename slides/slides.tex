@@ -13,24 +13,8 @@
 \usepackage[english]{babel}
 
 \usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{amsopn}
-\usepackage{amsthm}
-% \usepackage[hidelinks]{hyperref}
-% \usepackage{cleveref}
-\usepackage{fancyvrb}
 \usepackage{tikz}
-\usepackage[justification=centering]{caption}
-\usepackage[super]{nth}
-\usepackage{textcomp}
-\usepackage{enumitem}
-\usepackage{doi}
 \usepackage{mathrsfs}
-\usepackage{siunitx}
-\setlist{nosep}
-% \usepackage[justification=justified,singlelinecheck=false]{caption}
-\usepackage{subcaption}
 
 
 
@@ -49,8 +33,6 @@
 \newcommand\eqdef{\stackrel{\mathclap{\mbox{\tiny def}}}{=}}
 
 
-\sisetup{inter-unit-product=\ensuremath{{}\cdot{}}}
-
 \newcommand{\ket}[1]{|#1\rangle}
 \newcommand{\bra}[1]{\langle#1|}
 \newcommand{\braket}[2]{\langle#1|#2\rangle}
@@ -61,30 +43,19 @@
 \newcommand{\dpar}[2]{\frac{\partial{#1}}{\partial{#2}}}
 \newcommand{\dparn}[3]{\frac{\partial^{#3} {#1}}{\partial{#2}^{#3}}}
 
-\renewcommand{\geq}{\geqslant}
-\renewcommand{\leq}{\leqslant}
 
 \newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 \newcommand{\bs}{\boldsymbol}
 
-\DeclareMathOperator{\cov}{cov}
-\DeclareMathOperator{\Tr}{Tr}
-\DeclareMathOperator{\argmax}{arg\,max}
-\DeclareMathOperator{\argmintmp}{arg\,min}
-\newcommand{\argmin}{\mathop{\argmintmp}}
-\DeclareMathOperator{\rk}{rk}
-\DeclareMathOperator{\Span}{Span}
-\DeclareMathOperator{\dom}{dom}
-\DeclareMathOperator{\diag}{diag}
+\newcommand{\Tr}{\mathsf{Tr}\,}
+\newcommand{\argmin}{\mathop{\mathsf{arg\,min}}}
+\newcommand{\rk}{\mathsf{rk}\,}
+\newcommand{\diag}{\mathsf{diag}\,}
 
 
 \newcommand{\class}[1]{{\mathscr{C}^{#1}}}
 
 \newcommand{\trnorm}[1]{\frac{#1}{\Tr\left({#1}\right)}}
-
-
-
-
 \newcommand{\ml}{_{M\!L}}
 
 
@@ -237,7 +208,7 @@
   \pause{}
 
 \begin{itemize}
-  \item[--] $\rho \geq 0$
+  \item[--] $\rho \geqslant 0$
     \pause{}
   \item[--] $\Tr \rho = 1$
     \pause{}
@@ -309,7 +280,7 @@
 
 \begin{frame}{Convex problem}
   \[\maxima{\Alt<1>f\ell(\Alt<1>x\rho)}{\Alt<1>x\rho}
-    {\Alt<1>{g(x)}{\rho} &\geq 0\\ \Alt<1>{h(x)}{\Tr \rho} &= \Alt<1>{0}{1}}\]
+    {\Alt<1>{g(x)}{\rho} &\geqslant 0\\ \Alt<1>{h(x)}{\Tr \rho} &= \Alt<1>{0}{1}}\]
   \pause{}
 
   \pause{}\vfill
@@ -348,7 +319,7 @@
 
 \begin{frame}{KKT conditions}
   \[\maxima{\ell(\rho)}{\rho}
-    {\rho &\geq 0\\ \Tr \rho &= 1}\]
+    {\rho &\geqslant 0\\ \Tr \rho &= 1}\]
 
 \begin{block}{Lagrangian}
   \[\mathcal{L}(\rho,\mu,\lambda) = \ell(\rho) + \braket{\mu}{\rho} - \lambda\Tr\rho\]
@@ -422,7 +393,7 @@
 
 \begin{frame}{New second laws of thermodynamics}
 
-  \[  \onslide<2->{- \Delta I_{QC:D} +}\Delta\beta Q \mathrel{\Alt<3>=\geq}
+  \[  \onslide<2->{- \Delta I_{QC:D} +}\Delta\beta Q \mathrel{\Alt<3>=\geqslant}
     \Alt<-2>0{\Delta D_{QC}}\]
 
 \end{frame}
@@ -516,40 +487,129 @@
 
 \newcommand{\lol}[1]{#1}
 
-\begin{frame}[fragile]{After multiples change of variables}
+\begin{frame}{After multiples change of variables}
 
   \begin{center}
-    \large General case
+    \large \hspace{2cm} General case \onslide<3>{($g \in \class 1$)}
   \end{center}
-  % \begin{tikzpicture}
-  %   \node {\int_{z \in U}g(z)e^{N \ell(z)}= g(0)
-  %     {\left(\frac {2\pi}{N}\right)}^{\frac n 2}
-  %     \frac {e^{N\ell(0)}}{\sqrt{
-  %         \left|\mathrm{det}\nabla^2 \ell(0) \right|
-  %       }}
-  %     + O(e^{N\ell(0)} N^{-\frac n 2 -1})$};
-  % \end{tikzpicture}
-  \[\int_{z \in U}g(z)e^{N \ell(z)}= g(0)
-      {\left(\frac {2\pi}{N}\right)}^{\frac n 2}
-      % \frac {e^{N\ell(0)}}{\sqrt{
-      %     % \left|\mathsf{det} \nabla^2 \ell(0) \right|
-        % }}
-      + O(e^{N\ell(0)} N^{-\frac n 2 -1})\]
+  \[\int g(z)e^{N\ell(z)} \dd z = g(0) J_0+ O(e^{N\ell(0)} N^{-\frac n 2 -1})\]
 
+  \vfill \pause{}
 
-
+\begin{center}
+    \large \hspace{2.5cm}Case $g(0) = 0$ \onslide<3>{($g \in \class 3$)}
+  \end{center}
+  \[\int g(z)e^{N \ell(z)} \dd z =
+    \tfrac{\Tr\left(-\partial^2 g(0) {\left(\partial^2 \ell(0)\right)}^{-1}\right)}{2N}
+    J_0
+    + O\left(e^{N\ell(0)}{N^{-\frac n 2 -2}}\right)\]
 \end{frame}
 
 \begin{frame}{On the edge}
-  The result with $x$ and $z$
+  \begin{block}{Example of edge theorem ($g \in \class1$)}
+
+      \vspace{-4mm}
+
+    \begin{multline*}
+      \int x^m g(x,z)e^{-N(x + \frac 12 \|z\|^2)} \,\dd x\, \dd z =\\
+      g(0,0)\,m! {(2\pi)}^{\frac n 2} N^{-\frac n 2 - m - 1} + O(N^{-\frac n 2 - m
+        - 2})
+    \end{multline*}
+
+      \vspace{-3mm}
+
+  \end{block}
+
+  \pause{}
+
+    \begin{block}{Other edge theorem ($g \in \class 2$, $g \in \class 3$ on $z$)}
+
+      \vspace{-4mm}
+
+    \begin{multline*}
+      \int x^m g(x,z)e^{-N(x + \frac 12 \|z\|^2)} \,\dd x\, \dd z
+    =\\ \frac{m!\Tr\left(\dparn g z 2\right)}{2N^{m+2}}
+    {\left(\frac {2\pi}{N}\right)}^{\frac n 2}
+    + O\left({N^{-\frac n 2 -m -3}}\right)
+    \end{multline*}
+
+      \vspace{-3mm}
+
+
+  \end{block}
+
+
+
 \end{frame}
 
-\begin{frame}{After even more Jacobian}
-  Mention the big change of variables.
+\begin{frame}{After even more changes of variables}
+  \[\Psi(x,\sigma,\zeta,\omega) = \exp\mat{0 &\omega\\-\omega^\dagger&0}
+    \mat{x\sigma&0\\0&\Delta + \zeta - x \frac{I}r} \exp\mat{0 &-\omega\\\omega^\dagger&0}\]
+
+
+  \begin{center}
+    \large \hspace{2cm} General case \onslide<3>{($h \in \class 1$)}
+  \end{center}
+  \[I_h(N) = h(\rho\ml) I_1(N)+ O\left(\ldots\right)\]
+
+  \vfill \pause{}
+
+\begin{center}
+    \large \hspace{2.5cm}Case $g(0) = 0$ \onslide<3>{($g \in \class 2$, but $g
+      \in \class 3$ on $z$)} \TODO{} blocks
+  \end{center}
+  \[I_h(N) = \frac{\displaystyle \Tr \left( - \dparn h z 2 (\rho\ml)  \left( \dparn \ell z
+        2(\rho\ml)\right)\inv\right)}{2N} I_1(N) + O(\ldots)\]
 \end{frame}
 
 \begin{frame}{Final formulas}
+
+  \begin{block}{Expectation ($h \in \class 1$)}
+    \[E_A = h(\rho\ml) + O \left(\frac 1N\right)\]
+  \end{block}
+
+  \begin{block}{Variance ($h \in \class 2$, and $h \in \class 3$ along the edge)}
+
+    If $\dparn h x 2 = o\left(\frac1x\right)$,
+
+\vspace{-4mm}
+    \[V_A = \Tr(\nabla h\pr \mathbb H\inv(\nabla h\pr)) + O \left(\frac 1{N^2}\right)\]
+
+\vspace{-3mm}
+
+    \begin{itemize}
+    \item[--] $A\pr$ is $A$ projected on tangent space to $\mathcal{D}$ in $\rho\ml$
+    \item[--] $\mathbb H$ is $\nabla^2f$ on the edge of $\mathcal{D}$ in
+      $\rho\ml$
+    \end{itemize}
+  \end{block}
 \end{frame}
+
+\begin{frame}{Case of the entropy \TODO{} alert new things}
+
+
+  \begin{block}{Expectation ($h \in \class \varepsilon$)}
+    \[E_A = h(\rho\ml) + O \left(\frac 1{N^{\varepsilon}}\right)\]
+  \end{block}
+
+  \begin{block}{Variance ($h \in \class{1+\varepsilon}$, and $h \in \class 3$ along the edge)}
+    If $\dpar h x = o\left(\frac 1 {x^\delta}\right)$, with $\delta < \varepsilon$,
+
+\vspace{-4mm}
+
+    \[V_A = \Tr(\nabla h\pr \mathbb H\inv(\nabla h\pr)) + O \left(\frac
+        1{N^{1+\varepsilon - \delta}}\right)\]
+
+\vspace{-3mm}
+
+    \begin{itemize}
+    \item[--] $A\pr$ is $A$ projected on tangent space to $\mathcal{D}$ in $\rho\ml$
+    \item[--] $\mathbb H$ is $\nabla^2f$ on the edge of $\mathcal{D}$ in
+      $\rho\ml$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
 
 
 
@@ -586,10 +646,6 @@
 \end{frame}
 
 \begin{frame}{Thanks}
-\end{frame}
-
-\begin{frame}[standout]
-  Thank you for your attention
 \end{frame}
 
 
