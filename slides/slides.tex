@@ -1,0 +1,599 @@
+\documentclass{beamer}
+
+
+\input{alt.tex}
+
+\usetheme[block=fill]{metropolis}
+
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsopn}
+\usepackage{amsthm}
+% \usepackage[hidelinks]{hyperref}
+% \usepackage{cleveref}
+\usepackage{fancyvrb}
+\usepackage{tikz}
+\usepackage[justification=centering]{caption}
+\usepackage[super]{nth}
+\usepackage{textcomp}
+\usepackage{enumitem}
+\usepackage{doi}
+\usepackage{mathrsfs}
+\usepackage{siunitx}
+\setlist{nosep}
+% \usepackage[justification=justified,singlelinecheck=false]{caption}
+\usepackage{subcaption}
+
+
+
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\Rb}{\ensuremath{\overline{\mathbb{R}}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\C}{\ensuremath{\mathbb{C}}}
+\newcommand{\U}{\ensuremath{\mathbb{U}}}
+\newcommand{\F}{\ensuremath{\mathbb{F}}}
+\newcommand{\K}{\ensuremath{\mathbb{K}}}
+\newcommand{\TODO}{\textbf{TODO}}
+
+
+\newcommand\eqdef{\stackrel{\mathclap{\mbox{\tiny def}}}{=}}
+
+
+\sisetup{inter-unit-product=\ensuremath{{}\cdot{}}}
+
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\bra}[1]{\langle#1|}
+\newcommand{\braket}[2]{\langle#1|#2\rangle}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\der}[2]{\frac{\dd{#1}}{\dd{#2}}}
+\newcommand{\dern}[3]{\frac{\dd^{#3} #1}{\dd{#2}^{#3}}}
+\newcommand{\dpar}[2]{\frac{\partial{#1}}{\partial{#2}}}
+\newcommand{\dparn}[3]{\frac{\partial^{#3} {#1}}{\partial{#2}^{#3}}}
+
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+
+\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\bs}{\boldsymbol}
+
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\argmax}{arg\,max}
+\DeclareMathOperator{\argmintmp}{arg\,min}
+\newcommand{\argmin}{\mathop{\argmintmp}}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\diag}{diag}
+
+
+\newcommand{\class}[1]{{\mathscr{C}^{#1}}}
+
+\newcommand{\trnorm}[1]{\frac{#1}{\Tr\left({#1}\right)}}
+
+
+
+
+\newcommand{\ml}{_{M\!L}}
+
+
+\newcommand{\maxim}[3]{\begin{cases}
+    \mathbf{maximize}\,\quad #1& \mathbf{on}\; #2\\
+    \mathbf{subject\;to}\quad #3
+  \end{cases}}
+\newcommand{\maximf}[2]{\begin{cases}
+    \mathbf{maximize}\,\quad #1& \mathbf{on}\; #2
+  \end{cases}}
+\newcommand{\maxima}[3]{\begin{cases}
+    \mathbf{maximize}\,\quad #1& \mathbf{on}\; #2\\
+    \mathbf{subject\;to}\quad \begin{aligned}[t]#3\end{aligned}
+  \end{cases}}
+
+\newcommand{\minim}[3]{\begin{cases}
+    \mathbf{minimize}\;\,\quad #1& \mathbf{on}\; #2\\
+    \mathbf{subject\;to}\quad #3
+  \end{cases}}
+\newcommand{\minimf}[2]{\begin{cases}
+    \mathbf{minimize}\,\quad #1& \mathbf{on}\; #2
+  \end{cases}}
+\newcommand{\minima}[3]{\begin{cases}
+    \mathbf{minimize}\;\,\quad #1& \mathbf{on}\; #2\\
+    \mathbf{subject\;to}\quad \begin{aligned}[t]#3\end{aligned}
+  \end{cases}}
+
+\newcommand{\gap}{\hspace{0.8cm}}
+\newcommand{\twoline}{\vphantom{\frac\int\int}}
+\graphicspath{{../img/}}
+
+
+
+
+\title{Error estimation in maximum likelihood reconstruction for
+    quantum state tomography}
+\author{Thibaut Pérami}
+\institute{LKB, Collège de France}
+\date{September 11, 2019}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Quantum state tomography}
+  Experiment --> Lots of data -> Statistics --> estimated/reconstructed state
+  --> Expectation of function of state
+
+  |--> Variance of function of state
+\end{frame}
+
+\section{Setup and Goal}
+
+
+\begin{frame}{The experimental setup}
+  Simply the experiment diagram
+\end{frame}
+
+\begin{frame}{The goal$\colon{}$ Create a Maxwell demon}
+  Study how an atom can give heat to a hotter cavity.
+  Diagram with and without demon
+\end{frame}
+
+\section{Atoms and light in cavities}
+
+\begin{frame}{Circular Rydberg atoms}
+
+  \begin{itemize}
+  \item exited state $\ket e$ \TODO{} tikz with 51 and 54 and n=?, l=m=n
+  \item exited state $\ket g$
+  \item exited state $\ket f$
+  \end{itemize}
+
+  \begin{block}{Hamiltonian}
+    \[H = \frac{\hbar \omega}2 \sigma_Z\]
+  \end{block}
+
+\end{frame}
+
+\begin{frame}{Rydberg atoms in a classical field: Rabi oscillation}
+  \[H = \frac{\hbar \omega}2 \sigma_Z \pause - \bs D \cdot \bs E\]
+
+  \pause{}
+
+  \begin{block}{Secular approximation in interaction picture: Rabi oscillation}
+    \[H_1 = \frac{\hbar \Delta_r}2 \sigma_Z - \frac{\hbar \Omega_r}2
+      \mat{0&e^{i\phi}\\e^{-i\phi}&0} = \frac{\hbar \Omega_r'}2 \bs \sigma
+      \cdot \bs n\]
+  \end{block}
+
+  \pause{}
+
+  \includegraphics[width=\textwidth]{Rabi.png}
+\end{frame}
+
+\begin{frame}{EM field in a resonant cavity}
+
+  \[H = \hbar\omega \left(N +\frac12\right)\]
+\end{frame}
+
+\begin{frame}{Rydberg atom in a resonant cavity}
+  f
+\end{frame}
+
+
+
+\section{Maximum likelihood estimation}
+
+\begin{frame}{Estimation theory}
+
+  \begin{block}{Goal}
+    Estimating parameter $\theta$ for observation $X$ and law $P_\theta(X = x)$
+  \end{block}
+
+  \pause{}
+
+  \begin{block}{Estimator}
+    deterministic function $\hat \theta(x)$ such that $P_\theta(\hat \theta(X)
+    \approx \theta)$ is high
+  \end{block}
+
+  \pause{}
+
+  \begin{block}{Likelihood}
+    \[P_\theta(A) = \int_A \mathcal{L}_x(\theta) \dd x\]
+    \[\ell_x = \log \mathcal{L}_x\]
+  \end{block}
+  
+\end{frame}
+
+\begin{frame}{Fischer information and Cramér-Rao bound}
+  Light and fast 30s
+\end{frame}
+
+\begin{frame}{MaxLike estimation}
+\end{frame}
+
+
+
+\section{Density matrices}
+
+\begin{frame}{Probability distribution on quantum states}
+  \[\int_S \bra \psi A\ket \psi \dd P(\psi)\pause = \int_S \Tr\big(A\ket \psi \bra \psi\big) \dd
+    P(\psi) \pause = \Tr\left(A \int_S\ket \psi \bra \psi \dd P(\psi) \right)\]
+  \pause{}
+  \begin{block}{Density matrix, $\mathcal{D}(\mathcal{H})$}
+    \[\rho = \int_S\ket \psi \bra \psi \dd P(\psi)\]
+  \end{block}
+
+  \pause{}
+
+\begin{itemize}
+  \item[--] $\rho \geq 0$
+    \pause{}
+  \item[--] $\Tr \rho = 1$
+    \pause{}
+  \item[--] $\rho = \sum p_i \ket {\psi_i} \bra{\psi_i}$
+\end{itemize}
+
+  \pause{} \vspace{3mm}
+
+\begin{block}{Pure states}
+  $P(\psi) = 1 \iff \rho = \ket \psi \bra \psi \iff \Tr(\rho^2) = 1 \iff \rk
+  \rho = 1$.
+\end{block}
+\end{frame}
+
+\begin{frame}{The qubit}
+  \TODO{} Nice diagram. Skip?
+\end{frame}
+
+\begin{frame}{Partial Trace}
+  \TODO{}
+\end{frame}
+
+
+
+\section{Quantum operations}
+
+\begin{frame}{Generalized measurement}
+\end{frame}
+
+\begin{frame}{Quantum operation}
+\end{frame}
+
+\begin{frame}{Krauss operators}
+  Krauss theorem
+\end{frame}
+
+\begin{frame}{Likelihood with quantum operations}
+\end{frame}
+
+\newcommand{\pr}{_{||}}
+\newcommand{\inv}{^{-1}}
+\begin{frame}{Evaluation of observable on the estimator}
+
+  \begin{center}
+    \Large observable A on $\rho\ml$
+  \end{center}
+
+  \pause{}
+
+  \begin{block}{Expectation}
+    \[E_A = \Tr(\rho\ml A)\]
+  \end{block}
+
+  \pause{}
+
+  \begin{block}{Variance}
+    \[V_A = \Tr(A\pr \mathbb H\inv(A\pr))\]
+    \begin{itemize}
+    \item[--] $A\pr$ is $A$ projected on tangent space to $\mathcal{D}$ in $\rho\ml$
+    \item[--] $\mathbb H$ is $\nabla^2f$ on the edge of $\mathcal{D}$ in
+      $\rho\ml$:
+      \[ \mathbb H(A) = \nabla^2 f\pr + \text{other term}\]
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\section{Convex Optimization}
+
+\begin{frame}{Convex problem}
+  \[\maxima{\Alt<1>f\ell(\Alt<1>x\rho)}{\Alt<1>x\rho}
+    {\Alt<1>{g(x)}{\rho} &\geq 0\\ \Alt<1>{h(x)}{\Tr \rho} &= \Alt<1>{0}{1}}\]
+  \pause{}
+
+  \pause{}\vfill
+
+  \centering \Large
+  This is \alert{tractable}
+
+  \TODO{} Add convexity hypothesis
+\end{frame}
+
+\begin{frame}{Projected gradient ascent}
+
+  \[\rho_{n+1} = P(\rho_n + t_n \nabla \ell)\]
+
+  \pause{}\vfill
+
+  \begin{block}{Step size}
+    $t_n$ minimize 2$^{\text{nd}}$ order: $\ell (\rho_n + h) = \ell(\rho_n) + \nabla
+    \ell \cdot h + \frac12 h \cdot \nabla^2 \ell \cdot h$
+  \end{block}
+
+  \pause{}
+
+  \begin{block}{Projection}
+    \onslide<4->{$M = UDU^\dagger$} \onslide<5->{, $D = \diag(d)$}
+    \[P(M) = \onslide<4->{U}
+       \onslide<5->{\diag\Big (}
+       \argmin_{\Alt<-4>\rho x \in \Alt<-4>{\mathcal{D}}{\mathcal{P}}}
+       \|\Alt<5>{d-x}{\Alt<-3>MD - \rho}\|^2
+      \onslide<5->{\Big)}
+      \onslide<4->{U^\dagger}\]
+    \onslide<5-> where $\mathcal{P}$ is the probability simplex
+  \end{block}
+\end{frame}
+
+
+\begin{frame}{KKT conditions}
+  \[\maxima{\ell(\rho)}{\rho}
+    {\rho &\geq 0\\ \Tr \rho &= 1}\]
+
+\begin{block}{Lagrangian}
+  \[\mathcal{L}(\rho,\mu,\lambda) = \ell(\rho) + \braket{\mu}{\rho} - \lambda\Tr\rho\]
+\end{block}
+
+    \pause{}
+
+\begin{block}{KKT}
+  \begin{itemize}
+  \item[--] $\rho \in \mathcal{D}$
+  \item[--] $\nabla \mathcal{L} = 0 \implies \nabla \ell = \lambda I - \mu$
+    \pause{}
+  \item[--] $\mu > 0$
+  \item [--] $\braket{\mu}{\rho} = 0$
+  \end{itemize}
+\end{block}
+\end{frame}
+
+
+
+
+
+
+\section{Quantum thermodynamics}
+
+\begin{frame}{Thermal state at Maxwell Boltzmann distribution}
+  \[\zeta_\beta = \trnorm{{\exp(\beta H)}}\]
+\end{frame}
+
+\begin{frame}{Exact Protocol}
+  Bring back the diagram of Luis
+
+  \TODO{} Think about it.
+\end{frame}
+
+
+\begin{frame}{Quantum information theory}
+
+  \begin{block}{Shanon entropy}
+    \[H(p_1,\ldots,p_n) = \sum_i -p_i\log (p_i)\]
+
+  \vspace{-0.2cm}
+
+  \end{block}
+
+  \pause{}
+
+  \begin{block}{VonNeuman Entropy}
+
+  \vspace{-0.3cm}
+
+    \[S(\rho) = -\Tr(\rho\log \rho) = H(p_1,\ldots,p_n) \gap \left(\rho = \sum p_i
+      \ket {\psi_i}\bra{\psi_i}\right)\]
+
+  \vspace{-0.2cm}
+
+  \end{block}
+
+  \pause{}
+
+  \begin{block}{Mutual Infomation}
+    \[I_{A:B} = S(\rho^A) + S(\rho^B) - S(\rho^{AB})\]
+  \end{block}
+
+  \pause{}
+
+  \begin{block}{Reltative entropy to $\zeta$ (Kullback–Leibler divergence)}
+    \[D(\rho) = \Tr(\rho (\log \rho - \log \zeta))\]
+  \end{block}
+\end{frame}
+
+\begin{frame}{New second laws of thermodynamics}
+
+  \[  \onslide<2->{- \Delta I_{QC:D} +}\Delta\beta Q \mathrel{\Alt<3>=\geq}
+    \Alt<-2>0{\Delta D_{QC}}\]
+
+\end{frame}
+
+\begin{frame}{Heat vs relative temperature}
+  1 plot (maybe multiple ones)
+\end{frame}
+
+
+
+\section{Deviation computation}
+
+\begin{frame}{Monte-Carlo algorithm}
+
+  \vspace{0.5mm}
+
+  \begin{block}{Input}
+    $n$ probabilities $p_i$ with standard deviation $\Delta p_i$
+  \end{block}
+
+  \pause{}
+  \begin{block}{Goal}
+    Simulate a corresponding probability distribution
+  \end{block}
+
+  \pause{}
+  \begin{block}{Difficulty}
+    We must project and truncate the distribution $\prod_i
+    \mathcal{N}(p_i,\Delta p_i)$ to the polyhedron $\mathcal{P}$ of valid probability distributions
+  \end{block}
+
+  \pause{}
+  \emph{Hit and run Markov chain}
+  \begin{itemize}
+  \item[--] Take a random direction $d$
+  \item[--] Compute the segment $S = \{x_n + t d\} \cap \mathcal{P}$
+  \item[--] Project the distribution on that segment (it's a normal law)
+  \item[--] Draw $x_{n+1}$ from that distribution
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Expectation and variance\onslide<4>{, Asymptotics}}
+  \[I_h\onslide<4>{(N)} = \int_{\rho \in \mathcal{D}} h(\rho) e^{\onslide<4>{N}\ell(\rho)} P_0(\rho)\, \dd \rho.\]
+
+  \pause{}
+
+  \begin{block}{Expectation}
+
+    \vspace{-1mm}
+
+    \[\gap \gap \gap \gap E_h \onslide<4>{(N)}= \Alt<4>{\frac{I_h(N)}{I_1(N)}}{\frac{I_h}{I_1}} \gap \gap (I_1 = P(X=x))\]
+
+    \vspace{-3mm}
+
+  \end{block}
+
+  \pause{}
+
+  \begin{block}{Variance}
+
+    \vspace{-3mm}
+
+    \[\gap \gap V_h \onslide<4>{(N)}= E_{h_V} \onslide<4>{(N)}\gap h_v = \Alt<4>{{(h - \lim_{N \to \infty} E_h(N))}^2}{{(h - E_h)}^2}\]
+
+    \vspace{-5mm}
+
+  \end{block}
+
+
+\end{frame}
+
+\begin{frame}{Results in the interior}
+  \begin{block}{Example of theorem}
+    \[\int_{z \in U} g(z)e^{-\frac N2\|z\|^2} \dd z = g(0){\left(\frac
+          {2\pi}{N}\right)}^{\frac n 2} +
+      O\left({N^{-\frac n 2 -1}}\right)\]
+  \end{block}
+
+  \pause{}
+
+  \emph{Example of proof}
+
+  $g \in \class 1$ so $g(h) = g(0) + O(h)$, thus:
+      \[\int g(z)e^{-\frac N2\|z\|^2} \dd z = \int
+        g(0)e^{-\frac N2\|z\|^2} \dd z + \int O(h)e^{-\frac N2\|z\|^2} \dd z \]
+
+
+
+\end{frame}
+
+\newcommand{\lol}[1]{#1}
+
+\begin{frame}[fragile]{After multiples change of variables}
+
+  \begin{center}
+    \large General case
+  \end{center}
+  % \begin{tikzpicture}
+  %   \node {\int_{z \in U}g(z)e^{N \ell(z)}= g(0)
+  %     {\left(\frac {2\pi}{N}\right)}^{\frac n 2}
+  %     \frac {e^{N\ell(0)}}{\sqrt{
+  %         \left|\mathrm{det}\nabla^2 \ell(0) \right|
+  %       }}
+  %     + O(e^{N\ell(0)} N^{-\frac n 2 -1})$};
+  % \end{tikzpicture}
+  \[\int_{z \in U}g(z)e^{N \ell(z)}= g(0)
+      {\left(\frac {2\pi}{N}\right)}^{\frac n 2}
+      % \frac {e^{N\ell(0)}}{\sqrt{
+      %     % \left|\mathsf{det} \nabla^2 \ell(0) \right|
+        % }}
+      + O(e^{N\ell(0)} N^{-\frac n 2 -1})\]
+
+
+
+\end{frame}
+
+\begin{frame}{On the edge}
+  The result with $x$ and $z$
+\end{frame}
+
+\begin{frame}{After even more Jacobian}
+  Mention the big change of variables.
+\end{frame}
+
+\begin{frame}{Final formulas}
+\end{frame}
+
+
+
+\section{Error propagation}
+
+\begin{frame}{First order error propagation}
+\end{frame}
+
+\begin{frame}{Heat vs relative temperature}
+\end{frame}
+
+
+
+\section{Centering the result}
+
+\begin{frame}{The non-full span problem}
+\end{frame}
+
+\begin{frame}{Proposed centering function and properties}
+\end{frame}
+
+\begin{frame}%Plot of the functions
+  Plots
+\end{frame}
+
+\begin{frame}{Multi variable optimization}
+\end{frame}
+
+
+
+\section{Conclusion}
+
+\begin{frame}{Conclusion}
+\end{frame}
+
+\begin{frame}{Thanks}
+\end{frame}
+
+\begin{frame}[standout]
+  Thank you for your attention
+\end{frame}
+
+
+
+
+\end{document}
+
