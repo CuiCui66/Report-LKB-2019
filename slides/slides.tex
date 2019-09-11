@@ -48,6 +48,7 @@
 \newcommand{\bs}{\boldsymbol}
 
 \newcommand{\Tr}{\mathsf{Tr}\,}
+\newcommand{\argmax}{\mathop{\mathsf{arg\,max}}}
 \newcommand{\argmin}{\mathop{\mathsf{arg\,min}}}
 \newcommand{\rk}{\mathsf{rk}\,}
 \newcommand{\diag}{\mathsf{diag}\,}
@@ -101,35 +102,83 @@
 \maketitle
 
 \begin{frame}{Quantum state tomography}
-  Experiment --> Lots of data -> Statistics --> estimated/reconstructed state
-  --> Expectation of function of state
+  \centering
+    \begin{tikzpicture}
+    \node[rectangle] (E) at(0,0) {Experiment};
+    \pause
+    \node[rectangle] (D) at(0,-1) {Lots of data};
+    \draw[double,->] (E) -- (D);
+    \pause
+    \node[rectangle] (S) at (0,-2) {Statistics};
+    \draw[double,->] (D) -- (S);
+    \pause
+    \node[rectangle] (R) at (0,-3) {Reconstructed state};
+    \draw[double,->] (S) -- (R);
+    \pause
+    \node[rectangle] (Ex) at (0,-4) {Expectation};
+    \draw[double,->] (R) -- (Ex);
+    \pause
+    \node[rectangle] (V) at (3,-4) {Variance};
+    \draw[double,->] (R) -- (V);
+  \end{tikzpicture}
 
-  |--> Variance of function of state
+  
 \end{frame}
 
 \section{Setup and Goal}
 
 
 \begin{frame}{The experimental setup}
-  Simply the experiment diagram
+
+  \vfill
+
+  \includegraphics[width=\textwidth]{exp.png}
 \end{frame}
 
 \begin{frame}{The goal$\colon{}$ Create a Maxwell demon}
-  Study how an atom can give heat to a hotter cavity.
-  Diagram with and without demon
+
+\vspace{2cm}
+
+  \begin{description}
+    \item[Normal interaction:] A cold atom \alert{takes} heat from a hot cavity
+      \pause{}
+    \item[Maxwell demon] A cold atom \alert{gives} heat to a hot cavity
+  \end{description}
+
+  \begin{center}
+    \includegraphics[height=3cm]{md.png}
+  \end{center}
+
+
 \end{frame}
 
 \section{Atoms and light in cavities}
 
 \begin{frame}{Circular Rydberg atoms}
+\begin{center}
+  \begin{tikzpicture}[y=1.5cm,x=2cm]
+    \draw (0,0) -- (2,0);
+    \node[right] at (2,0) {$\ket e$};
+    \node[left] at (0,0) {$n=l=m=51$};
+    \draw (0,-1) -- (2,-1);
+    \node[right] at (2,-1) {$\ket g$};
+    \node[left] at (0,-1) {$n=l=m=50$};
+    \draw[<->] (1,0) --(1,-1);
+    \node[right] at (1,-0.5) {$ 51 \mathsf{GHz}$};
+    \pause{}
+    \draw (0,-2) -- (2,-2);
+    \node[right] at (2,-2) {$\ket f$};
+    \node[left] at (0,-2) {$n=l=m=49$};
+    \draw[<->] (1,-1) --(1,-2);
+    \node[right] at (1,-1.5) {$54 \mathsf{GHz}$};
 
-  \begin{itemize}
-  \item exited state $\ket e$ \TODO{} tikz with 51 and 54 and n=?, l=m=n
-  \item exited state $\ket g$
-  \item exited state $\ket f$
-  \end{itemize}
 
-  \begin{block}{Hamiltonian}
+  \end{tikzpicture}
+\end{center}
+
+\vfill
+
+  \begin{block}<3->{Hamiltonian on a transition}
     \[H = \frac{\hbar \omega}2 \sigma_Z\]
   \end{block}
 
@@ -152,12 +201,52 @@
 \end{frame}
 
 \begin{frame}{EM field in a resonant cavity}
-
   \[H = \hbar\omega \left(N +\frac12\right)\]
+
+  \[a = \sum_n \sqrt{n} \ket {n-1} \bra n\]
+
+  \pause{}
+
+  \begin{block}{EM Field}
+    \[\bs{E}(\bs r) = \mathcal{E}(\bs f(\bs r) a + \bs f(\bs r) a^\dagger)\]
+  \end{block}
+
+  \pause{}
+
+  \begin{description}
+  \item[Coherent state] eigenvector $\ket \alpha$ of $a$ (classical field amplitude
+    $\alpha$)
+  \item[Fock state] eigenvector $\ket n$ of $N$ (exactly $n$ photons)
+  \end{description}
+
 \end{frame}
 
 \begin{frame}{Rydberg atom in a resonant cavity}
-  f
+  \[H = \frac{\hbar \omega}2 \sigma_Z - \bs D \cdot \bs E(\bs R)\]
+
+  \pause{}
+
+  \begin{block}{Dressed states}
+    $\ket{+,n}$ and $\ket{-,n}$
+  \end{block}
+
+  \pause{}
+
+
+  \begin{block}{Resonant case $\omega_c = \omega_a$}
+    $\ket{+,n} = \frac12 \ket{g,n} + \frac12 \ket{e,n}$. Rotation at pulsation $\Omega_n =
+    \sqrt{n+1} \Omega_0$
+  \end{block}
+
+  \pause{}
+
+  \begin{block}{Dispersive case $\omega_a \neq \omega_c$\onslide<5>{, \alert{QND
+        measurement}}}
+    $\ket{g,n}$ and $\ket{e,n}$ are conserved. Phase shift of $\phi_0(n+\frac12)$
+  \end{block}
+
+
+
 \end{frame}
 
 
@@ -186,11 +275,31 @@
   
 \end{frame}
 
-\begin{frame}{Fischer information and Cramér-Rao bound}
-  Light and fast 30s
-\end{frame}
-
 \begin{frame}{MaxLike estimation}
+
+  \[\hat \theta(x) = \argmax_{\theta \in \mathcal{D}} \ell_x(\theta)\]
+
+\pause{}
+
+  \begin{center}
+    \LARGE Why?
+  \end{center}
+
+  \pause{}
+
+  \begin{block}{Cramér-Rao bound}
+    \[V(hat \theta) \geqslant {I(\theta)}^{-1}\]
+
+    $I$ is the Fisher information: $I(\theta) = \dparn \ell \theta 2$
+  \end{block}
+
+  \begin{center}
+    MaxLike extimation asymptotically \alert{saturate} the Cramér-Rao bound
+  \end{center}
+
+
+
+
 \end{frame}
 
 
@@ -224,11 +333,20 @@
 \end{frame}
 
 \begin{frame}{The qubit}
-  \TODO{} Nice diagram. Skip?
-\end{frame}
 
-\begin{frame}{Partial Trace}
-  \TODO{}
+  \vfill
+
+  \[\rho = \frac I2 + \bs r \cdot \bs \sigma\]
+  \[\rho \in \mathcal{D} \iff \|\bs r\| \leqslant 1\]
+
+  \vfill
+
+  \begin{center}
+    \Large Mixed state are \alert{inside} the Bloch sphere.
+  \end{center}
+
+  \vfill
+
 \end{frame}
 
 
@@ -236,17 +354,63 @@
 \section{Quantum operations}
 
 \begin{frame}{Generalized measurement}
+
+
+  \begin{block}{Projective measurement}
+
+    \begin{description}
+    \item[Measurement projector:] $P_a$, such that $A = \sum aP_a$
+    \item[Probability of measuring $a$:] $\|P_a \ket \psi\|^2$ or $\Tr(P_a
+      \rho)$
+    \item[Output state after $a$:] $\frac{P_a \ket \psi}{\|P_a \ket \psi\|}$ or $\trnorm{P_a
+        \rho P_a}$
+    \end{description}
+  \end{block}
+
+\pause{}\vfill
+
+  \begin{block}{Generalized measurement}
+    \begin{description}
+    \item[Measurement operator:] $M_\mu$
+    \item[Probability of measuring $\mu$:] $\|M_\mu \ket \psi\|^2$ or $\Tr(M_\mu
+      \rho M_\mu)$
+    \item[Output state after $\mu$:] $\frac{M_\mu \ket \psi}{\|M_\mu \ket \psi\|}$ or $\trnorm{M_\mu
+        \rho M_\mu}$
+    \end{description}
+  \end{block}
 \end{frame}
 
 \begin{frame}{Quantum operation}
-\end{frame}
 
-\begin{frame}{Krauss operators}
-  Krauss theorem
+  \begin{block}{Definition}
+    \begin{itemize}
+    \item[--] $\mathbb E \in \mathcal{L}(\mathcal{O}(\mathcal{H}_i),\mathcal{O}(\mathcal{H}_o))$
+    \item[--] $\Tr \circ \mathbb E \mathrel{\Alt<-2>{=}{\alert<3>{\leqslant}}} \Tr$
+    \item[--] $\rho \geqslant 0 \implies \mathbb E\only<2->{\alert<2>{\otimes I}}(\rho) \geqslant 0$
+    \end{itemize}
+  \end{block}
+
+  \onslide<4>
+
+  \begin{block}{Krauss theorem}
+    Any quantum operation can be written as:
+    \[\mathbb E(\rho) = \sum M_i \rho M_i^\dagger\]
+    $\mathbb E$ is trace preserving $\iff \sum M_i M_i^\dagger = I$
+  \end{block}
 \end{frame}
 
 \begin{frame}{Likelihood with quantum operations}
+
+  $P(X|\rho) = \Tr (\mathbb{K}_n \circ \ldots \circ \mathbb K_1(\rho))$
+
+  Introduce $E_i$.
+
+  Write $\ell$.
+
+
 \end{frame}
+
+
 
 \newcommand{\pr}{_{||}}
 \newcommand{\inv}{^{-1}}
@@ -266,6 +430,9 @@
 
   \begin{block}{Variance}
     \[V_A = \Tr(A\pr \mathbb H\inv(A\pr))\]
+
+    \vspace{-4mm}
+
     \begin{itemize}
     \item[--] $A\pr$ is $A$ projected on tangent space to $\mathcal{D}$ in $\rho\ml$
     \item[--] $\mathbb H$ is $\nabla^2f$ on the edge of $\mathcal{D}$ in
