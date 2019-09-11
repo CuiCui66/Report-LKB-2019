@@ -51,6 +51,7 @@
 \newcommand{\argmax}{\mathop{\mathsf{arg\,max}}}
 \newcommand{\argmin}{\mathop{\mathsf{arg\,min}}}
 \newcommand{\rk}{\mathsf{rk}\,}
+\newcommand{\Span}{\mathsf{Span}\,}
 \newcommand{\diag}{\mathsf{diag}\,}
 
 
@@ -262,7 +263,7 @@
   \pause{}
 
   \begin{block}{Estimator}
-    deterministic function $\hat \theta(x)$ such that $P_\theta(\hat \theta(X)
+    Deterministic function $\hat \theta(x)$ such that $P_\theta(\hat \theta(X)
     \approx \theta)$ is high
   \end{block}
 
@@ -288,7 +289,7 @@
   \pause{}
 
   \begin{block}{Cramér-Rao bound}
-    \[V(hat \theta) \geqslant {I(\theta)}^{-1}\]
+    \[V(\hat \theta) \geqslant {I(\theta)}^{-1}\]
 
     $I$ is the Fisher information: $I(\theta) = \dparn \ell \theta 2$
   \end{block}
@@ -317,11 +318,11 @@
   \pause{}
 
 \begin{itemize}
-  \item[--] $\rho \geqslant 0$
+  \item $\rho \geqslant 0$
     \pause{}
-  \item[--] $\Tr \rho = 1$
+  \item $\Tr \rho = 1$
     \pause{}
-  \item[--] $\rho = \sum p_i \ket {\psi_i} \bra{\psi_i}$
+  \item $\rho = \sum p_i \ket {\psi_i} \bra{\psi_i}$
 \end{itemize}
 
   \pause{} \vspace{3mm}
@@ -384,9 +385,9 @@
 
   \begin{block}{Definition}
     \begin{itemize}
-    \item[--] $\mathbb E \in \mathcal{L}(\mathcal{O}(\mathcal{H}_i),\mathcal{O}(\mathcal{H}_o))$
-    \item[--] $\Tr \circ \mathbb E \mathrel{\Alt<-2>{=}{\alert<3>{\leqslant}}} \Tr$
-    \item[--] $\rho \geqslant 0 \implies \mathbb E\only<2->{\alert<2>{\otimes I}}(\rho) \geqslant 0$
+    \item $\mathbb E \in \mathcal{L}(\mathcal{O}(\mathcal{H}_i),\mathcal{O}(\mathcal{H}_o))$
+    \item $\Tr \circ \mathbb E \mathrel{\Alt<-2>{=}{\alert<3>{\leqslant}}} \Tr$
+    \item $\rho \geqslant 0 \implies \mathbb E\only<2->{\alert<2>{\otimes I}}(\rho) \geqslant 0$
     \end{itemize}
   \end{block}
 
@@ -401,13 +402,16 @@
 
 \begin{frame}{Likelihood with quantum operations}
 
-  $P(X|\rho) = \Tr (\mathbb{K}_n \circ \ldots \circ \mathbb K_1(\rho))$
+  \[P(X|\rho) = \Tr (\mathbb{K}_n^i \circ \cdots \circ \mathbb K_1^i(\rho))\]
 
-  Introduce $E_i$.
+\pause{}
 
-  Write $\ell$.
+  \[E_i = {\mathbb K_1^i}^* \circ \cdots \circ {\mathbb K_n^i}^* (I) \implies P(X|\rho) = \Tr(\rho
+  E_i)\]
 
+\pause{}
 
+  \[\ell(\rho) = \sum_i \log (\Tr(\rho E_i))\]
 \end{frame}
 
 
@@ -434,8 +438,8 @@
     \vspace{-4mm}
 
     \begin{itemize}
-    \item[--] $A\pr$ is $A$ projected on tangent space to $\mathcal{D}$ in $\rho\ml$
-    \item[--] $\mathbb H$ is $\nabla^2f$ on the edge of $\mathcal{D}$ in
+    \item $A\pr$ is $A$ projected on tangent space to $\mathcal{D}$ in $\rho\ml$
+    \item $\mathbb H$ is $\nabla^2f$ on the edge of $\mathcal{D}$ in
       $\rho\ml$:
       \[ \mathbb H(A) = \nabla^2 f\pr + \text{other term}\]
     \end{itemize}
@@ -448,14 +452,18 @@
 \begin{frame}{Convex problem}
   \[\maxima{\Alt<1>f\ell(\Alt<1>x\rho)}{\Alt<1>x\rho}
     {\Alt<1>{g(x)}{\rho} &\geqslant 0\\ \Alt<1>{h(x)}{\Tr \rho} &= \Alt<1>{0}{1}}\]
+
+  \centering
+
+  \Alt<1>{$f$ and $g$}{\ell} are concave, and \Alt<1>{$h$}{$\Tr-1$} is affine
+
+
   \pause{}
 
   \pause{}\vfill
 
-  \centering \Large
+  \Large
   This is \alert{tractable}
-
-  \TODO{} Add convexity hypothesis
 \end{frame}
 
 \begin{frame}{Projected gradient ascent}
@@ -472,13 +480,13 @@
   \pause{}
 
   \begin{block}{Projection}
-    \onslide<4->{$M = UDU^\dagger$} \onslide<5->{, $D = \diag(d)$}
-    \[P(M) = \onslide<4->{U}
-       \onslide<5->{\diag\Big (}
-       \argmin_{\Alt<-4>\rho x \in \Alt<-4>{\mathcal{D}}{\mathcal{P}}}
-       \|\Alt<5>{d-x}{\Alt<-3>MD - \rho}\|^2
-      \onslide<5->{\Big)}
-      \onslide<4->{U^\dagger}\]
+    \onslide<4->{\alert<4>{$M = UDU^\dagger$}} \onslide<5->{, \alert<5>{$D = \diag(d)$}}
+    \[P(M) = \onslide<4->{\alert<4>{U}}\,
+       \onslide<5->{\alert<5>{\diag\Big (}}
+       \argmin_{\alert<5>{\Alt<-4>\rho x \in \Alt<-4>{\mathcal{D}}{\mathcal{P}}}}
+       \|\Alt<5>{\alert<5>{d-x}}{\Alt<-3>M{\alert<4>{D}} - \rho}\|^2
+      \onslide<5->{\alert<5>{\Big)}}
+      \onslide<4->{\alert<4>{U^\dagger}}\]
     \onslide<5-> where $\mathcal{P}$ is the probability simplex
   \end{block}
 \end{frame}
@@ -496,11 +504,11 @@
 
 \begin{block}{KKT}
   \begin{itemize}
-  \item[--] $\rho \in \mathcal{D}$
-  \item[--] $\nabla \mathcal{L} = 0 \implies \nabla \ell = \lambda I - \mu$
+  \item $\rho \in \mathcal{D}$
+  \item $\nabla \mathcal{L} = 0 \implies \nabla \ell = \lambda I - \mu$
     \pause{}
-  \item[--] $\mu > 0$
-  \item [--] $\braket{\mu}{\rho} = 0$
+  \item $\mu > 0$
+  \item $\braket{\mu}{\rho} = 0$
   \end{itemize}
 \end{block}
 \end{frame}
@@ -517,9 +525,9 @@
 \end{frame}
 
 \begin{frame}{Exact Protocol}
-  Bring back the diagram of Luis
+  \vfill
 
-  \TODO{} Think about it.
+  \includegraphics[width=\textwidth]{exp.png}
 \end{frame}
 
 
@@ -565,9 +573,11 @@
 
 \end{frame}
 
-\begin{frame}{Heat vs relative temperature}
-  1 plot (maybe multiple ones)
+\begin{frame}{Second law}
+  \centering
+  \includegraphics[height=\textheight]{plots/Strg1.png}
 \end{frame}
+
 
 
 
@@ -595,10 +605,10 @@
   \pause{}
   \emph{Hit and run Markov chain}
   \begin{itemize}
-  \item[--] Take a random direction $d$
-  \item[--] Compute the segment $S = \{x_n + t d\} \cap \mathcal{P}$
-  \item[--] Project the distribution on that segment (it's a normal law)
-  \item[--] Draw $x_{n+1}$ from that distribution
+  \item Take a random direction $d$
+  \item Compute the segment $S = \{x_n + t d\} \cap \mathcal{P}$
+  \item Project the distribution on that segment (it's a normal law)
+  \item Draw $x_{n+1}$ from that distribution
   \end{itemize}
 
 \end{frame}
@@ -656,20 +666,18 @@
 
 \begin{frame}{After multiples change of variables}
 
-  \begin{center}
-    \large \hspace{2cm} General case \onslide<3>{($g \in \class 1$)}
-  \end{center}
+    \begin{block}{General case \onslide<3>{($g \in \class 1$)}}
   \[\int g(z)e^{N\ell(z)} \dd z = g(0) J_0+ O(e^{N\ell(0)} N^{-\frac n 2 -1})\]
+\end{block}
 
   \vfill \pause{}
 
-\begin{center}
-    \large \hspace{2.5cm}Case $g(0) = 0$ \onslide<3>{($g \in \class 3$)}
-  \end{center}
-  \[\int g(z)e^{N \ell(z)} \dd z =
-    \tfrac{\Tr\left(-\partial^2 g(0) {\left(\partial^2 \ell(0)\right)}^{-1}\right)}{2N}
-    J_0
-    + O\left(e^{N\ell(0)}{N^{-\frac n 2 -2}}\right)\]
+  \begin{block}{Case $g(0) = 0$ \onslide<3>{($g \in \class 3$)}}
+    \[\int g(z)e^{N \ell(z)} \dd z =
+      \tfrac{\Tr\left(-\partial^2 g(0) {\left(\partial^2 \ell(0)\right)}^{-1}\right)}{2N}
+      J_0
+      + O\left(e^{N\ell(0)}{N^{-\frac n 2 -2}}\right)\]
+  \end{block}
 \end{frame}
 
 \begin{frame}{On the edge}
@@ -714,19 +722,17 @@
     \mat{x\sigma&0\\0&\Delta + \zeta - x \frac{I}r} \exp\mat{0 &-\omega\\\omega^\dagger&0}\]
 
 
-  \begin{center}
-    \large \hspace{2cm} General case \onslide<3>{($h \in \class 1$)}
-  \end{center}
-  \[I_h(N) = h(\rho\ml) I_1(N)+ O\left(\ldots\right)\]
+  \begin{block}{General case \onslide<3>{($h \in \class 1$)}}
+    \[I_h(N) = h(\rho\ml) I_1(N)+ O\left(\ldots\right)\]
+  \end{block}
 
   \vfill \pause{}
 
-\begin{center}
-    \large \hspace{2.5cm}Case $g(0) = 0$ \onslide<3>{($g \in \class 2$, but $g
-      \in \class 3$ on $z$)} \TODO{} blocks
-  \end{center}
-  \[I_h(N) = \frac{\displaystyle \Tr \left( - \dparn h z 2 (\rho\ml)  \left( \dparn \ell z
-        2(\rho\ml)\right)\inv\right)}{2N} I_1(N) + O(\ldots)\]
+  \begin{block}{Case $g(0) = 0$ \onslide<3>{($g \in \class 2$, but $g
+        \in \class 3$ on $z =(\zeta,\omega)$)}}
+    \[I_h(N) = \frac{\displaystyle \Tr \left( - \dparn h z 2 (\rho\ml)  \left( \dparn \ell z
+            2(\rho\ml)\right)\inv\right)}{2N} I_1(N) + O(\ldots)\]
+  \end{block}
 \end{frame}
 
 \begin{frame}{Final formulas}
@@ -735,7 +741,8 @@
     \[E_A = h(\rho\ml) + O \left(\frac 1N\right)\]
   \end{block}
 
-  \begin{block}{Variance ($h \in \class 2$, and $h \in \class 3$ along the edge)}
+  \begin{block}{Variance ($h \in \class {\alert 1}$, and $h \in \class 3$ along
+      the edge and inside)}
 
     If $\dparn h x 2 = o\left(\frac1x\right)$,
 
@@ -745,21 +752,22 @@
 \vspace{-3mm}
 
     \begin{itemize}
-    \item[--] $A\pr$ is $A$ projected on tangent space to $\mathcal{D}$ in $\rho\ml$
-    \item[--] $\mathbb H$ is $\nabla^2f$ on the edge of $\mathcal{D}$ in
+    \item $A\pr$ is $A$ projected on tangent space to $\mathcal{D}$ in $\rho\ml$
+    \item $\mathbb H$ is $\nabla^2f$ on the edge of $\mathcal{D}$ in
       $\rho\ml$
     \end{itemize}
   \end{block}
 \end{frame}
 
-\begin{frame}{Case of the entropy \TODO{} alert new things}
+\begin{frame}{Case of the entropy}
 
 
   \begin{block}{Expectation ($h \in \class \varepsilon$)}
     \[E_A = h(\rho\ml) + O \left(\frac 1{N^{\varepsilon}}\right)\]
   \end{block}
 
-  \begin{block}{Variance ($h \in \class{1+\varepsilon}$, and $h \in \class 3$ along the edge)}
+  \begin{block}{Variance ($h \in \class{\varepsilon}$, and $h \in \class 3$
+      along the edge and inside)}
     If $\dpar h x = o\left(\frac 1 {x^\delta}\right)$, with $\delta < \varepsilon$,
 
 \vspace{-4mm}
@@ -770,8 +778,8 @@
 \vspace{-3mm}
 
     \begin{itemize}
-    \item[--] $A\pr$ is $A$ projected on tangent space to $\mathcal{D}$ in $\rho\ml$
-    \item[--] $\mathbb H$ is $\nabla^2f$ on the edge of $\mathcal{D}$ in
+    \item $A\pr$ is $A$ projected on tangent space to $\mathcal{D}$ in $\rho\ml$
+    \item $\mathbb H$ is $\nabla^2f$ on the edge of $\mathcal{D}$ in
       $\rho\ml$
     \end{itemize}
   \end{block}
@@ -783,37 +791,146 @@
 \section{Error propagation}
 
 \begin{frame}{First order error propagation}
+  \begin{center}
+    Variance of $f(X)$?
+  \end{center}
+\[V(f(X)) \approx \nabla f^t V(X) \nabla f\]
+
+\pause{}\vspace{5mm}
+
+\begin{center}
+By identification $\mathbb H^{-1}$ is the variance of $\rho\ml$
+\end{center}
+
 \end{frame}
 
-\begin{frame}{Heat vs relative temperature}
+\begin{frame}{Second law}
+  \centering
+  \includegraphics[height=\textheight]{plots/Strg2.png}
 \end{frame}
-
 
 
 \section{Centering the result}
 
 \begin{frame}{The non-full span problem}
+
+  \[\Span E_I \neq \mathcal{O}(\mathcal{H}) \implies \Alt<1>?{\dparn \ell \rho 2
+    \not < 0}\]
+
+  \onslide<3->
+
+  \begin{center}
+How to choose the \alert<3>{right} $\rho\ml$?
+  \end{center}
+
+  \onslide<4->
+
+  \begin{center}
+    There isn't a \alert<4>{right one}
+  \end{center}
+
+
+  \onslide<5->
+
+  \begin{block}{Two objective optimization}
+    Maximize a centering function $c$ among $\argmax_{\rho\in \mathcal{D}}\ell(\rho)$
+  \end{block}
+
+  \onslide<6->
+
+  \begin{block}{How?}
+  \onslide<7->
+  Maximize $\ell + \varepsilon c$ then $\varepsilon \to 0$
+  \end{block}
+
+
 \end{frame}
 
 \begin{frame}{Proposed centering function and properties}
+
+  \begin{itemize}
+  \item Log determinant ($\log \circ \det$)
+  \item Von Neumann entropy ($S$)
+  \end{itemize}
+
+  \pause{}\vfill
+
+  \begin{block}{Properties}
+    \begin{itemize}
+    \item Strictly concave
+    \item Unitary invariant
+    \item Give $\frac In$ as most centered matrix of $\mathcal{D}$
+    \item Give exact result in dimension 2
+    \end{itemize}
+  \end{block}
+
+
 \end{frame}
 
-\begin{frame}%Plot of the functions
-  Plots
+\begin{frame}{Log-determinant}
+  \includegraphics[width=\textwidth]{det5.png}
 \end{frame}
 
-\begin{frame}{Multi variable optimization}
+\begin{frame}{Von-Neumann entropy}
+  \includegraphics[width=\textwidth]{ent5.png}
 \end{frame}
+
 
 
 
 \section{Conclusion}
 
 \begin{frame}{Conclusion}
+
+  \begin{block}{Prior in Maths}
+    \begin{itemize}
+    \item Maxlike quantum state tomography
+    \item Computed with projected gradient ascent
+    \item Proof of convergence are asymptotic integrals development
+    \end{itemize}
+  \end{block}
+
+  \pause{}
+
+  \begin{block}{Prior in Physics}
+    \begin{itemize}
+    \item Quantum electro dynamics in cavities, Rabi oscillation
+    \item Formalism of density matrices and quantum operations
+    \item Quantum thermodynamics: information and entropy
+    \end{itemize}
+  \end{block}
+
+  \pause{}
+
+  \begin{block}{Personal Contribution}
+    \begin{itemize}
+    \item Monte-Carlo algorithm to evaluate error bars
+    \item Extension of asymptotic proofs to allow entropy
+    \item Creation of the secondary centering function system
+    \end{itemize}
+  \end{block}
 \end{frame}
 
 \begin{frame}{Thanks}
+
+  \begin{itemize}
+  \item Thanks to Igor Dotsenko for welcoming me in his lab and showing me
+    their amazing experimental setup.
+  \item Thanks to Pierre Rouchon for giving me interesting problems to solve and
+    helping me solving them
+  \item Thanks to Luis Najera for sharing with me his awesome internship project
+    allowing me to directly apply my work to something physically interesting,
+    and also for answering my various physical questions.
+  \item Thanks to Valentin Metillon for helping me understanding various
+    physical concepts.
+  \end{itemize}
+
 \end{frame}
+\begin{frame}[standout]
+  Thank you for your attention
+\end{frame}
+
+
 
 
 
