@@ -1,2 +1,8 @@
 report/*
 !report/*.tex
+!report/*.bib
+slides/*
+!slides/*.tex
+article/*
+!article/*.tex
+!article/*.bib
